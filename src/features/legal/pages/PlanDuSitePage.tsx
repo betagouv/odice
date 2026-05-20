@@ -1,0 +1,63 @@
+import { Link } from "react-router-dom";
+import { ROUTES } from "@shared/config/routes.config";
+import { Breadcrumb } from "@shared/components/Breadcrumb";
+import { PageContainer } from "@shared/components/PageContainer";
+
+export function PlanDuSitePage() {
+  // TODO: remplir avec le plan du site réel (arborescence complète des pages)
+  return (
+    <PageContainer>
+      <Breadcrumb segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: "Plan du site" }]} />
+
+      <div className="fr-grid-row fr-grid-row--gutters fr-mt-2w">
+        <div className="fr-col-12 fr-col-md-8">
+          <h1>Plan du site</h1>
+          <p className="fr-text--lead">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi
+            tristique senectus et netus et malesuada.
+          </p>
+
+          <h2>Pages principales</h2>
+          <ul>
+            <li>
+              <Link to={ROUTES.HOME}>Accueil</Link>
+            </li>
+            <li>
+              <Link to={ROUTES.SIMULATEURS}>Simulateur</Link>
+              <ul>
+                <li>
+                  <Link to={ROUTES.SIMULATEUR_ABATTOIRS}>Simulateur Abattoirs</Link>
+                </li>
+                <li>
+                  <Link to={ROUTES.SIMULATEUR_ETABLISSEMENTS}>Simulateur Établissements</Link>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <Link to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}>Documentation réglementaire</Link>
+            </li>
+            <li>
+              <Link to={ROUTES.NOTICE_UTILISATION}>Notice d'utilisation</Link>
+            </li>
+          </ul>
+
+          <h2>Informations légales</h2>
+          <ul>
+            <li>
+              <Link to={ROUTES.ACCESSIBILITE}>Accessibilité</Link>
+            </li>
+            <li>
+              <Link to={ROUTES.MENTIONS_LEGALES}>Mentions légales</Link>
+            </li>
+            <li>
+              <Link to={ROUTES.DONNEES_PERSONNELLES}>Données personnelles</Link>
+            </li>
+            <li>
+              <Link to={ROUTES.GESTION_COOKIES}>Gestion des cookies</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </PageContainer>
+  );
+}
