@@ -48,7 +48,8 @@ L'application est servie sur <http://localhost:5173>.
 | ------------------- | ------------------------------------------------------------ |
 | `pnpm dev`          | Démarre le serveur Vite en mode développement                |
 | `pnpm build`        | Génère le build statique (`dist/`)                           |
-| `pnpm preview`      | Prévisualise le build généré                                 |
+| `pnpm start`        | Sert le build (`dist/`) en SPA mode via `serve` (prod)       |
+| `pnpm preview`      | Prévisualise le build généré (`vite preview`, dev)           |
 | `pnpm test`         | Lance les tests unitaires Vitest                             |
 | `pnpm test:watch`   | Tests unitaires en mode watch                                |
 | `pnpm test:e2e`     | Lance les tests E2E Playwright (Chromium)                    |
@@ -127,8 +128,10 @@ Mises à jour des dépendances : **Dependabot** ([`.github/dependabot.yml`](.git
 
 ## Déploiement
 
-- Plateforme : **Scalingo**
-- Type de build : application statique (`dist/`)
+- Plateforme : **Scalingo** (buildpack Node.js)
+- Build : `pnpm build` → application statique dans `dist/`
+- Run : `pnpm start` (déclaré dans le [Procfile](Procfile)) → `serve -s dist` en SPA mode, écoute sur `$PORT` fourni par Scalingo
+- Le flag `-s` (single page application) renvoie `index.html` pour toutes les routes inconnues — indispensable pour `react-router-dom` (sinon un refresh sur `/simulateurs/abattoirs` donnerait un 404)
 - CI/CD : GitHub Actions (voir section ci-dessus)
 
 ## Contribuer
