@@ -1,0 +1,91 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+build/
+*.tsbuildinfo
+
+# Testing
+coverage/
+.nyc_output
+
+# Playwright
+playwright-report/
+test-results/
+.playwright/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Environment variables
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# Temporary files
+.temp
+.tmp
+tmp/
+temp/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Debug
+*.pem
+
+# Package manager files
+.yarn/
+.pnpm-store/
+pnpm-debug.log*
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# Misc
+.cache
+.parcel-cache
+.local*
+
+# Claude Code
+.claude/settings.local.json
+CLAUDE.local.md
