@@ -13,7 +13,6 @@ import {
   Marque,
   Mouvement,
   Traitement,
-  formatDateEffet,
   type AbattoirsOutputs,
 } from "@engine";
 import {
@@ -23,6 +22,7 @@ import {
   MOUVEMENT_LABELS,
 } from "@shared/labels/abattoirs.labels";
 import { ROUTES } from "@shared/config/routes.config";
+import { formatDateIsoToLongFr } from "@shared/utils/format-date";
 
 type Props = {
   result: AbattoirsOutputs | null;
@@ -110,7 +110,7 @@ function Header() {
             rel="noopener noreferrer"
             style={BLUE}
           >
-            {formatDateEffet(versionCourante.dateEffet)}
+            {formatDateIsoToLongFr(versionCourante.dateEffet)}
           </Link>
         </p>
       </div>

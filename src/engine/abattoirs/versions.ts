@@ -40,27 +40,3 @@ export const ABATTOIRS_VERSIONS: readonly SimulateurVersion[] = [
     ],
   },
 ];
-
-const MOIS_FR = [
-  "janvier",
-  "février",
-  "mars",
-  "avril",
-  "mai",
-  "juin",
-  "juillet",
-  "août",
-  "septembre",
-  "octobre",
-  "novembre",
-  "décembre",
-] as const;
-
-// « 2026-02-04 » → « 4 février 2026 » (format affiché à l'utilisateur).
-export function formatDateEffet(iso: string): string {
-  const [year, month, day] = iso.split("-").map(Number);
-  if (!year || !month || !day || month < 1 || month > 12) {
-    throw new Error(`Date ISO invalide : ${iso}`);
-  }
-  return `${day} ${MOIS_FR[month - 1]} ${year}`;
-}

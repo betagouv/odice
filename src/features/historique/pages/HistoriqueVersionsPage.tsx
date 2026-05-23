@@ -1,8 +1,9 @@
 // Historique des versions du moteur de règles, lié aux arrêtés officiels.
 // Lecture seule, source = src/engine/<context>/versions.ts.
 
-import { ABATTOIRS_VERSIONS, formatDateEffet, type SimulateurVersion } from "@engine";
+import { ABATTOIRS_VERSIONS, type SimulateurVersion } from "@engine";
 import { PageContainer } from "@shared/components/PageContainer";
+import { formatDateIsoToLongFr } from "@shared/utils/format-date";
 
 export function HistoriqueVersionsPage() {
   return (
@@ -28,7 +29,7 @@ export function HistoriqueVersionsPage() {
 function VersionArticle({ version }: { version: SimulateurVersion }) {
   return (
     <article id={version.dateEffet} className="fr-mt-3w fr-pb-3w">
-      <h3 className="fr-h5">Version du {formatDateEffet(version.dateEffet)}</h3>
+      <h3 className="fr-h5">Version du {formatDateIsoToLongFr(version.dateEffet)}</h3>
 
       <p>
         <strong>Arrêté :</strong>{" "}

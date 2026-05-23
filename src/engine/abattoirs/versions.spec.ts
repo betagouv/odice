@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ABATTOIRS_VERSIONS, formatDateEffet } from "./versions";
+import { ABATTOIRS_VERSIONS } from "./versions";
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -40,21 +40,5 @@ describe("ABATTOIRS_VERSIONS", () => {
         expect(src.startsWith("docs/sources/")).toBe(true);
       }
     }
-  });
-});
-
-describe("formatDateEffet", () => {
-  it("formate une date en français long", () => {
-    expect(formatDateEffet("2026-02-04")).toBe("4 février 2026");
-  });
-
-  it("gère les mois avec accents", () => {
-    expect(formatDateEffet("2026-08-15")).toBe("15 août 2026");
-    expect(formatDateEffet("2026-12-01")).toBe("1 décembre 2026");
-  });
-
-  it("lève sur date invalide", () => {
-    expect(() => formatDateEffet("2026-13-01")).toThrow();
-    expect(() => formatDateEffet("invalide")).toThrow();
   });
 });
