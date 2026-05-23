@@ -3,10 +3,9 @@ import { ROUTES } from "@shared/config/routes.config";
 import { Layout } from "@shared/components/layout/Layout";
 import { HomePage } from "@features/home/pages/HomePage";
 import { SimulateursIndexPage } from "@features/simulateurs/pages/SimulateursIndexPage";
-import { SimulateurAbattoirsPage } from "@features/simulateurs/abattoirs/pages/SimulateurAbattoirsPage";
-import { SimulateurEtablissementsPage } from "@features/simulateurs/etablissements/pages/SimulateurEtablissementsPage";
 import { DocumentationReglementairePage } from "@features/documentation/pages/DocumentationReglementairePage";
 import { NoticeUtilisationPage } from "@features/documentation/pages/NoticeUtilisationPage";
+import { HistoriqueVersionsPage } from "@features/historique/pages/HistoriqueVersionsPage";
 import { PlanDuSitePage } from "@features/legal/pages/PlanDuSitePage";
 import { AccessibilitePage } from "@features/legal/pages/AccessibilitePage";
 import { MentionsLegalesPage } from "@features/legal/pages/MentionsLegalesPage";
@@ -19,13 +18,12 @@ function App() {
       <Routes>
         <Route path={ROUTES.HOME} element={<HomePage />} />
         <Route path={ROUTES.SIMULATEURS} element={<SimulateursIndexPage />} />
-        <Route path={ROUTES.SIMULATEUR_ABATTOIRS} element={<SimulateurAbattoirsPage />} />
-        <Route path={ROUTES.SIMULATEUR_ETABLISSEMENTS} element={<SimulateurEtablissementsPage />} />
         <Route
           path={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
           element={<DocumentationReglementairePage />}
         />
         <Route path={ROUTES.NOTICE_UTILISATION} element={<NoticeUtilisationPage />} />
+        <Route path={ROUTES.HISTORIQUE_VERSIONS} element={<HistoriqueVersionsPage />} />
         <Route path={ROUTES.PLAN_DU_SITE} element={<PlanDuSitePage />} />
         <Route path={ROUTES.ACCESSIBILITE} element={<AccessibilitePage />} />
         <Route path={ROUTES.MENTIONS_LEGALES} element={<MentionsLegalesPage />} />

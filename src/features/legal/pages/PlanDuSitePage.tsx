@@ -24,20 +24,15 @@ export function PlanDuSitePage() {
             </li>
             <li>
               <Link to={ROUTES.SIMULATEURS}>Simulateur</Link>
-              <ul>
-                <li>
-                  <Link to={ROUTES.SIMULATEUR_ABATTOIRS}>Simulateur Abattoirs</Link>
-                </li>
-                <li>
-                  <Link to={ROUTES.SIMULATEUR_ETABLISSEMENTS}>Simulateur Établissements</Link>
-                </li>
-              </ul>
             </li>
             <li>
               <Link to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}>Documentation réglementaire</Link>
             </li>
             <li>
               <Link to={ROUTES.NOTICE_UTILISATION}>Notice d'utilisation</Link>
+            </li>
+            <li>
+              <Link to={ROUTES.HISTORIQUE_VERSIONS}>Historique des versions</Link>
             </li>
           </ul>
 

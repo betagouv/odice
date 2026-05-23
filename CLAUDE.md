@@ -308,6 +308,25 @@ Les règles PPA (Peste Porcine Africaine) sont implémentées dans `src/engine/<
 1. d'un test Vitest qui couvre le nouveau cas (`*.spec.ts` co-localisé)
 2. d'une référence à la source réglementaire (instruction technique, arrêté, ou fichier dans `docs/sources/`) dans un commentaire
 
+## Versionnage des règles métier
+
+Chaque simulateur a son fichier de versions lié aux arrêtés officiels :
+
+- Source de vérité : `src/engine/<context>/versions.ts` (tableau antéchronologique, `[0]` = version courante)
+- Affichage : date dans le panneau résultats + page `/historique-versions`
+- Procédure PR « nouvel arrêté » détaillée dans [`docs/versions.md`](./docs/versions.md)
+
+Quand un nouvel arrêté entre en vigueur :
+
+1. Copier les sources datées dans `docs/sources/`
+2. Régénérer la fixture (`pnpm fixture:abattoirs`)
+3. Adapter les règles jusqu'à `pnpm test` vert
+4. **Ajouter une entrée en tête de `ABATTOIRS_VERSIONS`** avec `dateEffet` (ISO), `arrete`, `sources`, `changements`, `pullRequest`
+5. `pnpm validate`
+6. Commit `feat(<context>): nouvelle version YYYY-MM-DD`
+
+La spec `versions.spec.ts` garantit l'ordre antéchronologique strict et le format ISO des dates.
+
 ## Tests
 
 - Fichiers de test à côté des fichiers source : `*.spec.ts` / `*.spec.tsx`
