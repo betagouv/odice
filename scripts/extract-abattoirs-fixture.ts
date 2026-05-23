@@ -1,12 +1,22 @@
 #!/usr/bin/env node
 // Génère tests/fixtures/abattoirs/oracle-2744.json depuis le xlsx source.
 // Usage : pnpm fixture:abattoirs [--check]
-// Si la structure du xlsx change, le script échoue avec un message explicite.
+// Lancé via `node` natif (strip-types Node 24+), aucune dépendance ajoutée.
 
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as XLSX from "xlsx";
+import {
+  Certification,
+  LPS,
+  Marque,
+  Mouvement,
+  Statut,
+  Traitement,
+  Zone,
+} from "../src/engine/shared/types.ts";
+import type { AbattoirsInputs, AbattoirsOutputs } from "../src/engine/abattoirs/types.ts";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, "..");
@@ -15,59 +25,59 @@ const SOURCE_XLSX = join(REPO_ROOT, "docs/sources/abattoirs-test-formules-202605
 const TARGET_JSON = join(REPO_ROOT, "tests/fixtures/abattoirs/oracle-2744.json");
 const SHEET_NAME = "ABATTOIRS";
 
-// Mapping libellés xlsx → enums (cf. src/engine/types.ts).
+// Mapping libellés xlsx → enums (cf. src/engine/shared/types.ts).
 
-const ZONE_MAP = Object.freeze({
-  "zone indemne": "zone-indemne",
-  ZP: "zp",
-  ZS: "zs",
-  "ZI FS": "zi-fs",
-  ZRI: "zri",
-  ZRII: "zrii",
-  ZRIII: "zriii",
-});
+const ZONE_MAP: Record<string, Zone> = {
+  "zone indemne": Zone.ZoneIndemne,
+  ZP: Zone.ZP,
+  ZS: Zone.ZS,
+  "ZI FS": Zone.ZIFS,
+  ZRI: Zone.ZRI,
+  ZRII: Zone.ZRII,
+  ZRIII: Zone.ZRIII,
+};
 
-const STATUT_MAP = Object.freeze({
-  "MR-PPA": "mr-ppa",
-  "MNR-PPA": "mnr-ppa",
-});
+const STATUT_MAP: Record<string, Statut> = {
+  "MR-PPA": Statut.MrPpa,
+  "MNR-PPA": Statut.MnrPpa,
+};
 
-const MCA_MAP = Object.freeze({
+const MCA_MAP: Record<string, boolean> = {
   OUI: true,
   NON: false,
-});
+};
 
-const MARQUE_MAP = Object.freeze({
-  ovale: "ovale",
-  "ovale barree": "ovale-barree",
-  "ovale diagonales paralleles": "ovale-diagonales-paralleles",
-});
+const MARQUE_MAP: Record<string, Marque> = {
+  ovale: Marque.Ovale,
+  "ovale barree": Marque.OvaleBarree,
+  "ovale diagonales paralleles": Marque.OvaleDiagonalesParalleles,
+};
 
-const MOUVEMENT_MAP = Object.freeze({
-  autorise: "autorise",
-  interdit: "interdit",
-});
+const MOUVEMENT_MAP: Record<string, Mouvement> = {
+  autorise: Mouvement.Autorise,
+  interdit: Mouvement.Interdit,
+};
 
-const TRAITEMENT_MAP = Object.freeze({
-  "Traitement d'atténuation obligatoire": "obligatoire",
-  "Traitement d'atténuation non obligatoire": "non-obligatoire",
-});
+const TRAITEMENT_MAP: Record<string, Traitement> = {
+  "Traitement d'atténuation obligatoire": Traitement.Obligatoire,
+  "Traitement d'atténuation non obligatoire": Traitement.NonObligatoire,
+};
 
-const LPS_MAP = Object.freeze({
-  "LPS permanent": "lps-permanent",
-  "LPS systématique": "lps-systematique",
-  "LPS non requis": "lps-non-requis",
-});
+const LPS_MAP: Record<string, LPS> = {
+  "LPS permanent": LPS.Permanent,
+  "LPS systématique": LPS.Systematique,
+  "LPS non requis": LPS.NonRequis,
+};
 
 // Mapping « obligatoire » (xlsx) → « possible » (UI) — cf. points-a-valider TODO 4.
-const CERTIFICATION_MAP = Object.freeze({
-  "Certification zoosanitaire obligatoire": "certification-obligatoire",
-  "Dérogation à la certification zoosanitaire obligatoire": "derogation-possible",
-  "Certification zoosanitaire non requise": "certification-non-requise",
-});
+const CERTIFICATION_MAP: Record<string, Certification> = {
+  "Certification zoosanitaire obligatoire": Certification.Obligatoire,
+  "Dérogation à la certification zoosanitaire obligatoire": Certification.DerogationPossible,
+  "Certification zoosanitaire non requise": Certification.NonRequise,
+};
 
-const EXPECTED_HEADERS_R0 = ["ENTREES", null, null, null, null, null, "SORTIES"];
-const EXPECTED_HEADERS_R2 = [
+const EXPECTED_HEADERS_R0: (string | null)[] = ["ENTREES", null, null, null, null, null, "SORTIES"];
+const EXPECTED_HEADERS_R2: string[] = [
   "zone_suides",
   "statut",
   "zone_abattoir",
@@ -83,21 +93,22 @@ const EXPECTED_HEADERS_R2 = [
   "UE",
 ];
 
-function lookup(map, value, columnLabel) {
+function lookup<T>(map: Record<string, T>, value: unknown, columnLabel: string): T | null {
   if (value === null || value === undefined || value === "") {
     return null;
   }
-  if (!Object.prototype.hasOwnProperty.call(map, value)) {
+  const key = String(value);
+  if (!Object.prototype.hasOwnProperty.call(map, key)) {
     throw new Error(
       `Valeur inconnue dans la colonne "${columnLabel}" : ${JSON.stringify(value)}\n` +
         `  Valeurs acceptées : ${Object.keys(map).join(", ")}\n` +
-        `  → Mettre à jour le mapping et src/engine/types.ts.`,
+        `  → Mettre à jour le mapping et src/engine/shared/types.ts.`,
     );
   }
-  return map[value];
+  return map[key];
 }
 
-function assertHeader(row, expected, rowNumber) {
+function assertHeader(row: unknown[], expected: (string | null)[], rowNumber: number): void {
   for (let i = 0; i < expected.length; i += 1) {
     if (expected[i] === null) continue;
     const actual = row[i] ?? null;
@@ -112,7 +123,14 @@ function assertHeader(row, expected, rowNumber) {
   }
 }
 
-function buildFixture() {
+interface FixtureCase {
+  row: number;
+  description: string;
+  inputs: AbattoirsInputs;
+  expected: AbattoirsOutputs;
+}
+
+function buildFixture(): FixtureCase[] {
   if (!existsSync(SOURCE_XLSX)) {
     throw new Error(`Fichier source introuvable : ${SOURCE_XLSX}`);
   }
@@ -126,13 +144,16 @@ function buildFixture() {
     );
   }
 
-  const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: null });
+  const rows = XLSX.utils.sheet_to_json<unknown[]>(ws, {
+    header: 1,
+    defval: null,
+  });
 
   assertHeader(rows[0], EXPECTED_HEADERS_R0, 1);
   assertHeader(rows[2], EXPECTED_HEADERS_R2, 3);
 
   const dataRows = rows.slice(3);
-  const fixture = [];
+  const fixture: FixtureCase[] = [];
 
   for (let i = 0; i < dataRows.length; i += 1) {
     const r = dataRows[i];
@@ -155,12 +176,24 @@ function buildFixture() {
     const frDocument = lookup(LPS_MAP, r[11], "FR_document");
     const ueDocument = lookup(CERTIFICATION_MAP, r[12], "UE_document");
 
+    if (
+      zoneSuides === null ||
+      zoneAbattoir === null ||
+      mcaAbattoir === null ||
+      zoneEtbDestinataire === null ||
+      mcaEtbDestinataire === null ||
+      frMouvement === null ||
+      ueMouvement === null
+    ) {
+      throw new Error(`Ligne xlsx ${xlsxRowNumber} : entrée ou sortie obligatoire manquante.`);
+    }
+
     // Statut applicable uniquement à ZRII/ZRIII : forcé null sinon.
-    const statutNormalise = zoneSuides === "zrii" || zoneSuides === "zriii" ? statut : null;
+    const statutNormalise = zoneSuides === Zone.ZRII || zoneSuides === Zone.ZRIII ? statut : null;
 
     fixture.push({
       row: xlsxRowNumber,
-      description: `${r[0]} | ${r[1]} | ${r[2]} | ${r[3]} | ${r[4]} | ${r[5]}`,
+      description: `${String(r[0])} | ${String(r[1])} | ${String(r[2])} | ${String(r[3])} | ${String(r[4])} | ${String(r[5])}`,
       inputs: {
         zoneSuides,
         statut: statutNormalise,
@@ -184,11 +217,11 @@ function buildFixture() {
   return fixture;
 }
 
-function serialize(fixture) {
+function serialize(fixture: FixtureCase[]): string {
   return `${JSON.stringify(fixture, null, 2)}\n`;
 }
 
-function main() {
+function main(): void {
   const checkMode = process.argv.includes("--check");
 
   const fixture = buildFixture();

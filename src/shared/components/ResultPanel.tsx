@@ -1,4 +1,4 @@
-import type { AbattoirsOutputs } from "@engine/types";
+import type { AbattoirsOutputs } from "@engine";
 
 type ResultPanelProps = {
   result: AbattoirsOutputs | null;

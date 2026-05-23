@@ -22,8 +22,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "fixture:abattoirs": "node scripts/extract-abattoirs-fixture.mjs",
-    "fixture:abattoirs:check": "node scripts/extract-abattoirs-fixture.mjs --check",
+    "fixture:abattoirs": "node scripts/extract-abattoirs-fixture.ts",
+    "fixture:abattoirs:check": "node scripts/extract-abattoirs-fixture.ts --check",
     "validate": "pnpm format && pnpm lint:fix && pnpm typecheck && pnpm fixture:abattoirs:check && pnpm test",
     "validate:full": "pnpm validate && pnpm test:e2e"
   },

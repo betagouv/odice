@@ -151,6 +151,47 @@ Quand une tâche implique un **choix architectural significatif**, créer automa
 
 Ne PAS créer d'ADR pour les corrections de bugs, refactorings mineurs ou fonctionnalités qui suivent un pattern existant.
 
+### Commits : simples et conventionnels
+
+Suivre **Conventional Commits** : un titre court, une seule ligne de description.
+
+Format :
+
+```
+<type>(<scope?>): <titre court à l'impératif>
+
+<description en une seule ligne, le pourquoi plus que le quoi>
+```
+
+**Types courants** : `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `style`, `perf`, `build`, `ci`.
+
+**Exemples** :
+
+```
+feat(abattoirs): moteur de règles + oracle 2744 cas
+
+Implémentation des 5 règles métier dans une architecture DDD pour préparer l'arrivée du 2e simulateur.
+```
+
+```
+fix(marque): corrige le cas ZRII MR-PPA dest non MCA
+
+Le LPS retournait null à tort pour la zone destinataire ZRI.
+```
+
+```
+docs: ADR architecture DDD du moteur
+
+Justifie le découpage en bounded contexts et la séparation data/validation/logique.
+```
+
+Règles :
+
+- Titre **sous 70 caractères**, à l'impératif, en minuscules.
+- **Une seule ligne** de description (pas de listes à puces, pas de paragraphes).
+- Préférer le **pourquoi** au quoi (le diff montre déjà le quoi).
+- **Aucune mention d'auteur ou de co-auteur** dans le corps du commit (pas de `Co-Authored-By`, pas de `Generated with`, etc.). L'auteur git suffit.
+
 ### Compaction du contexte
 
 Lors de la compaction automatique ou manuelle (`/compact`), TOUJOURS préserver :
@@ -191,37 +232,49 @@ pnpm preview                # Prévisualisation du build
 
 ## Architecture
 
-Structure organisée par features, avec un moteur de règles isolé en TypeScript pur :
+Structure organisée par features (UI) avec un moteur de règles isolé en TypeScript pur, organisé en **DDD propre mais simple** :
 
 ```
 src/
-├── engine/                 # Moteur de règles TypeScript pur (sans React)
-│   ├── types.ts            # Types des inputs/outputs des simulateurs
-│   ├── rules.ts            # Règles métier PPA
-│   └── evaluate.ts         # Fonction d'évaluation principale
-├── features/               # Une feature = un parcours utilisateur
+├── engine/                       # Moteur de règles (TypeScript pur, sans React)
+│   ├── index.ts                  # Public API du moteur (re-exports)
+│   ├── shared/                   # Shared kernel : concepts communs aux contexts
+│   │   ├── types.ts              # Enums communs (Zone, Statut, Marque, ...)
+│   │   └── index.ts
+│   ├── abattoirs/                # Bounded context #1
+│   │   ├── index.ts              # API publique du context
+│   │   ├── types.ts              # AbattoirsInputs, AbattoirsOutputs
+│   │   ├── schema.ts             # Schémas Zod (data definition)
+│   │   ├── parse.ts              # Fonctions de validation (parse/safeParse)
+│   │   ├── evaluate.ts           # Orchestrateur (evaluateAbattoir)
+│   │   ├── evaluate.spec.ts      # Test oracle (fixture 2 744 cas)
+│   │   └── rules/                # Règles métier atomiques
+│   │       └── *.ts + *.spec.ts
+│   └── etablissements/           # Bounded context #2 (placeholder)
+├── features/                     # Une feature = un parcours utilisateur
 │   ├── home/pages/
-│   └── simulateurs/        # Sous-domaine simulateurs (regroupe les 2 parcours)
+│   └── simulateurs/
 │       ├── abattoirs/pages/
 │       └── etablissements/pages/
-└── shared/                 # Composants, hooks, utilitaires partagés
-    ├── components/
-    │   ├── SimulatorForm.tsx
-    │   ├── ResultPanel.tsx
-    │   └── layout/Layout.tsx   # Header DSFR + Footer DSFR
-    ├── config/routes.config.ts
-    ├── hooks/
-    └── utils/
+└── shared/                       # Composants UI, hooks, utilitaires
 ```
+
+### Principes DDD appliqués
+
+- **Bounded contexts** : un dossier par simulateur sous `src/engine/`. **Aucun import croisé** entre contexts.
+- **Shared kernel minimal** : `src/engine/shared/` contient uniquement les concepts vraiment partagés (enums communs aux simulateurs).
+- **Public API par context** : un `index.ts` expose les entry points (evaluator, types, parser). Le reste de l'app importe via cet `index.ts` ou via `src/engine/index.ts`.
+- **Séparation des couches dans un context** : data (`schema.ts`), validation (`parse.ts`), logique (`rules/` + `evaluate.ts`) sont des fichiers distincts.
+- **Pas de couches inutiles** : pas de Repository, pas de Domain Service abstrait, pas de DI container. On reste pragmatique tant que le besoin ne le justifie pas.
 
 **Règle d'or** : le moteur (`src/engine/`) ne doit JAMAIS importer de React ni de dépendances UI. Il doit être testable en pur TypeScript.
 
 ## Logique métier
 
-Les règles PPA (Peste Porcine Africaine) sont implémentées dans `src/engine/rules.ts`. Toute modification de ces règles DOIT être accompagnée :
+Les règles PPA (Peste Porcine Africaine) sont implémentées dans `src/engine/<context>/rules/`. Toute modification de ces règles DOIT être accompagnée :
 
-1. d'un test Vitest qui couvre le nouveau cas (`src/engine/evaluate.spec.ts`)
-2. d'une référence à la source réglementaire (instruction technique, arrêté, etc.) dans un commentaire
+1. d'un test Vitest qui couvre le nouveau cas (`*.spec.ts` co-localisé)
+2. d'une référence à la source réglementaire (instruction technique, arrêté, ou fichier dans `docs/sources/`) dans un commentaire
 
 ## Tests
 

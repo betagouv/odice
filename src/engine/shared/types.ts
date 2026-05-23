@@ -1,8 +1,5 @@
-// Types du moteur ODICE.
-// Enums en kebab-case (libellés UI accentués gérés séparément côté front).
+// Enums communs aux simulateurs (shared kernel).
 // Source de vérité : docs/sources/abattoirs-test-formules-20260512.xlsx
-
-// Enums communs aux simulateurs
 
 export const Zone = {
   ZoneIndemne: "zone-indemne",
@@ -20,8 +17,6 @@ export const Statut = {
   MnrPpa: "mnr-ppa",
 } as const;
 export type Statut = (typeof Statut)[keyof typeof Statut];
-
-// Sorties communes
 
 export const Marque = {
   Ovale: "ovale",
@@ -55,44 +50,3 @@ export const Certification = {
   NonRequise: "certification-non-requise",
 } as const;
 export type Certification = (typeof Certification)[keyof typeof Certification];
-
-// Simulateur Abattoirs
-
-// statut est null hors {ZRII, ZRIII} (sans impact réglementaire ailleurs).
-export interface AbattoirsInputs {
-  zoneSuides: Zone;
-  statut: Statut | null;
-  zoneAbattoir: Zone;
-  mcaAbattoir: boolean;
-  zoneEtbDestinataire: Zone;
-  mcaEtbDestinataire: boolean;
-}
-
-// marque=null ⇔ interdiction totale. Autres champs null si non applicables.
-// Cf. docs/simulateur-abattoirs-points-a-valider.md (TODO 1 et 2).
-export interface AbattoirsOutputs {
-  marque: Marque | null;
-  frMouvement: Mouvement;
-  ueMouvement: Mouvement;
-  frTraitement: Traitement | null;
-  ueTraitement: Traitement | null;
-  frDocument: LPS | null;
-  ueDocument: Certification | null;
-}
-
-// Simulateur Autres Établissements (placeholder — 2e simulateur).
-
-export interface EtablissementsInputs {
-  zoneOrigine: Zone | null;
-}
-
-export interface EtablissementsOutputs {
-  marque: Marque | null;
-}
-
-// Union pour le dispatcher racine.
-export type SimulateurInputs =
-  | ({ kind: "abattoirs" } & AbattoirsInputs)
-  | ({ kind: "etablissements" } & EtablissementsInputs);
-
-export type SimulateurOutputs = AbattoirsOutputs | EtablissementsOutputs;
