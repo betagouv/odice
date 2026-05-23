@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function PlanDuSitePage() {
   // TODO: remplir avec le plan du site réel (arborescence complète des pages)
   return (
     <PageContainer>
+      <PageTitle>Plan du site</PageTitle>
       <Breadcrumb segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: "Plan du site" }]} />
 
       <div className="fr-grid-row fr-grid-row--gutters fr-mt-2w">

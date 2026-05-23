@@ -6,6 +6,7 @@
 import { useEffect, useRef, useState } from "react";
 import { evaluateAbattoir, type AbattoirsInputs, type AbattoirsOutputs } from "@engine";
 import { Notice } from "@shared/components/Notice";
+import { PageTitle } from "@shared/components/PageTitle";
 import { AbattoirsForm } from "../abattoirs/components/AbattoirsForm";
 import { AbattoirsResult } from "../abattoirs/components/AbattoirsResult";
 import { EtablissementsSimulator } from "../etablissements/components/EtablissementsSimulator";
@@ -39,6 +40,7 @@ export function SimulateursIndexPage() {
 
   return (
     <>
+      <PageTitle>Simulateur</PageTitle>
       <div className="fr-background-alt--blue-france fr-py-6w">
         <div className="fr-container">
           <div className="fr-background-default--grey fr-p-6w">

@@ -3,11 +3,13 @@
 
 import { ABATTOIRS_VERSIONS, type SimulateurVersion } from "@engine";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
 
 export function HistoriqueVersionsPage() {
   return (
     <PageContainer>
+      <PageTitle>Historique des versions</PageTitle>
       <div className="fr-grid-row fr-grid-row--gutters fr-mt-2w">
         <div className="fr-col-12 fr-col-md-10">
           <h1>Historique des versions</h1>

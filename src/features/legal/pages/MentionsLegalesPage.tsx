@@ -1,12 +1,14 @@
 import { ROUTES } from "@shared/config/routes.config";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function MentionsLegalesPage() {
   // TODO: rédiger les mentions légales (éditeur, directeur de publication, hébergeur,
   // propriété intellectuelle, contact)
   return (
     <PageContainer>
+      <PageTitle>Mentions légales</PageTitle>
       <Breadcrumb
         segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: "Mentions légales" }]}
       />

@@ -5,10 +5,12 @@
 import ovoidUrl from "@gouvfr/dsfr/dist/artwork/background/ovoid.svg?url";
 import technicalErrorUrl from "@gouvfr/dsfr/dist/artwork/pictograms/system/technical-error.svg?url";
 import { ROUTES } from "@shared/config/routes.config";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function ErrorFallbackPage() {
   return (
     <div className="fr-container">
+      <PageTitle>Erreur</PageTitle>
       <div className="fr-my-7w fr-mt-md-12w fr-mb-md-10w fr-grid-row fr-grid-row--gutters fr-grid-row--middle fr-grid-row--center">
         <div className="fr-py-0 fr-col-12 fr-col-md-6">
           <h1>Erreur inattendue</h1>
