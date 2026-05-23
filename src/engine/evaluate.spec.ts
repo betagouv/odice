@@ -1,57 +1,19 @@
 import { describe, it, expect } from "vitest";
-import { evaluate } from "./evaluate";
-import type { SimulateurAbattoirsInput, SimulateurEtablissementsInput } from "./types";
+import { evaluateAbattoir } from "./evaluate";
+import { Statut, Zone, type AbattoirsInputs } from "./types";
 
-describe("evaluate", () => {
-  it("retourne un résultat avec tous les champs à null pour le simulateur Abattoirs (placeholder)", () => {
-    const input: SimulateurAbattoirsInput = {
-      zoneOrigine: null,
-      statutSanitaire: null,
-      agrementMCA: null,
+describe("evaluateAbattoir (stub temporaire)", () => {
+  it("est exporté avec la bonne signature", () => {
+    const input: AbattoirsInputs = {
+      zoneSuides: Zone.ZoneIndemne,
+      statut: Statut.MrPpa,
+      zoneAbattoir: Zone.ZoneIndemne,
+      mcaAbattoir: true,
+      zoneEtbDestinataire: Zone.ZoneIndemne,
+      mcaEtbDestinataire: true,
     };
-
-    const result = evaluate(input);
-
-    expect(result).toEqual({
-      marqueSanitaire: null,
-      territoireAutorise: null,
-      lps: null,
-      certificationZoosanitaire: null,
-      traitementAttenuation: null,
-    });
-  });
-
-  it("retourne un résultat avec tous les champs à null pour le simulateur Établissements (placeholder)", () => {
-    const input: SimulateurEtablissementsInput = {
-      zoneOrigine: null,
-      typeEtablissement: null,
-    };
-
-    const result = evaluate(input);
-
-    expect(result.marqueSanitaire).toBeNull();
-    expect(result.territoireAutorise).toBeNull();
-    expect(result.lps).toBeNull();
-    expect(result.certificationZoosanitaire).toBeNull();
-    expect(result.traitementAttenuation).toBeNull();
-  });
-
-  it("expose les 5 champs réglementaires attendus", () => {
-    const input: SimulateurAbattoirsInput = {
-      zoneOrigine: null,
-      statutSanitaire: null,
-      agrementMCA: null,
-    };
-
-    const result = evaluate(input);
-    const keys = Object.keys(result).sort();
-
-    expect(keys).toEqual([
-      "certificationZoosanitaire",
-      "lps",
-      "marqueSanitaire",
-      "territoireAutorise",
-      "traitementAttenuation",
-    ]);
+    // Le stub actuel throw : on vérifie juste qu'il existe.
+    // Sera remplacé par le test oracle une fois l'implémentation faite.
+    expect(() => evaluateAbattoir(input)).toThrow(/implémentation en cours/);
   });
 });

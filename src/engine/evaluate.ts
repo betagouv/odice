@@ -1,12 +1,17 @@
-import type { SimulateurInput, SimulateurResult } from "./types";
-import { applyRules } from "./rules";
+// Dispatcher racine. Implémentation Abattoirs dans ./abattoirs/.
 
-/**
- * Point d'entrée du moteur ODICE.
- *
- * Prend les inputs d'un simulateur (Abattoirs ou Établissements) et renvoie
- * le résultat réglementaire associé.
- */
-export function evaluate(input: SimulateurInput): SimulateurResult {
-  return applyRules(input);
+import type {
+  AbattoirsInputs,
+  AbattoirsOutputs,
+  EtablissementsInputs,
+  EtablissementsOutputs,
+} from "./types";
+
+// Stub temporaire — remplacé par re-export de ./abattoirs/evaluate.
+export function evaluateAbattoir(_inputs: AbattoirsInputs): AbattoirsOutputs {
+  throw new Error("evaluateAbattoir: implémentation en cours");
+}
+
+export function evaluateEtablissements(_inputs: EtablissementsInputs): EtablissementsOutputs {
+  throw new Error("evaluateEtablissements: simulateur non encore implémenté");
 }

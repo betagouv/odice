@@ -1,11 +1,12 @@
-import type { SimulateurResult } from "@engine/types";
+import type { AbattoirsOutputs } from "@engine/types";
 
 type ResultPanelProps = {
-  result: SimulateurResult | null;
+  result: AbattoirsOutputs | null;
 };
 
 export function ResultPanel({ result }: ResultPanelProps) {
-  // TODO: afficher chaque champ du résultat avec sa source réglementaire
+  // TODO: refonte UI conforme à la maquette (badges colorés, 4 blocs groupés).
+  // Ce composant est un placeholder technique le temps de cabler le moteur.
   if (!result) {
     return (
       <section className="fr-mt-4w">
@@ -18,11 +19,13 @@ export function ResultPanel({ result }: ResultPanelProps) {
     <section className="fr-mt-4w">
       <h2>Résultats</h2>
       <ul>
-        <li>Marque sanitaire : {result.marqueSanitaire ?? "—"}</li>
-        <li>Territoire autorisé : {result.territoireAutorise ?? "—"}</li>
-        <li>LPS : {result.lps ?? "—"}</li>
-        <li>Certification zoosanitaire : {result.certificationZoosanitaire ?? "—"}</li>
-        <li>Traitement d'atténuation : {result.traitementAttenuation ?? "—"}</li>
+        <li>Marque : {result.marque ?? "—"}</li>
+        <li>Mouvement France : {result.frMouvement}</li>
+        <li>Mouvement UE : {result.ueMouvement}</li>
+        <li>Traitement France : {result.frTraitement ?? "—"}</li>
+        <li>Traitement UE : {result.ueTraitement ?? "—"}</li>
+        <li>Document France (LPS) : {result.frDocument ?? "—"}</li>
+        <li>Document UE (certification) : {result.ueDocument ?? "—"}</li>
       </ul>
     </section>
   );

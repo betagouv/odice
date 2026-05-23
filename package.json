@@ -22,7 +22,9 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "validate": "pnpm format && pnpm lint:fix && pnpm typecheck && pnpm test",
+    "fixture:abattoirs": "node scripts/extract-abattoirs-fixture.mjs",
+    "fixture:abattoirs:check": "node scripts/extract-abattoirs-fixture.mjs --check",
+    "validate": "pnpm format && pnpm lint:fix && pnpm typecheck && pnpm fixture:abattoirs:check && pnpm test",
     "validate:full": "pnpm validate && pnpm test:e2e"
   },
   "dependencies": {
@@ -58,6 +60,7 @@
     "tailwindcss": "^4.2.2",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "xlsx": "^0.18.5"
   }
 }

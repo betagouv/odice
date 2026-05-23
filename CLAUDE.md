@@ -89,6 +89,33 @@ Cette règle s'applique à :
 - Tests : `*.spec.ts` / `*.spec.tsx`
 - Hooks personnalisés : `use*.ts`
 
+### 5. Commentaires : simples et brefs
+
+Les commentaires doivent être **courts** et n'expliquer que le **pourquoi** (jamais le quoi évident).
+
+```typescript
+// INTERDIT - verbeux, paraphrase le code, multi-lignes inutiles
+/**
+ * Cette fonction prend en entrée les inputs du simulateur Abattoirs
+ * et applique successivement toutes les règles métier PPA définies
+ * dans la spécification DOCX du 2026-05-12 pour produire en sortie
+ * un objet contenant les 7 sorties attendues du moteur.
+ */
+export function evaluateAbattoir(inputs: AbattoirsInputs): AbattoirsOutputs { ... }
+
+// CORRECT - bref, va à l'essentiel
+// Orchestre les 5 règles. Spec : docs/sources/abattoirs-formules-20260512.docx
+export function evaluateAbattoir(inputs: AbattoirsInputs): AbattoirsOutputs { ... }
+```
+
+Règles :
+
+- Pas de commentaires qui paraphrasent le code (le code est déjà lisible).
+- Pas de docblocks JSDoc longs sauf si la fonction a une sémantique non évidente.
+- Un commentaire d'une ligne suffit dans 90 % des cas.
+- Préférer un nom de variable/fonction explicite à un commentaire d'explication.
+- Référencer la source réglementaire (chemin de fichier) en une ligne, pas en paragraphe.
+
 ## Workflow obligatoire
 
 ### Vérification post-implémentation
