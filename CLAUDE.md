@@ -116,6 +116,38 @@ Règles :
 - Préférer un nom de variable/fonction explicite à un commentaire d'explication.
 - Référencer la source réglementaire (chemin de fichier) en une ligne, pas en paragraphe.
 
+### 6. CSS : DSFR + Tailwind, pas de CSS custom
+
+Pour toute UI, **ordre de priorité strict** :
+
+1. **DSFR** (dernière version, **`@gouvfr/dsfr` 1.14+`** à date) — classes `fr-*`, composants documentés sur [systeme-de-design.gouv.fr](https://www.systeme-de-design.gouv.fr/). C'est le défaut absolu pour layout, formulaires, boutons, badges, alertes, etc.
+2. **Tailwind CSS** (v4) — uniquement pour les ajustements utilitaires que le DSFR ne couvre pas (espacements fins, grille spécifique, responsive ponctuel).
+3. **CSS custom** (fichier `.css` dédié ou inline) — **uniquement** si DSFR + Tailwind ne suffisent pas, et **après avoir justifié** dans un commentaire pourquoi.
+
+```tsx
+// CORRECT — DSFR pour la structure, Tailwind pour le détail
+<div className="fr-card fr-card--shadow flex items-center gap-2">
+  <span className="fr-badge fr-badge--success">Autorisé</span>
+</div>
+
+// INTERDIT — CSS inline alors qu'une classe DSFR existe
+<div style={{ padding: 16, border: "1px solid #ddd" }}>...</div>
+
+// TOLÉRÉ — uniquement si justifié
+<div
+  className="fr-grid-row"
+  // Hauteur min imposée par la maquette, non couverte par DSFR
+  style={{ minHeight: "320px" }}
+>
+```
+
+Règles :
+
+- Ne jamais réinventer un composant DSFR existant (callout, alert, accordion, badge, etc.).
+- En cas de doute, chercher d'abord dans la doc DSFR avant d'écrire du Tailwind.
+- Si une override de style DSFR est nécessaire, utiliser `mt-0!` (Tailwind v4 important) plutôt qu'un fichier CSS séparé.
+- Pas de framework UI tiers (Material UI, Chakra, etc.) — la conformité Beta.gouv impose DSFR.
+
 ## Workflow obligatoire
 
 ### Vérification post-implémentation
