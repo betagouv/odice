@@ -104,7 +104,12 @@ function Header() {
       <div className="fr-col-auto">
         <p className="fr-text--sm fr-mb-0" style={BLUE}>
           Dernière mise à jour :{" "}
-          <Link to={`${ROUTES.HISTORIQUE_VERSIONS}#${versionCourante.dateEffet}`} style={BLUE}>
+          <Link
+            to={`${ROUTES.HISTORIQUE_VERSIONS}#${versionCourante.dateEffet}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={BLUE}
+          >
             {formatDateEffet(versionCourante.dateEffet)}
           </Link>
         </p>

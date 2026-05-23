@@ -327,6 +327,36 @@ Quand un nouvel arrêté entre en vigueur :
 
 La spec `versions.spec.ts` garantit l'ordre antéchronologique strict et le format ISO des dates.
 
+## Monitoring des erreurs
+
+Pas de Sentry — solution maison légère, RGPD-friendly, zéro dépendance.
+
+**Pipeline (Phase 1)** :
+
+1. `installGlobalHandlers()` dans `src/main.tsx` pose `window.error` + `unhandledrejection`.
+2. `<ErrorBoundary>` dans `src/App.tsx` wrappe `<Routes>` et capture les erreurs de rendu React.
+3. Tous les chemins appellent `reportError(error, context)` qui log un payload structuré via `console.error("[ODICE error]", { … })`.
+
+**Visibilité actuelle** : DevTools utilisateur uniquement (console).
+
+**Phase 2 (à venir)** : `reportError` POSTera le payload vers un endpoint configurable via `VITE_ERROR_ENDPOINT` (Mattermost webhook ou petit endpoint Scalingo Node).
+
+**Fichiers** :
+
+- `src/shared/monitoring/error-reporter.ts` — `reportError(error, context)`
+- `src/shared/monitoring/install-global-handlers.ts` — listeners globaux
+- `src/shared/components/ErrorBoundary.tsx` — boundary React
+- `src/features/error/pages/ErrorFallbackPage.tsx` — UI de fallback
+
+**Tester en local** :
+
+```ts
+// dans n'importe quel composant
+throw new Error("test ErrorBoundary");
+```
+
+Ou depuis la console DevTools : `throw new Error("test")` (capté par `window.error`).
+
 ## Tests
 
 - Fichiers de test à côté des fichiers source : `*.spec.ts` / `*.spec.tsx`
