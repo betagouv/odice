@@ -85,9 +85,9 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
       <hr />
 
       <section className="fr-mb-3w">
-        <h4 className="fr-h6 fr-mb-2w">
-          <span className="fr-icon-question-line fr-mr-1w" aria-hidden="true" />
-          Informations à la réception des suidés
+        <h4 className="fr-h6 fr-mb-2w flex items-center gap-2">
+          <img src="/icons/cochon.png" alt="" aria-hidden="true" className="h-6 w-6 shrink-0" />
+          <span>Informations à la réception des suidés</span>
         </h4>
 
         <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
@@ -151,9 +151,9 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
       <hr />
 
       <section className="fr-mb-3w">
-        <h4 className="fr-h6 fr-mb-2w">
-          <span className="fr-icon-question-line fr-mr-1w" aria-hidden="true" />
-          Informations sur votre abattoir
+        <h4 className="fr-h6 fr-mb-2w flex items-center gap-2">
+          <img src="/icons/building.png" alt="" aria-hidden="true" className="h-6 w-6 shrink-0" />
+          <span>Informations sur votre abattoir</span>
         </h4>
 
         <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
@@ -214,9 +214,9 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
       <hr />
 
       <section className="fr-mb-3w">
-        <h4 className="fr-h6 fr-mb-2w">
-          <span className="fr-icon-question-line fr-mr-1w" aria-hidden="true" />
-          Informations sur l'établissement destinataire des viandes
+        <h4 className="fr-h6 fr-mb-2w flex items-center gap-2">
+          <img src="/icons/truck.png" alt="" aria-hidden="true" className="h-6 w-6 shrink-0" />
+          <span>Informations sur l'établissement destinataire des viandes</span>
         </h4>
 
         <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
