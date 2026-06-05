@@ -31,30 +31,31 @@ test.describe("Simulateur Abattoirs — chargement initial", () => {
 });
 
 test.describe("Simulateur Abattoirs — champ statut conditionnel", () => {
-  test("statut désactivé pour zone indemne", async ({ page }) => {
+  test("statut masqué pour zone indemne", async ({ page }) => {
     await page.goto("/simulateurs");
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
 
-    await expect(page.getByLabel(/Statut réglementaire/i)).toBeDisabled();
+    await expect(page.getByLabel(/Statut réglementaire/i)).toHaveCount(0);
   });
 
-  test("statut activé et requis pour ZRII", async ({ page }) => {
+  test("statut visible et requis pour ZRII", async ({ page }) => {
     await page.goto("/simulateurs");
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zrii");
 
+    await expect(page.getByLabel(/Statut réglementaire/i)).toBeVisible();
     await expect(page.getByLabel(/Statut réglementaire/i)).toBeEnabled();
   });
 
-  test("statut re-désactivé en revenant sur zone indemne", async ({ page }) => {
+  test("statut re-masqué en revenant sur zone indemne", async ({ page }) => {
     await page.goto("/simulateurs");
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zrii");
-    await expect(page.getByLabel(/Statut réglementaire/i)).toBeEnabled();
+    await expect(page.getByLabel(/Statut réglementaire/i)).toBeVisible();
 
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
-    await expect(page.getByLabel(/Statut réglementaire/i)).toBeDisabled();
+    await expect(page.getByLabel(/Statut réglementaire/i)).toHaveCount(0);
   });
 });
 

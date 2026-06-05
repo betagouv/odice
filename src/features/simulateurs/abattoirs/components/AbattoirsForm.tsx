@@ -39,8 +39,8 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
 
   // Statut requis (= bloque la validation) uniquement pour ZRII/ZRIII.
-  // Pour les autres zones le champ reste visible (maquette) mais sa valeur
-  // est normalisée à null avant appel au moteur (cf. engine/abattoirs).
+  // Pour les autres zones le champ est masqué (aucune valeur métier possible)
+  // et form.statut est normalisée à null avant appel au moteur si présent.
   const statutRequired = useMemo(
     () => isStatutApplicable(form.zoneSuides === "" ? null : form.zoneSuides),
     [form.zoneSuides],
@@ -118,33 +118,34 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
             </div>
           </div>
 
-          <div className="fr-col-12 fr-col-md-6">
-            <div className="fr-select-group">
-              <label className="fr-label" htmlFor="statut">
-                Statut réglementaire du mouvement des animaux
-                <span className="fr-hint-text">
-                  Visible sur document d'accompagnement des animaux
-                </span>
-              </label>
-              <select
-                className="fr-select"
-                id="statut"
-                required={statutRequired}
-                disabled={!statutRequired}
-                value={form.statut}
-                onChange={(e) => update("statut", e.target.value as Statut | "")}
-              >
-                <option value="" disabled>
-                  Sélectionner une option
-                </option>
-                {STATUT_ORDER.map((s) => (
-                  <option key={s} value={s}>
-                    {STATUT_LABELS[s]}
+          {statutRequired && (
+            <div className="fr-col-12 fr-col-md-6">
+              <div className="fr-select-group">
+                <label className="fr-label" htmlFor="statut">
+                  Statut réglementaire du mouvement des animaux
+                  <span className="fr-hint-text">
+                    Visible sur document d'accompagnement des animaux
+                  </span>
+                </label>
+                <select
+                  className="fr-select"
+                  id="statut"
+                  required
+                  value={form.statut}
+                  onChange={(e) => update("statut", e.target.value as Statut | "")}
+                >
+                  <option value="" disabled>
+                    Sélectionner une option
                   </option>
-                ))}
-              </select>
+                  {STATUT_ORDER.map((s) => (
+                    <option key={s} value={s}>
+                      {STATUT_LABELS[s]}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
