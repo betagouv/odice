@@ -47,14 +47,16 @@ export const CERTIFICATION_LABELS: Record<Certification, string> = {
 };
 
 // Ordre d'affichage des zones dans les dropdowns (du moins au plus restrictif).
+// Ordre validé métier : zone indemne, puis foyers/zones réglementées du moins
+// au plus restrictif (ZI FS → ZP → ZS → ZRI → ZRII → ZRIII).
 export const ZONE_ORDER: Zone[] = [
   Zone.ZoneIndemne,
-  Zone.ZRI,
-  Zone.ZRII,
-  Zone.ZRIII,
   Zone.ZIFS,
   Zone.ZP,
   Zone.ZS,
+  Zone.ZRI,
+  Zone.ZRII,
+  Zone.ZRIII,
 ];
 
 export const STATUT_ORDER: Statut[] = [Statut.MrPpa, Statut.MnrPpa];
