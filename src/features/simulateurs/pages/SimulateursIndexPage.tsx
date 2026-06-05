@@ -42,7 +42,7 @@ export function SimulateursIndexPage() {
     <>
       <PageTitle>Simulateur</PageTitle>
       <div className="fr-background-alt--blue-france fr-py-6w">
-        <div className="fr-container">
+        <div className="fr-container fr-mb-4w">
           <div className="fr-background-default--grey fr-p-6w">
             <div className="fr-grid-row">
               <div className="fr-col-12 fr-col-md-6">
@@ -86,7 +86,7 @@ export function SimulateursIndexPage() {
 
           {type === "autre" && <EtablissementsSimulator />}
 
-          {type === "abattoir" && (
+          {type === "abattoir" && abattoirsResult !== null && (
             <div
               ref={resultRef}
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"

@@ -18,15 +18,14 @@ test.describe("Simulateur Abattoirs — chargement initial", () => {
     await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
   });
 
-  test("sélectionner 'Abattoir' fait apparaître le formulaire et le panneau placeholder", async ({
+  test("sélectionner 'Abattoir' fait apparaître le formulaire mais pas encore le panneau de résultats", async ({
     page,
   }) => {
     await page.goto("/simulateurs");
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
 
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toBeVisible();
-    await expect(page.getByText(/Cliquez sur valider/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
   });
 });
 
@@ -177,7 +176,7 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
 });
 
 test.describe("Simulateur Abattoirs — interactions post-validation", () => {
-  test("modifier un champ après Valider remet le panneau en placeholder", async ({ page }) => {
+  test("modifier un champ après Valider masque le panneau de résultats", async ({ page }) => {
     await page.goto("/simulateurs");
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
@@ -194,13 +193,11 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
 
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zp");
 
-    await expect(page.getByText(/Cliquez sur valider/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
     await expect(page.getByText("OVALE", { exact: true })).not.toBeVisible();
   });
 
-  test("Réinitialiser vide le formulaire et le panneau revient au placeholder", async ({
-    page,
-  }) => {
+  test("Réinitialiser vide le formulaire et masque le panneau de résultats", async ({ page }) => {
     await page.goto("/simulateurs");
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
@@ -217,7 +214,7 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
 
     await page.getByRole("button", { name: "Réinitialiser" }).click();
 
-    await expect(page.getByText(/Cliquez sur valider/i)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
     await expect(page.getByLabel(/Zone d'origine des suidés/i)).toHaveValue("");
     await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();
   });

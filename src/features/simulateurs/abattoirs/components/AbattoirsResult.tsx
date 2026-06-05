@@ -1,5 +1,6 @@
-// Panneau de résultats du simulateur Abattoirs.
-// État vide : header + placeholder centré. État rempli : grille 2×2 + alerte.
+// Panneau de résultats du simulateur Abattoirs. Le parent ne rend ce composant
+// qu'après une soumission valide (cf. SimulateursIndexPage), donc `result` est
+// toujours défini ici.
 // Couleur bleue forcée via inline style (DSFR pose `h1..h6 { color: grey }` au
 // niveau élément, et Tailwind arbitrary peut être supprimé par le scanner si
 // l'agrégation n'est pas littérale ; inline style garantit l'override).
@@ -25,7 +26,7 @@ import { ROUTES } from "@shared/config/routes.config";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
 
 type Props = {
-  result: AbattoirsOutputs | null;
+  result: AbattoirsOutputs;
 };
 
 const BLUE = { color: "var(--text-title-blue-france)" } as const;
@@ -35,56 +36,43 @@ export function AbattoirsResult({ result }: Props) {
     <div>
       <Header />
 
-      {result === null ? (
-        <div
-          className="fr-grid-row fr-grid-row--middle fr-grid-row--center"
-          style={{ minHeight: "16rem" }}
-        >
-          <p className="fr-text--lg fr-text--center fr-mb-0" style={BLUE}>
-            Cliquez sur valider pour obtenir les conditions de mouvement
-          </p>
+      <div className="fr-grid-row fr-grid-row--gutters">
+        <div className="fr-col-12 fr-col-md-6">
+          <ResultBlock title="Possibilité de mouvement">
+            <BadgeRow label="France" badge={mouvementBadge(result.frMouvement)} />
+            <BadgeRow label="UE" badge={mouvementBadge(result.ueMouvement)} />
+          </ResultBlock>
         </div>
-      ) : (
-        <>
-          <div className="fr-grid-row fr-grid-row--gutters">
-            <div className="fr-col-12 fr-col-md-6">
-              <ResultBlock title="Possibilité de mouvement">
-                <BadgeRow label="France" badge={mouvementBadge(result.frMouvement)} />
-                <BadgeRow label="UE" badge={mouvementBadge(result.ueMouvement)} />
-              </ResultBlock>
-            </div>
-            <div className="fr-col-12 fr-col-md-6">
-              <ResultBlock title="Marque à apposer sur les viandes">
-                <BadgeRow label="" badge={marqueBadge(result.marque)} />
-              </ResultBlock>
-            </div>
-            <div className="fr-col-12 fr-col-md-6">
-              <ResultBlock title="Traitement d'atténuation selon la destination des viandes">
-                <BadgeRow label="France" badge={traitementBadge(result.frTraitement)} />
-                <BadgeRow label="UE" badge={traitementBadge(result.ueTraitement)} />
-              </ResultBlock>
-            </div>
-            <div className="fr-col-12 fr-col-md-6">
-              <ResultBlock title="Document d'accompagnement">
-                <BadgeRow label="France" badge={lpsBadge(result.frDocument)} />
-                <BadgeRow label="UE" badge={certificationBadge(result.ueDocument)} />
-              </ResultBlock>
-            </div>
-          </div>
+        <div className="fr-col-12 fr-col-md-6">
+          <ResultBlock title="Marque à apposer sur les viandes">
+            <BadgeRow label="" badge={marqueBadge(result.marque)} />
+          </ResultBlock>
+        </div>
+        <div className="fr-col-12 fr-col-md-6">
+          <ResultBlock title="Traitement d'atténuation selon la destination des viandes">
+            <BadgeRow label="France" badge={traitementBadge(result.frTraitement)} />
+            <BadgeRow label="UE" badge={traitementBadge(result.ueTraitement)} />
+          </ResultBlock>
+        </div>
+        <div className="fr-col-12 fr-col-md-6">
+          <ResultBlock title="Document d'accompagnement">
+            <BadgeRow label="France" badge={lpsBadge(result.frDocument)} />
+            <BadgeRow label="UE" badge={certificationBadge(result.ueDocument)} />
+          </ResultBlock>
+        </div>
+      </div>
 
-          <div className="fr-alert fr-alert--info fr-mt-4w">
-            <h3 className="fr-alert__title">Ne pas oublier</h3>
-            <p>
-              En contexte de PPA, des informations de traçabilité complémentaires doivent être
-              transmises au destinataire des produits.{" "}
-              <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
-                Consulter la documentation réglementaire
-              </a>
-              .
-            </p>
-          </div>
-        </>
-      )}
+      <div className="fr-alert fr-alert--info fr-mt-4w">
+        <h3 className="fr-alert__title">Ne pas oublier</h3>
+        <p>
+          En contexte de PPA, des informations de traçabilité complémentaires doivent être
+          transmises au destinataire des produits.{" "}
+          <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
+            Consulter la documentation réglementaire
+          </a>
+          .
+        </p>
+      </div>
     </div>
   );
 }
