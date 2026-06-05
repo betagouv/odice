@@ -21,7 +21,7 @@ import type { AbattoirsInputs, AbattoirsOutputs } from "../src/engine/abattoirs/
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname, "..");
 
-const SOURCE_XLSX = join(REPO_ROOT, "docs/sources/abattoirs-test-formules-20260512.xlsx");
+const SOURCE_XLSX = join(REPO_ROOT, "docs/sources/abattoirs-test-formules-20260605.xlsx");
 const TARGET_JSON = join(REPO_ROOT, "tests/fixtures/abattoirs/oracle-2744.json");
 const SHEET_NAME = "ABATTOIRS";
 
@@ -70,8 +70,12 @@ const LPS_MAP: Record<string, LPS> = {
 };
 
 // Mapping « obligatoire » (xlsx) → « possible » (UI) — cf. points-a-valider TODO 4.
+// V2 du 2026-06-05 : le libellé "Dérogation … possible" remplace "… obligatoire"
+// dans le xlsx. Les deux sont acceptés ici pour permettre de re-générer l'oracle
+// depuis l'ancien xlsx en cas de besoin (cf. ADR versionnage).
 const CERTIFICATION_MAP: Record<string, Certification> = {
   "Certification zoosanitaire obligatoire": Certification.Obligatoire,
+  "Dérogation à la certification zoosanitaire possible": Certification.DerogationPossible,
   "Dérogation à la certification zoosanitaire obligatoire": Certification.DerogationPossible,
   "Certification zoosanitaire non requise": Certification.NonRequise,
 };

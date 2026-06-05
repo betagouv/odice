@@ -1,8 +1,8 @@
 // Règle de détermination du document d'accompagnement UE (certification zoosanitaire).
-// Source : docs/sources/abattoirs-formules-20260512.docx
-// 195 cas connus retournent null malgré UE autorisé (zone indemne/ZRI + non MCA
-// + abattoir en ZRI/ZRII/ZRIII) — cf. points-a-valider TODO 2.
-// Contradiction sur la condition MCA pour la dérogation — cf. TODO 3.
+// Source : docs/sources/abattoirs-test-formules-20260605.xlsx (V2).
+// V2 : la dérogation est désormais explicite ("possible") sur 363 cas, dont les
+// 195 anciens trous (TODO 2 résolu) et les 27 cas litigieux Grist vs DOCX
+// (TODO 3 résolu, on suit la décision V2 qui retient la dérogation).
 
 import { Certification, Marque, Statut, Zone } from "../../shared/types";
 import type { AbattoirsInputs } from "../types";
@@ -19,8 +19,20 @@ export function evaluateCertification(
     return Certification.Obligatoire;
   }
 
+  // Dérogation possible : suidés zone-indemne/ZRI vers abattoir en zone
+  // réglementée I/II/III (peu importe l'agrément MCA).
   if (
     (zoneSuides === Zone.ZoneIndemne || zoneSuides === Zone.ZRI) &&
+    (zoneAbattoir === Zone.ZRI || zoneAbattoir === Zone.ZRII || zoneAbattoir === Zone.ZRIII)
+  ) {
+    return Certification.DerogationPossible;
+  }
+
+  // Dérogation possible : ZRII en statut MR-PPA + abattoir MCA en zone
+  // réglementée I/II/III (cas tranché dans la V2 du 2026-06-05).
+  if (
+    zoneSuides === Zone.ZRII &&
+    statut === Statut.MrPpa &&
     mcaAbattoir &&
     (zoneAbattoir === Zone.ZRI || zoneAbattoir === Zone.ZRII || zoneAbattoir === Zone.ZRIII)
   ) {

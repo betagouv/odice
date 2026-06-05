@@ -75,11 +75,30 @@ describe("evaluateLPS", () => {
     ).toBe(LPS.NonRequis);
   });
 
-  it("marque null → LPS null", () => {
-    expect(evaluateLPS(inputs({ zoneSuides: Zone.ZP, mcaAbattoir: false }), null)).toBeNull();
+  it("marque null + dest hors zone saine → LPS null", () => {
+    // Mouvement interdit vers une zone réglementée stricte : pas de notion de LPS.
+    expect(
+      evaluateLPS(
+        inputs({ zoneSuides: Zone.ZP, mcaAbattoir: false, zoneEtbDestinataire: Zone.ZRII }),
+        null,
+      ),
+    ).toBeNull();
   });
 
-  it("TODO 1 : ZRII MR-PPA + MCA + dest non MCA en ZP → LPS null (trou connu)", () => {
+  it("V2 : marque null + dest en zone saine → LPS non requis (explicite)", () => {
+    expect(
+      evaluateLPS(
+        inputs({
+          zoneSuides: Zone.ZP,
+          mcaAbattoir: false,
+          zoneEtbDestinataire: Zone.ZoneIndemne,
+        }),
+        null,
+      ),
+    ).toBe(LPS.NonRequis);
+  });
+
+  it("V2 (ex-TODO 1) : ZRII MR-PPA + MCA + dest non MCA en ZP → LPS non requis", () => {
     expect(
       evaluateLPS(
         inputs({
@@ -91,6 +110,6 @@ describe("evaluateLPS", () => {
         }),
         Marque.OvaleDiagonalesParalleles,
       ),
-    ).toBeNull();
+    ).toBe(LPS.NonRequis);
   });
 });

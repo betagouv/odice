@@ -84,7 +84,7 @@ describe("evaluateCertification", () => {
     ).toBeNull();
   });
 
-  it("TODO 2 : ZRI + non MCA + abattoir ZRII + ovale → null (trou connu)", () => {
+  it("V2 (ex-TODO 2) : ZRI + non MCA + abattoir ZRII + ovale → dérogation possible", () => {
     expect(
       evaluateCertification(
         inputs({
@@ -94,6 +94,20 @@ describe("evaluateCertification", () => {
         }),
         Marque.Ovale,
       ),
-    ).toBeNull();
+    ).toBe(Certification.DerogationPossible);
+  });
+
+  it("V2 (ex-TODO 3) : ZRII + MR-PPA + MCA + abattoir ZRII + ovale → dérogation possible", () => {
+    expect(
+      evaluateCertification(
+        inputs({
+          zoneSuides: Zone.ZRII,
+          statut: Statut.MrPpa,
+          mcaAbattoir: true,
+          zoneAbattoir: Zone.ZRII,
+        }),
+        Marque.Ovale,
+      ),
+    ).toBe(Certification.DerogationPossible);
   });
 });
