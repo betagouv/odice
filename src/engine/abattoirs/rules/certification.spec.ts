@@ -84,7 +84,7 @@ describe("evaluateCertification", () => {
     ).toBeNull();
   });
 
-  it("V2 (ex-TODO 2) : ZRI + non MCA + abattoir ZRII + ovale → dérogation possible", () => {
+  it("correctif (ex-TODO 2) : ZRI + non MCA + abattoir ZRII + ovale → dérogation possible", () => {
     expect(
       evaluateCertification(
         inputs({
@@ -97,7 +97,7 @@ describe("evaluateCertification", () => {
     ).toBe(Certification.DerogationPossible);
   });
 
-  it("V2 (ex-TODO 3) : ZRII + MR-PPA + MCA + abattoir ZRII + ovale → dérogation possible", () => {
+  it("correctif (ex-TODO 3) : ZRII + MR-PPA + MCA + abattoir ZRII + ovale → dérogation possible", () => {
     expect(
       evaluateCertification(
         inputs({

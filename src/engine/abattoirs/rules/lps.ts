@@ -1,6 +1,7 @@
 // Règle de détermination du document d'accompagnement France (LPS).
-// Source : docs/sources/abattoirs-test-formules-20260605.xlsx (V2).
-// V2 :
+// Source : docs/sources/abattoirs-test-formules-20260605.xlsx (correctif du
+// 2026-06-05 sur le tableau initial du 2026-05-12).
+// Correctif :
 //   - les 35 anciens trous (ZRII MR-PPA + MCA + dest non-MCA dans toutes zones)
 //     retournent maintenant "LPS non requis" (TODO 1 résolu, condition zoneDest
 //     supprimée),
@@ -34,12 +35,14 @@ export function evaluateLPS(inputs: AbattoirsInputs, marque: Marque | null): LPS
   if (zoneSuides === Zone.ZRIII && statut === Statut.MrPpa && mcaAbattoir && !mcaEtbDestinataire) {
     return LPS.NonRequis;
   }
-  // V2 : élargi à tous les zoneEtbDestinataire (avant, restreint à indemne/ZRI).
+  // Correctif 2026-06-05 : élargi à tous les zoneEtbDestinataire
+  // (avant le correctif, restreint à indemne/ZRI).
   if (zoneSuides === Zone.ZRII && statut === Statut.MrPpa && mcaAbattoir && !mcaEtbDestinataire) {
     return LPS.NonRequis;
   }
 
-  // V2 : mouvement interdit (marque null) vers destination saine → explicitement non requis.
+  // Correctif 2026-06-05 : mouvement interdit (marque null) vers destination
+  // saine → explicitement non requis.
   if (
     marque === null &&
     (zoneEtbDestinataire === Zone.ZoneIndemne || zoneEtbDestinataire === Zone.ZRI)

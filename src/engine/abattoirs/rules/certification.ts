@@ -1,8 +1,9 @@
 // Règle de détermination du document d'accompagnement UE (certification zoosanitaire).
-// Source : docs/sources/abattoirs-test-formules-20260605.xlsx (V2).
-// V2 : la dérogation est désormais explicite ("possible") sur 363 cas, dont les
-// 195 anciens trous (TODO 2 résolu) et les 27 cas litigieux Grist vs DOCX
-// (TODO 3 résolu, on suit la décision V2 qui retient la dérogation).
+// Source : docs/sources/abattoirs-test-formules-20260605.xlsx (correctif du
+// 2026-06-05 sur le tableau initial du 2026-05-12).
+// Correctif : la dérogation est désormais explicite ("possible") sur 363 cas,
+// dont les 195 anciens trous (TODO 2 résolu) et les 27 cas litigieux Grist vs
+// DOCX (TODO 3 résolu, le correctif retient la dérogation).
 
 import { Certification, Marque, Statut, Zone } from "../../shared/types";
 import type { AbattoirsInputs } from "../types";
@@ -29,7 +30,7 @@ export function evaluateCertification(
   }
 
   // Dérogation possible : ZRII en statut MR-PPA + abattoir MCA en zone
-  // réglementée I/II/III (cas tranché dans la V2 du 2026-06-05).
+  // réglementée I/II/III (cas tranché par le correctif du 2026-06-05).
   if (
     zoneSuides === Zone.ZRII &&
     statut === Statut.MrPpa &&

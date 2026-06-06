@@ -85,7 +85,7 @@ describe("evaluateLPS", () => {
     ).toBeNull();
   });
 
-  it("V2 : marque null + dest en zone saine → LPS non requis (explicite)", () => {
+  it("correctif : marque null + dest en zone saine → LPS non requis (explicite)", () => {
     expect(
       evaluateLPS(
         inputs({
@@ -98,7 +98,7 @@ describe("evaluateLPS", () => {
     ).toBe(LPS.NonRequis);
   });
 
-  it("V2 (ex-TODO 1) : ZRII MR-PPA + MCA + dest non MCA en ZP → LPS non requis", () => {
+  it("correctif (ex-TODO 1) : ZRII MR-PPA + MCA + dest non MCA en ZP → LPS non requis", () => {
     expect(
       evaluateLPS(
         inputs({

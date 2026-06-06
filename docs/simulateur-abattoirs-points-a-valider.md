@@ -40,7 +40,7 @@ Chaque point ci-dessous est une décision à prendre avec l'équipe métier avan
 
 ### TODO 1 — Trous dans la formule LPS (35 cas)
 
-**Statut** : ✅ résolu dans la V2 du 2026-06-05
+**Statut** : ✅ résolu par le correctif du 2026-06-05
 
 **Le problème en clair**
 La formule actuelle du test xlsx renvoie une **valeur vide** pour le « document d'accompagnement France » (LPS) dans 35 situations très précises où, paradoxalement, le mouvement national est autorisé.
@@ -71,7 +71,7 @@ Si on autorise un mouvement national, il faut bien préciser quel document d'acc
 
 ### TODO 2 — Trous dans la formule Certification UE (195 cas)
 
-**Statut** : ✅ résolu dans la V2 du 2026-06-05
+**Statut** : ✅ résolu par le correctif du 2026-06-05
 
 **Le problème en clair**
 La formule actuelle du test xlsx renvoie une **valeur vide** pour le « document d'accompagnement UE » (certification zoosanitaire) dans 195 situations où le mouvement vers l'UE est pourtant autorisé.
@@ -105,7 +105,7 @@ L'ancienne formule Grist (2025-09) traitait ces cas comme « **Dérogation à la
 
 ### TODO 3 — Contradiction sur la condition d'agrément MCA pour la dérogation
 
-**Statut** : ✅ résolu dans la V2 du 2026-06-05 (en lien avec TODO 2)
+**Statut** : ✅ résolu par le correctif du 2026-06-05 (en lien avec TODO 2)
 
 **Le problème en clair**
 Pour la « dérogation à la certification zoosanitaire » dans le cas où les suidés viennent de zone indemne ou ZRI et que l'abattoir est en ZRI/ZRII/ZRIII, les deux sources disent l'inverse l'une de l'autre sur l'agrément MCA :
@@ -124,7 +124,7 @@ Quelle est la règle actuellement en vigueur ? L'inversion de la condition MCA e
 
 ### TODO 4 — Libellé exact « Dérogation à la certification zoosanitaire »
 
-**Statut** : ✅ résolu dans la V2 du 2026-06-05 (décision provisoire prise)
+**Statut** : ✅ résolu par le correctif du 2026-06-05 (décision provisoire prise)
 
 **Le problème en clair**
 Deux variantes du libellé existent dans les sources :
@@ -143,7 +143,7 @@ Le test xlsx sera mappé en interne lors des tests automatisés pour rester coh�
 
 ### TODO 5 — Combinaisons d'entrées « impossibles » dans la réalité
 
-**Statut** : à valider (recommandation prise, pas bloquée par la V2)
+**Statut** : à valider (recommandation prise, non bloqué par le correctif du 2026-06-05)
 
 **Le problème en clair**
 Le test xlsx contient les 2 744 combinaisons cartésiennes possibles, y compris certaines qui pourraient sembler impossibles en pratique. Exemples :
@@ -163,8 +163,8 @@ Pour les 5 zones où le statut n'a pas de sens réglementaire (zone indemne, ZP,
 
 | TODO | Sujet | Décision provisoire |
 |---|---|---|
-| 1 | 35 cas FR_document vide pour ZRII MR-PPA + ovale diagonales | ✅ LPS non requis (V2 du 2026-06-05) |
-| 2 | 195 cas UE_document vide pour zone indemne/ZRI + non MCA + abattoir ZRI/ZRII/ZRIII | ✅ Dérogation à la certification possible (V2 du 2026-06-05) |
-| 3 | Condition MCA inversée DOCX vs Grist pour la dérogation | ✅ Dérogation possible (V2 du 2026-06-05) |
-| 4 | Libellé « Dérogation … obligatoire » vs « … possible » | ✅ « possible » (V2 du 2026-06-05) |
-| 5 | Validation de combinaisons d'entrées impossibles | Pas de validation côté moteur (à confirmer) |
+| 1 | 35 cas FR_document vide pour ZRII MR-PPA + ovale diagonales | ✅ LPS non requis (correctif du 2026-06-05) |
+| 2 | 195 cas UE_document vide pour zone indemne/ZRI + non MCA + abattoir ZRI/ZRII/ZRIII | ✅ Dérogation à la certification possible (correctif du 2026-06-05) |
+| 3 | Condition MCA inversée DOCX vs Grist pour la dérogation | ✅ Dérogation possible (correctif du 2026-06-05) |
+| 4 | Libellé « Dérogation … obligatoire » vs « … possible » | ✅ « possible » (correctif du 2026-06-05) |
+| 5 | Validation de combinaisons d'entrées impossibles | Ouvert, non bloquant (pas de validation côté moteur, UI masque le statut quand non applicable) |

@@ -70,9 +70,10 @@ const LPS_MAP: Record<string, LPS> = {
 };
 
 // Mapping « obligatoire » (xlsx) → « possible » (UI) — cf. points-a-valider TODO 4.
-// V2 du 2026-06-05 : le libellé "Dérogation … possible" remplace "… obligatoire"
-// dans le xlsx. Les deux sont acceptés ici pour permettre de re-générer l'oracle
-// depuis l'ancien xlsx en cas de besoin (cf. ADR versionnage).
+// Correctif du 2026-06-05 : le libellé "Dérogation … possible" remplace
+// "… obligatoire" dans le xlsx. Les deux sont acceptés ici pour permettre
+// de re-générer l'oracle depuis l'ancien xlsx en cas de besoin (cf. ADR
+// versionnage).
 const CERTIFICATION_MAP: Record<string, Certification> = {
   "Certification zoosanitaire obligatoire": Certification.Obligatoire,
   "Dérogation à la certification zoosanitaire possible": Certification.DerogationPossible,

@@ -25,7 +25,7 @@ export const ABATTOIRS_VERSIONS: readonly SimulateurVersion[] = [
     dateEffet: "2026-06-05",
     arrete: {
       titre:
-        "Arrêté du 5 juin 2026 relatif aux mouvements de viandes en contexte de Peste Porcine Africaine (V2)",
+        "Correctif du 5 juin 2026 — arrêté du 4 février 2026 relatif aux mouvements de viandes en contexte de Peste Porcine Africaine",
       reference: "NOR à compléter",
       url: undefined,
     },
