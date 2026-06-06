@@ -89,6 +89,65 @@ Cette règle s'applique à :
 - Tests : `*.spec.ts` / `*.spec.tsx`
 - Hooks personnalisés : `use*.ts`
 
+### 5. Commentaires : simples et brefs
+
+Les commentaires doivent être **courts** et n'expliquer que le **pourquoi** (jamais le quoi évident).
+
+```typescript
+// INTERDIT - verbeux, paraphrase le code, multi-lignes inutiles
+/**
+ * Cette fonction prend en entrée les inputs du simulateur Abattoirs
+ * et applique successivement toutes les règles métier PPA définies
+ * dans la spécification DOCX du 2026-05-12 pour produire en sortie
+ * un objet contenant les 7 sorties attendues du moteur.
+ */
+export function evaluateAbattoir(inputs: AbattoirsInputs): AbattoirsOutputs { ... }
+
+// CORRECT - bref, va à l'essentiel
+// Orchestre les 5 règles. Spec : docs/sources/abattoirs-formules-20260512.docx
+export function evaluateAbattoir(inputs: AbattoirsInputs): AbattoirsOutputs { ... }
+```
+
+Règles :
+
+- Pas de commentaires qui paraphrasent le code (le code est déjà lisible).
+- Pas de docblocks JSDoc longs sauf si la fonction a une sémantique non évidente.
+- Un commentaire d'une ligne suffit dans 90 % des cas.
+- Préférer un nom de variable/fonction explicite à un commentaire d'explication.
+- Référencer la source réglementaire (chemin de fichier) en une ligne, pas en paragraphe.
+
+### 6. CSS : DSFR + Tailwind, pas de CSS custom
+
+Pour toute UI, **ordre de priorité strict** :
+
+1. **DSFR** (dernière version, **`@gouvfr/dsfr` 1.14+`** à date) — classes `fr-*`, composants documentés sur [systeme-de-design.gouv.fr](https://www.systeme-de-design.gouv.fr/). C'est le défaut absolu pour layout, formulaires, boutons, badges, alertes, etc.
+2. **Tailwind CSS** (v4) — uniquement pour les ajustements utilitaires que le DSFR ne couvre pas (espacements fins, grille spécifique, responsive ponctuel).
+3. **CSS custom** (fichier `.css` dédié ou inline) — **uniquement** si DSFR + Tailwind ne suffisent pas, et **après avoir justifié** dans un commentaire pourquoi.
+
+```tsx
+// CORRECT — DSFR pour la structure, Tailwind pour le détail
+<div className="fr-card fr-card--shadow flex items-center gap-2">
+  <span className="fr-badge fr-badge--success">Autorisé</span>
+</div>
+
+// INTERDIT — CSS inline alors qu'une classe DSFR existe
+<div style={{ padding: 16, border: "1px solid #ddd" }}>...</div>
+
+// TOLÉRÉ — uniquement si justifié
+<div
+  className="fr-grid-row"
+  // Hauteur min imposée par la maquette, non couverte par DSFR
+  style={{ minHeight: "320px" }}
+>
+```
+
+Règles :
+
+- Ne jamais réinventer un composant DSFR existant (callout, alert, accordion, badge, etc.).
+- En cas de doute, chercher d'abord dans la doc DSFR avant d'écrire du Tailwind.
+- Si une override de style DSFR est nécessaire, utiliser `mt-0!` (Tailwind v4 important) plutôt qu'un fichier CSS séparé.
+- Pas de framework UI tiers (Material UI, Chakra, etc.) — la conformité Beta.gouv impose DSFR.
+
 ## Workflow obligatoire
 
 ### Vérification post-implémentation
@@ -123,6 +182,47 @@ Quand une tâche implique un **choix architectural significatif**, créer automa
 - Choix entre plusieurs approches avec des compromis
 
 Ne PAS créer d'ADR pour les corrections de bugs, refactorings mineurs ou fonctionnalités qui suivent un pattern existant.
+
+### Commits : simples et conventionnels
+
+Suivre **Conventional Commits** : un titre court, une seule ligne de description.
+
+Format :
+
+```
+<type>(<scope?>): <titre court à l'impératif>
+
+<description en une seule ligne, le pourquoi plus que le quoi>
+```
+
+**Types courants** : `feat`, `fix`, `chore`, `docs`, `refactor`, `test`, `style`, `perf`, `build`, `ci`.
+
+**Exemples** :
+
+```
+feat(abattoirs): moteur de règles + oracle 2744 cas
+
+Implémentation des 5 règles métier dans une architecture DDD pour préparer l'arrivée du 2e simulateur.
+```
+
+```
+fix(marque): corrige le cas ZRII MR-PPA dest non MCA
+
+Le LPS retournait null à tort pour la zone destinataire ZRI.
+```
+
+```
+docs: ADR architecture DDD du moteur
+
+Justifie le découpage en bounded contexts et la séparation data/validation/logique.
+```
+
+Règles :
+
+- Titre **sous 70 caractères**, à l'impératif, en minuscules.
+- **Une seule ligne** de description (pas de listes à puces, pas de paragraphes).
+- Préférer le **pourquoi** au quoi (le diff montre déjà le quoi).
+- **Aucune mention d'auteur ou de co-auteur** dans le corps du commit (pas de `Co-Authored-By`, pas de `Generated with`, etc.). L'auteur git suffit.
 
 ### Compaction du contexte
 
@@ -164,37 +264,98 @@ pnpm preview                # Prévisualisation du build
 
 ## Architecture
 
-Structure organisée par features, avec un moteur de règles isolé en TypeScript pur :
+Structure organisée par features (UI) avec un moteur de règles isolé en TypeScript pur, organisé en **DDD propre mais simple** :
 
 ```
 src/
-├── engine/                 # Moteur de règles TypeScript pur (sans React)
-│   ├── types.ts            # Types des inputs/outputs des simulateurs
-│   ├── rules.ts            # Règles métier PPA
-│   └── evaluate.ts         # Fonction d'évaluation principale
-├── features/               # Une feature = un parcours utilisateur
+├── engine/                       # Moteur de règles (TypeScript pur, sans React)
+│   ├── index.ts                  # Public API du moteur (re-exports)
+│   ├── shared/                   # Shared kernel : concepts communs aux contexts
+│   │   ├── types.ts              # Enums communs (Zone, Statut, Marque, ...)
+│   │   └── index.ts
+│   ├── abattoirs/                # Bounded context #1
+│   │   ├── index.ts              # API publique du context
+│   │   ├── types.ts              # AbattoirsInputs, AbattoirsOutputs
+│   │   ├── schema.ts             # Schémas Zod (data definition)
+│   │   ├── parse.ts              # Fonctions de validation (parse/safeParse)
+│   │   ├── evaluate.ts           # Orchestrateur (evaluateAbattoir)
+│   │   ├── evaluate.spec.ts      # Test oracle (fixture 2 744 cas)
+│   │   └── rules/                # Règles métier atomiques
+│   │       └── *.ts + *.spec.ts
+│   └── etablissements/           # Bounded context #2 (placeholder)
+├── features/                     # Une feature = un parcours utilisateur
 │   ├── home/pages/
-│   └── simulateurs/        # Sous-domaine simulateurs (regroupe les 2 parcours)
+│   └── simulateurs/
 │       ├── abattoirs/pages/
 │       └── etablissements/pages/
-└── shared/                 # Composants, hooks, utilitaires partagés
-    ├── components/
-    │   ├── SimulatorForm.tsx
-    │   ├── ResultPanel.tsx
-    │   └── layout/Layout.tsx   # Header DSFR + Footer DSFR
-    ├── config/routes.config.ts
-    ├── hooks/
-    └── utils/
+└── shared/                       # Composants UI, hooks, utilitaires
 ```
+
+### Principes DDD appliqués
+
+- **Bounded contexts** : un dossier par simulateur sous `src/engine/`. **Aucun import croisé** entre contexts.
+- **Shared kernel minimal** : `src/engine/shared/` contient uniquement les concepts vraiment partagés (enums communs aux simulateurs).
+- **Public API par context** : un `index.ts` expose les entry points (evaluator, types, parser). Le reste de l'app importe via cet `index.ts` ou via `src/engine/index.ts`.
+- **Séparation des couches dans un context** : data (`schema.ts`), validation (`parse.ts`), logique (`rules/` + `evaluate.ts`) sont des fichiers distincts.
+- **Pas de couches inutiles** : pas de Repository, pas de Domain Service abstrait, pas de DI container. On reste pragmatique tant que le besoin ne le justifie pas.
 
 **Règle d'or** : le moteur (`src/engine/`) ne doit JAMAIS importer de React ni de dépendances UI. Il doit être testable en pur TypeScript.
 
 ## Logique métier
 
-Les règles PPA (Peste Porcine Africaine) sont implémentées dans `src/engine/rules.ts`. Toute modification de ces règles DOIT être accompagnée :
+Les règles PPA (Peste Porcine Africaine) sont implémentées dans `src/engine/<context>/rules/`. Toute modification de ces règles DOIT être accompagnée :
 
-1. d'un test Vitest qui couvre le nouveau cas (`src/engine/evaluate.spec.ts`)
-2. d'une référence à la source réglementaire (instruction technique, arrêté, etc.) dans un commentaire
+1. d'un test Vitest qui couvre le nouveau cas (`*.spec.ts` co-localisé)
+2. d'une référence à la source réglementaire (instruction technique, arrêté, ou fichier dans `docs/sources/`) dans un commentaire
+
+## Versionnage des règles métier
+
+Chaque simulateur a son fichier de versions lié aux arrêtés officiels :
+
+- Source de vérité : `src/engine/<context>/versions.ts` (tableau antéchronologique, `[0]` = version courante)
+- Affichage : date dans le panneau résultats + page `/historique-versions`
+- Procédure PR « nouvel arrêté » détaillée dans [`docs/versions.md`](./docs/versions.md)
+
+Quand un nouvel arrêté entre en vigueur :
+
+1. Copier les sources datées dans `docs/sources/`
+2. Régénérer la fixture (`pnpm fixture:abattoirs`)
+3. Adapter les règles jusqu'à `pnpm test` vert
+4. **Ajouter une entrée en tête de `ABATTOIRS_VERSIONS`** avec `dateEffet` (ISO), `arrete`, `sources`, `changements`, `pullRequest`
+5. `pnpm validate`
+6. Commit `feat(<context>): nouvelle version YYYY-MM-DD`
+
+La spec `versions.spec.ts` garantit l'ordre antéchronologique strict et le format ISO des dates.
+
+## Monitoring des erreurs
+
+Pas de Sentry — solution maison légère, RGPD-friendly, zéro dépendance.
+
+**Pipeline (Phase 1)** :
+
+1. `installGlobalHandlers()` dans `src/main.tsx` pose `window.error` + `unhandledrejection`.
+2. `<ErrorBoundary>` dans `src/App.tsx` wrappe `<Routes>` et capture les erreurs de rendu React.
+3. Tous les chemins appellent `reportError(error, context)` qui log un payload structuré via `console.error("[ODICE error]", { … })`.
+
+**Visibilité actuelle** : DevTools utilisateur uniquement (console).
+
+**Phase 2 (à venir)** : `reportError` POSTera le payload vers un endpoint configurable via `VITE_ERROR_ENDPOINT` (Mattermost webhook ou petit endpoint Scalingo Node).
+
+**Fichiers** :
+
+- `src/shared/monitoring/error-reporter.ts` — `reportError(error, context)`
+- `src/shared/monitoring/install-global-handlers.ts` — listeners globaux
+- `src/shared/components/ErrorBoundary.tsx` — boundary React
+- `src/features/error/pages/ErrorFallbackPage.tsx` — UI de fallback
+
+**Tester en local** :
+
+```ts
+// dans n'importe quel composant
+throw new Error("test ErrorBoundary");
+```
+
+Ou depuis la console DevTools : `throw new Error("test")` (capté par `window.error`).
 
 ## Tests
 

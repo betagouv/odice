@@ -1,12 +1,14 @@
 import { ROUTES } from "@shared/config/routes.config";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function DonneesPersonnellesPage() {
   // TODO: rédiger la politique de protection des données (RGPD : finalités, base légale,
   // données collectées, durée de conservation, droits, DPO, recours CNIL)
   return (
     <PageContainer>
+      <PageTitle>Données personnelles</PageTitle>
       <Breadcrumb
         segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: "Données personnelles" }]}
       />

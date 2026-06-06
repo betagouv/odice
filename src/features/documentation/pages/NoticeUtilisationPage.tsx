@@ -1,12 +1,14 @@
 import { ROUTES } from "@shared/config/routes.config";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function NoticeUtilisationPage() {
   // TODO: rédiger la notice utilisateur : qui peut utiliser Odicé, comment lire un résultat,
   // limites d'usage, contact en cas de doute.
   return (
     <PageContainer>
+      <PageTitle>Notice d'utilisation</PageTitle>
       <Breadcrumb
         segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: "Notice d'utilisation" }]}
       />

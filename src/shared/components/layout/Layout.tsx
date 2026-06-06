@@ -180,6 +180,7 @@ export function Layout({ children }: LayoutProps) {
                   Plan du site
                 </Link>
               </li>
+
               <li className="fr-footer__bottom-item">
                 <Link className="fr-footer__bottom-link" to={ROUTES.ACCESSIBILITE}>
                   Accessibilité : non conforme
@@ -198,6 +199,11 @@ export function Layout({ children }: LayoutProps) {
               <li className="fr-footer__bottom-item">
                 <Link className="fr-footer__bottom-link" to={ROUTES.GESTION_COOKIES}>
                   Gestion des cookies
+                </Link>
+              </li>
+              <li className="fr-footer__bottom-item">
+                <Link className="fr-footer__bottom-link" to={ROUTES.HISTORIQUE_VERSIONS}>
+                  Historique des versions
                 </Link>
               </li>
             </ul>

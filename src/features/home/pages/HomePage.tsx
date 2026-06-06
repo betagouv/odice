@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
 import { Notice } from "@shared/components/Notice";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function HomePage() {
   return (
     <>
+      <PageTitle>Accueil</PageTitle>
       <PageContainer>
         <h1 className="fr-mt-4w">Bienvenue sur Odicé</h1>
         <hr className="fr-mt-2w fr-mb-4w" />

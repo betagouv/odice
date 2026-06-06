@@ -1,12 +1,14 @@
 import { ROUTES } from "@shared/config/routes.config";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function DocumentationReglementairePage() {
   // TODO: rédiger / référencer la documentation réglementaire PPA (instructions techniques,
   // arrêtés, règlements UE applicables) avec liens vers Légifrance et FranceAgriMer.
   return (
     <PageContainer>
+      <PageTitle>Documentation réglementaire</PageTitle>
       <Breadcrumb
         segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: "Documentation réglementaire" }]}
       />

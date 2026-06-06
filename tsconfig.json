@@ -22,12 +22,14 @@
       "@/*": ["src/*"],
       "@shared/*": ["src/shared/*"],
       "@features/*": ["src/features/*"],
+      "@engine": ["src/engine"],
       "@engine/*": ["src/engine/*"]
     }
   },
   "include": [
     "src",
     "tests",
+    "scripts",
     "vite.config.ts",
     "vitest.config.ts",
     "vitest.setup.ts",

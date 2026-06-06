@@ -1,12 +1,14 @@
 import { ROUTES } from "@shared/config/routes.config";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function GestionCookiesPage() {
   // TODO: lister les cookies/traceurs utilisés (technique vs mesure d'audience), expliquer les
   // finalités, et brancher le bandeau de consentement (CNIL / tarteaucitron ou équivalent DSFR)
   return (
     <PageContainer>
+      <PageTitle>Gestion des cookies</PageTitle>
       <Breadcrumb
         segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: "Gestion des cookies" }]}
       />

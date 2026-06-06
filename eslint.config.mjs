@@ -82,6 +82,9 @@ export default [
       "@typescript-eslint/no-non-null-assertion": "warn",
       "@typescript-eslint/ban-ts-comment": "warn",
       "no-console": ["warn", { allow: ["warn", "error", "info"] }],
+
+      // Pattern `const X / type X` idiomatique en TS (enum-replacement).
+      "no-redeclare": "off",
     },
   },
 

@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import { installGlobalHandlers } from "@shared/monitoring/install-global-handlers";
 
 // Styles DSFR
 import "@gouvfr/dsfr/dist/dsfr.min.css";
@@ -12,6 +13,9 @@ import "@gouvfr/dsfr/dist/dsfr.module.min.js";
 
 // Styles custom (Tailwind)
 import "../styles/index.css";
+
+// Capture des erreurs JS non gérées (window.error + unhandledrejection).
+installGlobalHandlers();
 
 const rootElement = document.getElementById("root");
 

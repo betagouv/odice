@@ -1,12 +1,14 @@
 import { ROUTES } from "@shared/config/routes.config";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
+import { PageTitle } from "@shared/components/PageTitle";
 
 export function AccessibilitePage() {
   // TODO: rédiger la déclaration d'accessibilité conforme RGAA 4.1.2 (audit, état de conformité,
   // dérogations, voies de recours, contact référent accessibilité)
   return (
     <PageContainer>
+      <PageTitle>Accessibilité</PageTitle>
       <Breadcrumb segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: "Accessibilité" }]} />
 
       <div className="fr-grid-row fr-grid-row--gutters fr-mt-2w">
