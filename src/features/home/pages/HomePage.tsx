@@ -15,18 +15,23 @@ export function HomePage() {
         {/* Section 1 — Aide à la décision : texte à gauche, image à droite, CTA simulation */}
         <section className="fr-grid-row fr-grid-row--gutters fr-grid-row--top fr-mt-4w fr-mb-2w">
           <div className="fr-col-12 fr-col-md-8">
-            <h2>Aide à la décision pour les professionnels</h2>
+            <h2>Aide à la décision en santé animale</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris convallis augue ut
-              metus hendrerit porttitor. Mauris eu erat felis. Nunc id tellus vel ex dapibus
-              venenatis. Aliquam sollicitudin lacus sem, et sollicitudin augue fermentum at. Sed
-              volutpat condimentum imperdiet. Praesent aliquet sodales neque, et iaculis augue.
-              Donec eros lectus, sodales at porttitor vitae, sagittis ut neque. Maecenas sapien
-              ante, fringilla nec aliquet fermentum, sagittis placerat ex. Vestibulum et venenatis
-              tellus. Praesent at tristique felis. Nulla varius feugiat magna, id rhoncus justo
-              iaculis quis. Aenean aliquam maximus pretium. Aenean diam nulla, elementum quis tempus
-              sed, ultricies eget augue. Praesent pharetra magna sit amet risus vehicula, sed
-              pretium diam porta.
+              Les crises en santé animale mobilisent de nombreux acteurs et nécessitent
+              l'application rapide de mesures sanitaires parfois complexes. Dans une approche « One
+              health », la prévention et la maîtrise de ces risques reposent sur une compréhension
+              partagée des règles qui encadrent les mouvements d'animaux, de produits et de
+              sous-produits animaux.
+            </p>
+            <p>
+              Odicé est un simulateur conçu pour faciliter l'accès à ces règles et accompagner les
+              acteurs concernés dans leur mise en œuvre. En décrivant leur situation, les
+              utilisateurs peuvent identifier les dispositions applicables et être guidés dans les
+              décisions à prendre en contexte de crise sanitaire.
+            </p>
+            <p>
+              En favorisant une interprétation homogène de la réglementation, Odicé contribue à
+              renforcer la prévention, la gestion et la maîtrise des risques en santé animale.
             </p>
             <Link to={ROUTES.SIMULATEURS} className="fr-btn fr-mt-2w">
               Démarrer une simulation
@@ -46,7 +51,7 @@ export function HomePage() {
         </section>
 
         {/* Section 2 — La PPA : image à gauche, texte à droite */}
-        <section className="fr-grid-row fr-grid-row--gutters fr-grid-row--top fr-mb-2w">
+        <section className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle fr-mb-2w">
           <div className="fr-col-12 fr-col-md-4">
             <figure className="fr-content-media mt-0!" role="group">
               <div className="fr-content-media__img">
@@ -59,18 +64,28 @@ export function HomePage() {
             </figure>
           </div>
           <div className="fr-col-12 fr-col-md-8">
-            <h2>La Peste Porcine Africaine</h2>
+            <h2>La peste porcine africaine</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris convallis augue ut
-              metus hendrerit porttitor. Mauris eu erat felis. Nunc id tellus vel ex dapibus
-              venenatis. Aliquam sollicitudin lacus sem, et sollicitudin augue fermentum at. Sed
-              volutpat condimentum imperdiet. Praesent aliquet sodales neque, et iaculis augue.
-              Donec eros lectus, sodales at porttitor vitae, sagittis ut neque. Maecenas sapien
-              ante, fringilla nec aliquet fermentum, sagittis placerat ex. Vestibulum et venenatis
-              tellus. Praesent at tristique felis. Nulla varius feugiat magna, id rhoncus justo
-              iaculis quis. Aenean aliquam maximus pretium. Aenean diam nulla, elementum quis tempus
-              sed, ultricies eget augue. Praesent pharetra magna sit amet risus vehicula, sed
-              pretium diam porta.
+              La peste porcine africaine (PPA) est une maladie virale hautement contagieuse qui
+              affecte les porcs et les sangliers. Bien qu'elle ne présente aucun risque pour la
+              santé humaine, son introduction sur le territoire aurait des conséquences sanitaires,
+              économiques et commerciales majeures pour l'ensemble de la filière porcine.
+            </p>
+            <p>
+              Le virus se caractérise notamment par sa capacité à persister dans les viandes. Le
+              transport ou la mise sur le marché de produits contaminés peut ainsi contribuer à sa
+              diffusion sur de longues distances et favoriser l'apparition de nouveaux foyers.
+            </p>
+            <p>
+              Pour limiter ce risque, la réglementation prévoit des mesures spécifiques encadrant
+              les mouvements et la commercialisation des produits issus des zones concernées par la
+              maladie. La bonne compréhension de ces dispositions est essentielle pour concilier
+              maîtrise du risque sanitaire et continuité des activités économiques.
+            </p>
+            <p>
+              C'est pourquoi Odicé propose, dans un premier temps, un parcours dédié au devenir des
+              produits carnés en contexte de peste porcine africaine, afin d'accompagner les acteurs
+              dans l'application des règles sanitaires associées.
             </p>
           </div>
         </section>
@@ -80,16 +95,23 @@ export function HomePage() {
           <div className="fr-col-12 fr-col-md-8">
             <h2>Prévention et règles de biosécurité</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris convallis augue ut
-              metus hendrerit porttitor. Mauris eu erat felis. Nunc id tellus vel ex dapibus
-              venenatis. Aliquam sollicitudin lacus sem, et sollicitudin augue fermentum at. Sed
-              volutpat condimentum imperdiet. Praesent aliquet sodales neque, et iaculis augue.
-              Donec eros lectus, sodales at porttitor vitae, sagittis ut neque. Maecenas sapien
-              ante, fringilla nec aliquet fermentum, sagittis placerat ex. Vestibulum et venenatis
-              tellus. Praesent at tristique felis. Nulla varius feugiat magna, id rhoncus justo
-              iaculis quis. Aenean aliquam maximus pretium. Aenean diam nulla, elementum quis tempus
-              sed, ultricies eget augue. Praesent pharetra magna sit amet risus vehicula, sed
-              pretium diam porta.
+              La prévention constitue le premier levier de protection contre les maladies animales.
+              Face à des maladies comme la peste porcine africaine, l'efficacité des mesures de
+              lutte repose en grande partie sur l'application rigoureuse des règles de biosécurité
+              par l'ensemble des acteurs concernés.
+            </p>
+            <p>
+              Ces règles visent à réduire les risques d'introduction et de diffusion des agents
+              pathogènes à chaque étape de la chaîne alimentaire. Elles reposent notamment sur le
+              respect des bonnes pratiques d'hygiène, la maîtrise des mouvements d'animaux, de
+              personnes, de véhicules et de produits, ainsi que sur une vigilance constante face aux
+              risques sanitaires.
+            </p>
+            <p>
+              La prévention est une responsabilité collective. En contribuant à une meilleure
+              compréhension des mesures applicables en situation de crise sanitaire, Odicé participe
+              à la diffusion d'une culture commune de la biosécurité et à la protection durable de
+              la santé animale.
             </p>
           </div>
           <div className="fr-col-12 fr-col-md-4">
