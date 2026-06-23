@@ -50,3 +50,22 @@ export const Certification = {
   NonRequise: "certification-non-requise",
 } as const;
 export type Certification = (typeof Certification)[keyof typeof Certification];
+
+// Descripteur de version réglementaire, commun aux simulateurs.
+// Chaque bounded context maintient son propre tableau (cf. <context>/versions.ts).
+export interface SimulateurVersion {
+  /** Date d'effet de l'arrêté, format ISO YYYY-MM-DD. */
+  dateEffet: string;
+  /** Informations sur l'arrêté officiel. */
+  arrete: {
+    titre: string;
+    reference?: string;
+    url?: string;
+  };
+  /** Chemins (depuis la racine du repo) des fichiers sources versionnés. */
+  sources: string[];
+  /** Liste des changements par rapport à la version précédente. */
+  changements: string[];
+  /** URL de la pull request GitHub correspondante. */
+  pullRequest?: string;
+}

@@ -2,22 +2,7 @@
 // Source de vérité — toute nouvelle version se rajoute en tête de tableau.
 // Procédure complète : docs/versions.md
 
-export interface SimulateurVersion {
-  /** Date d'effet de l'arrêté, format ISO YYYY-MM-DD. */
-  dateEffet: string;
-  /** Informations sur l'arrêté officiel. */
-  arrete: {
-    titre: string;
-    reference?: string;
-    url?: string;
-  };
-  /** Chemins (depuis la racine du repo) des fichiers sources versionnés. */
-  sources: string[];
-  /** Liste des changements par rapport à la version précédente. */
-  changements: string[];
-  /** URL de la pull request GitHub correspondante. */
-  pullRequest?: string;
-}
+import type { SimulateurVersion } from "../shared/types";
 
 // Ordre antéchronologique : ABATTOIRS_VERSIONS[0] = version courante.
 export const ABATTOIRS_VERSIONS: readonly SimulateurVersion[] = [
