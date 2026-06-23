@@ -32,3 +32,6 @@ Thumbs.db
 # Playwright
 playwright-report/
 test-results/
+
+# Fixtures oracle générées (format compact maîtrisé par les scripts d'extraction)
+tests/fixtures/
