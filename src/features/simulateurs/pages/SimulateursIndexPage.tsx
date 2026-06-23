@@ -1,41 +1,57 @@
 // Point d'entrée unique des simulateurs.
-// Layout : fond bleu DSFR full-width derrière, carte grise pleine largeur du container,
-// contenu (titre + form) constraint à 50 % à gauche. Panneau de résultats en bas,
-// uniquement après une soumission valide ; scroll auto vers le panneau.
+// Layout : fond bleu DSFR full-width, carte grise (sélecteur de type + formulaire),
+// puis panneau de résultats (carte à liseré bleu) après une soumission valide.
+// Les deux simulateurs (Abattoirs, Autres Établissements) sont gérés symétriquement.
 
 import { useEffect, useRef, useState } from "react";
-import { evaluateAbattoir, type AbattoirsInputs, type AbattoirsOutputs } from "@engine";
+import {
+  evaluateAbattoir,
+  evaluateEtablissements,
+  type AbattoirsInputs,
+  type AbattoirsOutputs,
+  type EtablissementsInputs,
+  type EtablissementsOutputs,
+} from "@engine";
 import { Notice } from "@shared/components/Notice";
 import { PageTitle } from "@shared/components/PageTitle";
 import { AbattoirsForm } from "../abattoirs/components/AbattoirsForm";
 import { AbattoirsResult } from "../abattoirs/components/AbattoirsResult";
-import { EtablissementsSimulator } from "../etablissements/components/EtablissementsSimulator";
+import { EtablissementsForm } from "../etablissements/components/EtablissementsForm";
+import { EtablissementsResult } from "../etablissements/components/EtablissementsResult";
 
 type TypeEtablissement = "" | "abattoir" | "autre";
 
 export function SimulateursIndexPage() {
   const [type, setType] = useState<TypeEtablissement>("");
   const [abattoirsResult, setAbattoirsResult] = useState<AbattoirsOutputs | null>(null);
+  const [etablissementsResult, setEtablissementsResult] = useState<EtablissementsOutputs | null>(
+    null,
+  );
   const resultRef = useRef<HTMLDivElement>(null);
 
   // Scroll vers le panneau de résultats à chaque nouvelle évaluation.
   useEffect(() => {
-    if (abattoirsResult !== null && resultRef.current !== null) {
+    if ((abattoirsResult !== null || etablissementsResult !== null) && resultRef.current !== null) {
       resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [abattoirsResult]);
+  }, [abattoirsResult, etablissementsResult]);
 
   function handleAbattoirsSubmit(inputs: AbattoirsInputs) {
     setAbattoirsResult(evaluateAbattoir(inputs));
   }
 
-  function handleAbattoirsReset() {
+  function handleEtablissementsSubmit(inputs: EtablissementsInputs) {
+    setEtablissementsResult(evaluateEtablissements(inputs));
+  }
+
+  function resetResults() {
     setAbattoirsResult(null);
+    setEtablissementsResult(null);
   }
 
   function handleTypeChange(value: TypeEtablissement) {
     setType(value);
-    setAbattoirsResult(null);
+    resetResults();
   }
 
   return (
@@ -77,14 +93,22 @@ export function SimulateursIndexPage() {
               <div className="fr-mt-8w">
                 <AbattoirsForm
                   onSubmit={handleAbattoirsSubmit}
-                  onReset={handleAbattoirsReset}
-                  onChange={handleAbattoirsReset}
+                  onReset={resetResults}
+                  onChange={resetResults}
+                />
+              </div>
+            )}
+
+            {type === "autre" && (
+              <div className="fr-mt-8w">
+                <EtablissementsForm
+                  onSubmit={handleEtablissementsSubmit}
+                  onReset={resetResults}
+                  onChange={resetResults}
                 />
               </div>
             )}
           </div>
-
-          {type === "autre" && <EtablissementsSimulator />}
 
           {type === "abattoir" && abattoirsResult !== null && (
             <div
@@ -92,6 +116,15 @@ export function SimulateursIndexPage() {
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"
             >
               <AbattoirsResult result={abattoirsResult} />
+            </div>
+          )}
+
+          {type === "autre" && etablissementsResult !== null && (
+            <div
+              ref={resultRef}
+              className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"
+            >
+              <EtablissementsResult result={etablissementsResult} />
             </div>
           )}
         </div>
