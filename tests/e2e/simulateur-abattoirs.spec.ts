@@ -219,14 +219,16 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
     await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();
   });
 
-  test("changement de type d'établissement masque le simulateur", async ({ page }) => {
+  test("changer de type d'établissement remplace le formulaire affiché", async ({ page }) => {
     await page.goto("/simulateurs");
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).toBeVisible();
 
     await page.getByLabel(/Type d'établissement/i).selectOption("autre");
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).not.toBeVisible();
-    await expect(page.getByText(/en cours de développement/i)).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Mouvement entre établissements/i }),
+    ).toBeVisible();
   });
 });
 
