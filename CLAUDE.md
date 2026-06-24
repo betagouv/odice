@@ -150,6 +150,15 @@ Règles :
 
 ## Workflow obligatoire
 
+### Découpage et livraison d'une feature
+
+Pour **chaque feature identifiée** (un groupe cohérent de modifications, typiquement une nouvelle conversation) :
+
+- **Découper en commits** atomiques et cohérents (un commit = une étape qui laisse `pnpm validate` vert).
+- **Réutiliser / mutualiser** le code existant dès que possible plutôt que de dupliquer (composants, hooks, types, labels partagés).
+- **Justifier les choix** : dans la description des commits (le pourquoi), et via un ADR (`/adr`) si le choix est architecturalement significatif.
+- **Proposer à l'utilisateur des tests manuels E2E côté UI** à réaliser lui-même, en fin de feature : un parcours pas à pas couvrant le comportement attendu.
+
 ### Vérification post-implémentation
 
 Après toute implémentation ou modification de code, TOUJOURS lancer la vérification rapide :
@@ -223,6 +232,16 @@ Règles :
 - **Une seule ligne** de description (pas de listes à puces, pas de paragraphes).
 - Préférer le **pourquoi** au quoi (le diff montre déjà le quoi).
 - **Aucune mention d'auteur ou de co-auteur** dans le corps du commit (pas de `Co-Authored-By`, pas de `Generated with`, etc.). L'auteur git suffit.
+- Committer uniquement à la demande explicite de l'utilisateur.
+- **Ne jamais `git push`** (ni `push --force`, ni création/mise à jour de PR distante) : les push sont gérés **exclusivement par l'utilisateur**. Se limiter au commit local.
+
+### Version de l'application
+
+Quand une **feature est terminée et vérifiée**, il est recommandé d'incrémenter la version de l'application dans le `package.json` via un **commit dédié** (séparé du commit de la feature).
+
+- Versionnage **SemVer** : `feat` → bump **mineur** (`1.2.0` → `1.3.0`), `fix` → bump **patch** (`1.2.0` → `1.2.1`), changement cassant → bump **majeur**.
+- Commit dédié : `chore(release): vX.Y.Z`.
+- Ne PAS confondre avec le versionnage des règles métier (voir section dédiée), qui est indépendant.
 
 ### Compaction du contexte
 
@@ -326,6 +345,15 @@ Quand un nouvel arrêté entre en vigueur :
 6. Commit `feat(<context>): nouvelle version YYYY-MM-DD`
 
 La spec `versions.spec.ts` garantit l'ordre antéchronologique strict et le format ISO des dates.
+
+## Variables d'environnement
+
+ODICE est une **SPA statique** (pas de backend) : toute variable lue par le front est **embarquée dans le bundle** au build. Deux règles :
+
+- **Jamais de secret** dans une variable exposée au client (token d'API, clé privée…). Un secret nécessiterait une brique serveur dédiée, hors périmètre actuel.
+- Seules les variables préfixées **`VITE_`** sont exposées par Vite via `import.meta.env`.
+
+**Validation centralisée (Zod)** : ne pas lire `import.meta.env` éparpillé dans les composants. Chaque domaine qui consomme des env regroupe lecture + validation Zod dans un module dédié (ex. `src/shared/analytics/matomo.env.ts`) qui exporte un objet typé. Le typage de `ImportMetaEnv` est déclaré dans `src/vite-env.d.ts`.
 
 ## Monitoring des erreurs
 
