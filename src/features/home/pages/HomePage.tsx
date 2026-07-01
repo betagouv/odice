@@ -84,7 +84,7 @@ export function HomePage() {
               maladie. La bonne compréhension de ces dispositions est essentielle pour concilier
               maîtrise du risque sanitaire et continuité des activités économiques.
             </p>
-            <p>
+            <p className="fr-mb-0">
               C'est pourquoi Odicé propose, dans un premier temps, un parcours dédié au devenir des
               produits carnés en contexte de peste porcine africaine, afin d'accompagner les acteurs
               dans l'application des règles sanitaires associées.
@@ -112,7 +112,7 @@ export function HomePage() {
               personnes, de véhicules et de produits, ainsi que sur une vigilance constante face aux
               risques sanitaires.
             </p>
-            <p>
+            <p className="fr-mb-0">
               La prévention est une responsabilité collective. En contribuant à une meilleure
               compréhension des mesures applicables en situation de crise sanitaire, Odicé participe
               à la diffusion d'une culture commune de la biosécurité et à la protection durable de
