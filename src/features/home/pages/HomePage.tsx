@@ -13,7 +13,7 @@ export function HomePage() {
         <hr className="fr-mt-2w fr-mb-4w" />
 
         {/* Section 1 — Aide à la décision : texte à gauche, image à droite, CTA simulation */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mt-4w fr-mb-2w">
+        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mt-4w fr-mb-8w">
           <div className="fr-col-12 fr-col-md-8">
             <h2>Aide à la décision pour les professionnels</h2>
             <p>
@@ -41,22 +41,26 @@ export function HomePage() {
             </Link>
           </div>
           <div className="fr-col-12 fr-col-md-4">
-            <img
-              className="block h-full min-h-60 w-full object-cover"
-              src="/images/image-1.png"
-              alt="Inspection sanitaire de carcasses dans un abattoir"
-            />
+            <div className="relative h-full min-h-60">
+              <img
+                className="absolute inset-0 h-full w-full object-cover"
+                src="/images/image-1.png"
+                alt="Inspection sanitaire de carcasses dans un abattoir"
+              />
+            </div>
           </div>
         </section>
 
         {/* Section 2 — La PPA : image à gauche, texte à droite */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-2w">
+        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-8w">
           <div className="fr-col-12 fr-col-md-4">
-            <img
-              className="block h-full min-h-60 w-full object-cover"
-              src="/images/image-2.png"
-              alt="Porcs dans un élevage"
-            />
+            <div className="relative h-full min-h-60">
+              <img
+                className="absolute inset-0 h-full w-full object-cover"
+                src="/images/image-2.png"
+                alt="Porcs dans un élevage"
+              />
+            </div>
           </div>
           <div className="fr-col-12 fr-col-md-8">
             <h2>La Peste Porcine Africaine</h2>
@@ -116,11 +120,13 @@ export function HomePage() {
             </p>
           </div>
           <div className="fr-col-12 fr-col-md-4">
-            <img
-              className="block h-full min-h-60 w-full object-cover"
-              src="/images/image-3.png"
-              alt="Sandwich préparé avec de la charcuterie"
-            />
+            <div className="relative h-full min-h-60">
+              <img
+                className="absolute inset-0 h-full w-full object-cover"
+                src="/images/image-3.png"
+                alt="Sandwich préparé avec de la charcuterie"
+              />
+            </div>
           </div>
         </section>
       </PageContainer>
