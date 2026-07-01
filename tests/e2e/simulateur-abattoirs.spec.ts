@@ -87,6 +87,15 @@ test.describe("Simulateur Abattoirs — bouton Valider", () => {
     await page.goto("/simulateurs");
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zrii");
+
+    // En ZRII, le statut s'insère dans la séquence : tant qu'il n'est pas rempli,
+    // les champs suivants ne sont pas révélés et Valider reste désactivé.
+    const validerBtn = page.getByRole("button", { name: "Valider" });
+    await expect(page.getByLabel(/Statut réglementaire/i)).toBeVisible();
+    await expect(page.getByLabel(/Zone dans laquelle est localisé votre abattoir/i)).toHaveCount(0);
+    await expect(validerBtn).toBeDisabled();
+
+    await page.getByLabel(/Statut réglementaire/i).selectOption("mr-ppa");
     await page
       .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
       .selectOption("zone-indemne");
@@ -96,10 +105,6 @@ test.describe("Simulateur Abattoirs — bouton Valider", () => {
       .selectOption("zone-indemne");
     await page.getByLabel(/L'établissement destinataire est-il en possession/i).selectOption("oui");
 
-    const validerBtn = page.getByRole("button", { name: "Valider" });
-    await expect(validerBtn).toBeDisabled();
-
-    await page.getByLabel(/Statut réglementaire/i).selectOption("mr-ppa");
     await expect(validerBtn).toBeEnabled();
   });
 });
@@ -228,6 +233,82 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).not.toBeVisible();
     await expect(
       page.getByRole("heading", { name: /Mouvement entre établissements/i }),
+    ).toBeVisible();
+  });
+});
+
+test.describe("Simulateur Abattoirs — affichage progressif", () => {
+  test("au démarrage, seul le premier champ est visible", async ({ page }) => {
+    await page.goto("/simulateurs");
+    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+
+    await expect(page.getByLabel(/Zone d'origine des suidés/i)).toBeVisible();
+    await expect(page.getByLabel(/Zone dans laquelle est localisé votre abattoir/i)).toHaveCount(0);
+    await expect(page.getByLabel(/Votre abattoir est-il en possession/i)).toHaveCount(0);
+  });
+
+  test("chaque saisie révèle le champ suivant un par un", async ({ page }) => {
+    await page.goto("/simulateurs");
+    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+
+    await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
+    await expect(page.getByLabel(/Zone dans laquelle est localisé votre abattoir/i)).toBeVisible();
+    // Le champ d'après n'apparaît pas encore.
+    await expect(page.getByLabel(/Votre abattoir est-il en possession/i)).toHaveCount(0);
+
+    await page
+      .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
+      .selectOption("zone-indemne");
+    await expect(page.getByLabel(/Votre abattoir est-il en possession/i)).toBeVisible();
+  });
+
+  test("modifier une valeur ne masque pas les champs déjà révélés", async ({ page }) => {
+    await page.goto("/simulateurs");
+    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
+    await page
+      .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
+      .selectOption("zone-indemne");
+    await page.getByLabel(/Votre abattoir est-il en possession/i).selectOption("oui");
+    await page
+      .getByLabel(/Zone dans laquelle est localisé l'établissement destinataire/i)
+      .selectOption("zone-indemne");
+    await page.getByLabel(/L'établissement destinataire est-il en possession/i).selectOption("oui");
+
+    // Changer la zone des suidés (vers une zone sans statut) ne masque aucun autre champ.
+    await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zp");
+
+    await expect(page.getByLabel(/Zone dans laquelle est localisé votre abattoir/i)).toHaveValue(
+      "zone-indemne",
+    );
+    await expect(page.getByLabel(/L'établissement destinataire est-il en possession/i)).toHaveValue(
+      "oui",
+    );
+  });
+
+  test("Réinitialiser vide les champs mais les garde visibles", async ({ page }) => {
+    await page.goto("/simulateurs");
+    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
+    await page
+      .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
+      .selectOption("zone-indemne");
+    await page.getByLabel(/Votre abattoir est-il en possession/i).selectOption("oui");
+    await page
+      .getByLabel(/Zone dans laquelle est localisé l'établissement destinataire/i)
+      .selectOption("zone-indemne");
+    await page.getByLabel(/L'établissement destinataire est-il en possession/i).selectOption("oui");
+
+    await page.getByRole("button", { name: "Réinitialiser" }).click();
+
+    // Les champs restent affichés, vidés de leur valeur.
+    await expect(page.getByLabel(/Zone d'origine des suidés/i)).toHaveValue("");
+    await expect(page.getByLabel(/Zone dans laquelle est localisé votre abattoir/i)).toBeVisible();
+    await expect(page.getByLabel(/Zone dans laquelle est localisé votre abattoir/i)).toHaveValue(
+      "",
+    );
+    await expect(
+      page.getByLabel(/L'établissement destinataire est-il en possession/i),
     ).toBeVisible();
   });
 });
