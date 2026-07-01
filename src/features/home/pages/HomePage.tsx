@@ -13,21 +13,24 @@ export function HomePage() {
         <hr className="fr-mt-2w fr-mb-4w" />
 
         {/* Section 1 — Aide à la décision : texte à gauche, image à droite, CTA simulation */}
-        <section className="fr-grid-row fr-grid-row--gutters fr-grid-row--top fr-mt-4w fr-mb-2w">
+        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mt-4w fr-mb-2w">
           <div className="fr-col-12 fr-col-md-8">
-            <h2>Aide à la décision en santé animale</h2>
+            <h2>Aide à la décision pour les professionnels</h2>
             <p>
               Les crises en santé animale mobilisent de nombreux acteurs et nécessitent
-              l'application rapide de mesures sanitaires parfois complexes. Dans une approche « One
-              health », la prévention et la maîtrise de ces risques reposent sur une compréhension
-              partagée des règles qui encadrent les mouvements d'animaux, de produits et de
-              sous-produits animaux.
+              l'application rapide de mesures sanitaires parfois complexes. Dans une approche{" "}
+              <em>One health</em>, la prévention et la maîtrise de ces risques reposent sur une
+              compréhension partagée des règles qui encadrent les mouvements d'animaux, de produits
+              et de sous-produits animaux.
             </p>
             <p>
-              Odicé est un simulateur conçu pour faciliter l'accès à ces règles et accompagner les
-              acteurs concernés dans leur mise en œuvre. En décrivant leur situation, les
-              utilisateurs peuvent identifier les dispositions applicables et être guidés dans les
-              décisions à prendre en contexte de crise sanitaire.
+              <strong>
+                Odicé est un simulateur conçu pour faciliter l'accès à ces règles et accompagner les
+                acteurs concernés dans leur mise en œuvre.
+              </strong>{" "}
+              En décrivant leur situation, les utilisateurs peuvent identifier les dispositions
+              applicables et être guidés dans les décisions à prendre en contexte de crise
+              sanitaire.
             </p>
             <p>
               En favorisant une interprétation homogène de la réglementation, Odicé contribue à
@@ -38,38 +41,33 @@ export function HomePage() {
             </Link>
           </div>
           <div className="fr-col-12 fr-col-md-4">
-            <figure className="fr-content-media mt-0!" role="group">
-              <div className="fr-content-media__img">
-                <img
-                  className="fr-responsive-img fr-ratio-1x1"
-                  src="/images/image-1.png"
-                  alt="Inspection sanitaire de carcasses dans un abattoir"
-                />
-              </div>
-            </figure>
+            <img
+              className="block h-full min-h-60 w-full object-cover"
+              src="/images/image-1.png"
+              alt="Inspection sanitaire de carcasses dans un abattoir"
+            />
           </div>
         </section>
 
         {/* Section 2 — La PPA : image à gauche, texte à droite */}
-        <section className="fr-grid-row fr-grid-row--gutters fr-grid-row--middle fr-mb-2w">
+        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-2w">
           <div className="fr-col-12 fr-col-md-4">
-            <figure className="fr-content-media mt-0!" role="group">
-              <div className="fr-content-media__img">
-                <img
-                  className="fr-responsive-img fr-ratio-1x1"
-                  src="/images/image-2.png"
-                  alt="Suidé en élevage derrière une grille"
-                />
-              </div>
-            </figure>
+            <img
+              className="block h-full min-h-60 w-full object-cover"
+              src="/images/image-2.png"
+              alt="Porcs dans un élevage"
+            />
           </div>
           <div className="fr-col-12 fr-col-md-8">
-            <h2>La peste porcine africaine</h2>
+            <h2>La Peste Porcine Africaine</h2>
             <p>
-              La peste porcine africaine (PPA) est une maladie virale hautement contagieuse qui
-              affecte les porcs et les sangliers. Bien qu'elle ne présente aucun risque pour la
-              santé humaine, son introduction sur le territoire aurait des conséquences sanitaires,
-              économiques et commerciales majeures pour l'ensemble de la filière porcine.
+              <strong>
+                La peste porcine africaine (PPA) est une maladie virale hautement contagieuse qui
+                affecte les porcs et les sangliers.
+              </strong>{" "}
+              Bien qu'elle ne présente aucun risque pour la santé humaine, son introduction sur le
+              territoire aurait des conséquences sanitaires, économiques et commerciales majeures
+              pour l'ensemble de la filière porcine.
             </p>
             <p>
               Le virus se caractérise notamment par sa capacité à persister dans les viandes. Le
@@ -91,11 +89,14 @@ export function HomePage() {
         </section>
 
         {/* Section 3 — Prévention et biosécurité : texte à gauche, image à droite */}
-        <section className="fr-grid-row fr-grid-row--gutters fr-grid-row--top">
+        <section className="fr-grid-row fr-grid-row--gutters items-stretch">
           <div className="fr-col-12 fr-col-md-8">
             <h2>Prévention et règles de biosécurité</h2>
             <p>
-              La prévention constitue le premier levier de protection contre les maladies animales.
+              <strong>
+                La prévention constitue le premier levier de protection contre les maladies
+                animales.
+              </strong>{" "}
               Face à des maladies comme la peste porcine africaine, l'efficacité des mesures de
               lutte repose en grande partie sur l'application rigoureuse des règles de biosécurité
               par l'ensemble des acteurs concernés.
@@ -115,15 +116,11 @@ export function HomePage() {
             </p>
           </div>
           <div className="fr-col-12 fr-col-md-4">
-            <figure className="fr-content-media mt-0!" role="group">
-              <div className="fr-content-media__img">
-                <img
-                  className="fr-responsive-img fr-ratio-1x1"
-                  src="/images/image-3.png"
-                  alt="Sandwich préparé avec de la charcuterie"
-                />
-              </div>
-            </figure>
+            <img
+              className="block h-full min-h-60 w-full object-cover"
+              src="/images/image-3.png"
+              alt="Sandwich préparé avec de la charcuterie"
+            />
           </div>
         </section>
       </PageContainer>
