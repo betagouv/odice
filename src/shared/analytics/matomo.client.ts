@@ -26,6 +26,8 @@ export function initMatomo(url: string, siteId: string): void {
 
   const base = url.endsWith("/") ? url : `${url}/`;
   const paq = getPaq();
+  // Mode sans cookie (RGPD) : aucune information de suivi stockée sur l'appareil.
+  paq.push(["disableCookies"]);
   paq.push(["enableLinkTracking"]);
   paq.push(["setTrackerUrl", `${base}matomo.php`]);
   paq.push(["setSiteId", siteId]);
