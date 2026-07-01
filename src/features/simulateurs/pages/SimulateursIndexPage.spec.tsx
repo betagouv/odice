@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, within } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 
 // jsdom n'implémente pas scrollIntoView (appelé par la page après évaluation).
@@ -14,56 +14,72 @@ vi.mock("@shared/analytics", async () => {
   };
 });
 
+// L'évaluation et les panneaux de résultat sont hors périmètre : on isole la page
+// pour ne tester QUE l'émission des events, sans dépendre des internes du formulaire.
+vi.mock("@engine", async () => {
+  const actual = await vi.importActual<typeof import("@engine")>("@engine");
+  return { ...actual, evaluateAbattoir: () => ({}), evaluateEtablissements: () => ({}) };
+});
+vi.mock("../abattoirs/components/AbattoirsResult", () => ({ AbattoirsResult: () => null }));
+vi.mock("../etablissements/components/EtablissementsResult", () => ({
+  EtablissementsResult: () => null,
+}));
+
+// Formulaires mockés : de simples boutons qui déclenchent les callbacks de la page.
+type FormMock = { onSubmit: (inputs: unknown) => void; onReset: () => void; onChange?: () => void };
+function formMock(prefix: string) {
+  return function MockForm({ onSubmit, onReset, onChange }: FormMock) {
+    return (
+      <div>
+        <button type="button" onClick={() => onSubmit({})}>
+          {prefix}-submit
+        </button>
+        <button type="button" onClick={() => onReset()}>
+          {prefix}-reset
+        </button>
+        <button type="button" onClick={() => onChange?.()}>
+          {prefix}-change
+        </button>
+      </div>
+    );
+  };
+}
+vi.mock("../abattoirs/components/AbattoirsForm", () => ({ AbattoirsForm: formMock("abattoir") }));
+vi.mock("../etablissements/components/EtablissementsForm", () => ({
+  EtablissementsForm: formMock("etab"),
+}));
+
 import { SimulateursIndexPage } from "./SimulateursIndexPage";
 import { MATOMO_EVENTS } from "@shared/analytics";
 
-function selectType(value: string) {
-  fireEvent.change(screen.getByLabelText(/Type d'établissement/i), { target: { value } });
+function renderPage() {
+  render(
+    <MemoryRouter>
+      <SimulateursIndexPage />
+    </MemoryRouter>,
+  );
 }
 
-function getForm(): HTMLElement {
-  const form = screen.getByRole("button", { name: /valider/i }).closest("form");
-  if (!form) throw new Error("formulaire introuvable");
-  return form;
-}
-
-// Remplit chaque select avec sa première option valide ; deux passes pour capter
-// le select conditionnel "statut" révélé après le choix de la zone.
-function fillAndSubmit(form: HTMLElement) {
-  for (let pass = 0; pass < 2; pass++) {
-    for (const select of within(form).queryAllByRole("combobox")) {
-      const option = within(select)
-        .getAllByRole("option")
-        .find((opt) => !(opt as HTMLOptionElement).disabled);
-      if (option)
-        fireEvent.change(select, { target: { value: (option as HTMLOptionElement).value } });
-    }
-  }
-  fireEvent.submit(form);
+function selectAbattoir() {
+  fireEvent.change(screen.getByLabelText(/Type d'établissement/i), {
+    target: { value: "abattoir" },
+  });
 }
 
 describe("SimulateursIndexPage — tracking Matomo", () => {
   beforeEach(() => trackEvent.mockClear());
 
   it("émet simulateur_ouvert au choix d'un type", () => {
-    render(
-      <MemoryRouter>
-        <SimulateursIndexPage />
-      </MemoryRouter>,
-    );
-    selectType("abattoir");
+    renderPage();
+    selectAbattoir();
     expect(trackEvent).toHaveBeenCalledWith(MATOMO_EVENTS.SIMULATEUR_OUVERT, { name: "abattoir" });
   });
 
   it("émet simulation_lancee puis resultat_affiche à une soumission valide", () => {
-    render(
-      <MemoryRouter>
-        <SimulateursIndexPage />
-      </MemoryRouter>,
-    );
-    selectType("abattoir");
+    renderPage();
+    selectAbattoir();
     trackEvent.mockClear();
-    fillAndSubmit(getForm());
+    fireEvent.click(screen.getByRole("button", { name: "abattoir-submit" }));
 
     const events = trackEvent.mock.calls.map((call) => call[0] as string);
     const lancee = events.indexOf(MATOMO_EVENTS.SIMULATION_LANCEE);
@@ -73,30 +89,18 @@ describe("SimulateursIndexPage — tracking Matomo", () => {
   });
 
   it("émet reinitialisation au clic sur le bouton Réinitialiser", () => {
-    render(
-      <MemoryRouter>
-        <SimulateursIndexPage />
-      </MemoryRouter>,
-    );
-    selectType("abattoir");
+    renderPage();
+    selectAbattoir();
     trackEvent.mockClear();
-    fireEvent.click(screen.getByRole("button", { name: /réinitialiser/i }));
+    fireEvent.click(screen.getByRole("button", { name: "abattoir-reset" }));
     expect(trackEvent).toHaveBeenCalledWith(MATOMO_EVENTS.REINITIALISATION, { name: "abattoir" });
   });
 
   it("n'émet pas reinitialisation sur une simple saisie de champ", () => {
-    render(
-      <MemoryRouter>
-        <SimulateursIndexPage />
-      </MemoryRouter>,
-    );
-    selectType("abattoir");
+    renderPage();
+    selectAbattoir();
     trackEvent.mockClear();
-    const select = within(getForm()).getAllByRole("combobox")[0];
-    const option = within(select)
-      .getAllByRole("option")
-      .find((opt) => !(opt as HTMLOptionElement).disabled);
-    fireEvent.change(select, { target: { value: (option as HTMLOptionElement).value } });
+    fireEvent.click(screen.getByRole("button", { name: "abattoir-change" }));
     expect(trackEvent).not.toHaveBeenCalledWith(MATOMO_EVENTS.REINITIALISATION, expect.anything());
   });
 });
