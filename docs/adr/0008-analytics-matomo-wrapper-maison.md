@@ -1,4 +1,4 @@
-# ADR-0007 : Analytics Matomo via wrapper maison (sans lib tierce)
+# ADR-0008 : Analytics Matomo via wrapper maison (sans lib tierce)
 
 **Date** : 2026-06-24
 **Statut** : Accepté

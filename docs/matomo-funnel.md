@@ -1,6 +1,6 @@
 # Mesure d'audience Matomo — funnel du parcours simulateur
 
-ODICE envoie à Matomo une page vue à chaque navigation et des événements le long du parcours simulateur. Ce document décrit le funnel à créer côté Matomo. L'intégration technique est décrite dans [ADR-0007](./adr/0007-analytics-matomo-wrapper-maison.md).
+ODICE envoie à Matomo une page vue à chaque navigation et des événements le long du parcours simulateur. Ce document décrit le funnel à créer côté Matomo. L'intégration technique est décrite dans [ADR-0008](./adr/0008-analytics-matomo-wrapper-maison.md).
 
 ## Événements émis
 

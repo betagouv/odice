@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
@@ -86,11 +87,14 @@ export function DonneesPersonnellesPage() {
 
           <h2>7. Cookies et traceurs</h2>
           <p>
-            ODICE n'utilise aucun cookie publicitaire ni traceur tiers. Seuls des cookies de mesure
-            d'audience Matomo, configurés pour respecter la vie privée (anonymisation, absence de
-            recoupement entre sites), peuvent être déposés. Cette configuration permet une mesure
-            d'audience exemptée de consentement au sens de la CNIL. Vous pouvez à tout moment
-            supprimer ces cookies en vidant les données de site de votre navigateur.
+            ODICE n'utilise aucun cookie publicitaire ni traceur tiers. La mesure d'audience Matomo
+            est configurée en mode sans cookie : aucune information n'est stockée sur votre appareil
+            à des fins de suivi, et les données recueillies sont anonymisées. Cette configuration
+            permet une mesure d'audience exemptée de consentement au sens de la CNIL. Voir la page{" "}
+            <Link className="fr-link" to={ROUTES.GESTION_COOKIES}>
+              Gestion des cookies
+            </Link>
+            .
           </p>
 
           <h2>8. Vos droits</h2>
