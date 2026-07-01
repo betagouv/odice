@@ -14,6 +14,7 @@ import {
   useProgressiveFields,
   type ProgressiveFieldConfig,
 } from "@shared/hooks/useProgressiveFields";
+import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 
 type OuiNon = "oui" | "non" | "";
 
@@ -233,6 +234,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="etb-zone-exp">
                     Zone dans laquelle est localisé l'établissement expéditeur *
+                    <CarteZonesHint />
                   </label>
                   <select
                     className="fr-select"
@@ -319,6 +321,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="etb-zone-dest">
                     Zone dans laquelle est localisé l'établissement destinataire des viandes *
+                    <CarteZonesHint />
                   </label>
                   <select
                     className="fr-select"

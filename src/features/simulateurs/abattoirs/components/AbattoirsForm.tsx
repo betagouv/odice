@@ -11,6 +11,7 @@ import {
   ZONE_ORDER,
   isStatutApplicable,
 } from "@shared/labels/abattoirs.labels";
+import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 import {
   useProgressiveFields,
   type ProgressiveFieldConfig,
@@ -197,13 +198,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="zone-abattoir">
                     Zone dans laquelle est localisé votre abattoir *
-                    <span className="fr-hint-text">
-                      Voir{" "}
-                      <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
-                        carte
-                      </a>{" "}
-                      pour localisation
-                    </span>
+                    <CarteZonesHint />
                   </label>
                   <select
                     className="fr-select"
@@ -266,13 +261,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="zone-dest">
                     Zone dans laquelle est localisé l'établissement destinataire des viandes *
-                    <span className="fr-hint-text">
-                      Voir{" "}
-                      <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
-                        carte
-                      </a>{" "}
-                      pour localisation
-                    </span>
+                    <CarteZonesHint />
                   </label>
                   <select
                     className="fr-select"
