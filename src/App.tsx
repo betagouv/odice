@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
 import { ErrorBoundary } from "@shared/components/ErrorBoundary";
 import { Layout } from "@shared/components/layout/Layout";
+import { Matomo } from "@shared/analytics";
 import { HomePage } from "@features/home/pages/HomePage";
 import { SimulateursIndexPage } from "@features/simulateurs/pages/SimulateursIndexPage";
 import { DocumentationReglementairePage } from "@features/documentation/pages/DocumentationReglementairePage";
@@ -17,6 +18,7 @@ import { GestionCookiesPage } from "@features/legal/pages/GestionCookiesPage";
 function App() {
   return (
     <Layout>
+      <Matomo />
       <ErrorBoundary fallback={<ErrorFallbackPage />}>
         <Routes>
           <Route path={ROUTES.HOME} element={<HomePage />} />

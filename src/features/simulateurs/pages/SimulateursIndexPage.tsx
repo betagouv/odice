@@ -14,6 +14,7 @@ import {
 } from "@engine";
 import { Notice } from "@shared/components/Notice";
 import { PageTitle } from "@shared/components/PageTitle";
+import { useMatomo, MATOMO_EVENTS } from "@shared/analytics";
 import { AbattoirsForm } from "../abattoirs/components/AbattoirsForm";
 import { AbattoirsResult } from "../abattoirs/components/AbattoirsResult";
 import { EtablissementsForm } from "../etablissements/components/EtablissementsForm";
@@ -28,6 +29,7 @@ export function SimulateursIndexPage() {
     null,
   );
   const resultRef = useRef<HTMLDivElement>(null);
+  const { trackEvent } = useMatomo();
 
   // Scroll vers le panneau de résultats à chaque nouvelle évaluation.
   useEffect(() => {
@@ -37,11 +39,15 @@ export function SimulateursIndexPage() {
   }, [abattoirsResult, etablissementsResult]);
 
   function handleAbattoirsSubmit(inputs: AbattoirsInputs) {
+    trackEvent(MATOMO_EVENTS.SIMULATION_LANCEE, { name: "abattoir" });
     setAbattoirsResult(evaluateAbattoir(inputs));
+    trackEvent(MATOMO_EVENTS.RESULTAT_AFFICHE, { name: "abattoir" });
   }
 
   function handleEtablissementsSubmit(inputs: EtablissementsInputs) {
+    trackEvent(MATOMO_EVENTS.SIMULATION_LANCEE, { name: "autre" });
     setEtablissementsResult(evaluateEtablissements(inputs));
+    trackEvent(MATOMO_EVENTS.RESULTAT_AFFICHE, { name: "autre" });
   }
 
   function resetResults() {
@@ -49,9 +55,16 @@ export function SimulateursIndexPage() {
     setEtablissementsResult(null);
   }
 
+  // Réinitialisation explicite (bouton du formulaire), distincte des resets implicites (saisie).
+  function handleReset() {
+    resetResults();
+    if (type !== "") trackEvent(MATOMO_EVENTS.REINITIALISATION, { name: type });
+  }
+
   function handleTypeChange(value: TypeEtablissement) {
     setType(value);
     resetResults();
+    if (value !== "") trackEvent(MATOMO_EVENTS.SIMULATEUR_OUVERT, { name: value });
   }
 
   return (
@@ -93,7 +106,7 @@ export function SimulateursIndexPage() {
               <div className="fr-mt-8w">
                 <AbattoirsForm
                   onSubmit={handleAbattoirsSubmit}
-                  onReset={resetResults}
+                  onReset={handleReset}
                   onChange={resetResults}
                 />
               </div>
@@ -103,7 +116,7 @@ export function SimulateursIndexPage() {
               <div className="fr-mt-8w">
                 <EtablissementsForm
                   onSubmit={handleEtablissementsSubmit}
-                  onReset={resetResults}
+                  onReset={handleReset}
                   onChange={resetResults}
                 />
               </div>
