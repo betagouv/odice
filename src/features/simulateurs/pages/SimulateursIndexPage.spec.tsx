@@ -50,7 +50,9 @@ vi.mock("../etablissements/components/EtablissementsForm", () => ({
 }));
 
 import { SimulateursIndexPage } from "./SimulateursIndexPage";
-import { MATOMO_EVENTS } from "@shared/analytics";
+import { matomoAction, MATOMO_SIMULATEURS, MATOMO_STEPS } from "@shared/analytics";
+
+const A = MATOMO_SIMULATEURS.ABATTOIRS;
 
 function renderPage() {
   render(
@@ -72,7 +74,7 @@ describe("SimulateursIndexPage — tracking Matomo", () => {
   it("émet simulateur_ouvert au choix d'un type", () => {
     renderPage();
     selectAbattoir();
-    expect(trackEvent).toHaveBeenCalledWith(MATOMO_EVENTS.SIMULATEUR_OUVERT, { name: "abattoir" });
+    expect(trackEvent).toHaveBeenCalledWith(matomoAction(A, MATOMO_STEPS.OUVERT));
   });
 
   it("émet simulation_lancee puis resultat_affiche à une soumission valide", () => {
@@ -82,8 +84,8 @@ describe("SimulateursIndexPage — tracking Matomo", () => {
     fireEvent.click(screen.getByRole("button", { name: "abattoir-submit" }));
 
     const events = trackEvent.mock.calls.map((call) => call[0] as string);
-    const lancee = events.indexOf(MATOMO_EVENTS.SIMULATION_LANCEE);
-    const affiche = events.indexOf(MATOMO_EVENTS.RESULTAT_AFFICHE);
+    const lancee = events.indexOf(matomoAction(A, MATOMO_STEPS.LANCEE));
+    const affiche = events.indexOf(matomoAction(A, MATOMO_STEPS.RESULTAT));
     expect(lancee).toBeGreaterThanOrEqual(0);
     expect(affiche).toBeGreaterThan(lancee);
   });
@@ -93,7 +95,7 @@ describe("SimulateursIndexPage — tracking Matomo", () => {
     selectAbattoir();
     trackEvent.mockClear();
     fireEvent.click(screen.getByRole("button", { name: "abattoir-reset" }));
-    expect(trackEvent).toHaveBeenCalledWith(MATOMO_EVENTS.REINITIALISATION, { name: "abattoir" });
+    expect(trackEvent).toHaveBeenCalledWith(matomoAction(A, MATOMO_STEPS.REINITIALISATION));
   });
 
   it("n'émet pas reinitialisation sur une simple saisie de champ", () => {
@@ -101,6 +103,6 @@ describe("SimulateursIndexPage — tracking Matomo", () => {
     selectAbattoir();
     trackEvent.mockClear();
     fireEvent.click(screen.getByRole("button", { name: "abattoir-change" }));
-    expect(trackEvent).not.toHaveBeenCalledWith(MATOMO_EVENTS.REINITIALISATION, expect.anything());
+    expect(trackEvent).not.toHaveBeenCalledWith(matomoAction(A, MATOMO_STEPS.REINITIALISATION));
   });
 });

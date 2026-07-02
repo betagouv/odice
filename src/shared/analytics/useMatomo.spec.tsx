@@ -10,7 +10,9 @@ vi.mock("./matomo.env", () => ({
 vi.mock("./matomo.client", () => ({ push: (args: unknown[]) => pushMock(args) }));
 
 import { useMatomo } from "./useMatomo";
-import { MATOMO_EVENTS, MATOMO_EVENT_CATEGORY } from "./events";
+import { matomoAction, MATOMO_SIMULATEURS, MATOMO_STEPS, MATOMO_EVENT_CATEGORY } from "./events";
+
+const ACTION = matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.LANCEE);
 
 describe("useMatomo (activé)", () => {
   beforeEach(() => pushMock.mockClear());
@@ -18,16 +20,12 @@ describe("useMatomo (activé)", () => {
   it("pose puis supprime les dimensions autour de l'event (set -> track -> delete)", () => {
     const { result } = renderHook(() => useMatomo());
     act(() => {
-      result.current.trackEvent(MATOMO_EVENTS.SIMULATION_LANCEE, undefined, { 3: "abattoir" });
+      result.current.trackEvent(ACTION, undefined, { 3: "abattoir" });
     });
 
     const calls = pushMock.mock.calls.map((call) => call[0] as unknown[]);
     expect(calls[0]).toEqual(["setCustomDimension", 3, "abattoir"]);
-    expect(calls[1]).toEqual([
-      "trackEvent",
-      MATOMO_EVENT_CATEGORY,
-      MATOMO_EVENTS.SIMULATION_LANCEE,
-    ]);
+    expect(calls[1]).toEqual(["trackEvent", MATOMO_EVENT_CATEGORY, ACTION]);
     expect(calls[2]).toEqual(["deleteCustomDimension", 3]);
   });
 
