@@ -42,6 +42,8 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
+        // Constante injectée au build par Vite (define)
+        __APP_VERSION__: "readonly",
       },
     },
   },
