@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
+import { APP_VERSION } from "@shared/config/version.config";
 
 type LayoutProps = {
   children: ReactNode;
@@ -205,6 +206,9 @@ export function Layout({ children }: LayoutProps) {
                 <Link className="fr-footer__bottom-link" to={ROUTES.HISTORIQUE_VERSIONS}>
                   Historique des versions
                 </Link>
+              </li>
+              <li className="fr-footer__bottom-item">
+                <span className="fr-footer__bottom-link">Version {APP_VERSION}</span>
               </li>
             </ul>
             <div className="fr-footer__bottom-copy">
