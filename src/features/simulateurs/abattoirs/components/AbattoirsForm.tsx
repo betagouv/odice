@@ -12,6 +12,7 @@ import {
   isStatutApplicable,
 } from "@shared/labels/abattoirs.labels";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
+import { DocumentAnimauxHint } from "@shared/components/DocumentAnimauxHint";
 import {
   useProgressiveFields,
   type ProgressiveFieldConfig,
@@ -123,9 +124,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="zone-suides">
                   Zone d'origine des suidés dont sont issues les viandes
-                  <span className="fr-hint-text">
-                    Visible sur document d'accompagnement des animaux
-                  </span>
+                  <DocumentAnimauxHint />
                 </label>
                 <select
                   className="fr-select"
@@ -152,9 +151,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="statut">
                   Statut réglementaire du mouvement des animaux
-                  <span className="fr-hint-text">
-                    Visible sur document d'accompagnement des animaux
-                  </span>
+                  <DocumentAnimauxHint />
                 </label>
                 <select
                   className="fr-select"

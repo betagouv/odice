@@ -15,6 +15,7 @@ import {
   type ProgressiveFieldConfig,
 } from "@shared/hooks/useProgressiveFields";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
+import { DocumentAnimauxHint } from "@shared/components/DocumentAnimauxHint";
 
 type OuiNon = "oui" | "non" | "";
 
@@ -119,6 +120,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-zone-suides">
                   Zone d'origine des suidés dont sont issues les viandes
+                  <DocumentAnimauxHint />
                 </label>
                 <select
                   className="fr-select"
