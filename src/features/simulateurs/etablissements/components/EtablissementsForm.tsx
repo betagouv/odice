@@ -129,10 +129,10 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
       <section className="fr-mb-3w">
         <h4 className="fr-h6 fr-mb-2w flex items-center gap-2">
           <img
-            src="/icons/cochon.png"
+            src="/icons/viande.svg"
             alt=""
             aria-hidden="true"
-            className="h-6 w-5 shrink-0 object-contain"
+            className="h-6 w-6 shrink-0 object-contain"
           />
           <span>Informations à la réception des viandes</span>
         </h4>
