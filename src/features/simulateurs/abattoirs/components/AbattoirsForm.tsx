@@ -122,7 +122,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="zone-suides">
-                  Zone d'origine des suidés dont sont issues les viandes *
+                  Zone d'origine des suidés dont sont issues les viandes
                   <span className="fr-hint-text">
                     Visible sur document d'accompagnement des animaux
                   </span>
@@ -197,7 +197,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-col-12 fr-col-md-6">
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="zone-abattoir">
-                    Zone dans laquelle est localisé votre abattoir *
+                    Zone dans laquelle est localisé votre abattoir
                     <CarteZonesHint />
                   </label>
                   <select
@@ -223,7 +223,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
                 <div className="fr-col-12 fr-col-md-6">
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="mca-abattoir">
-                      Votre abattoir est-il en possession d'un agrément zoosanitaire MCA ? *
+                      Votre abattoir est-il en possession d'un agrément zoosanitaire MCA ?
                     </label>
                     <select
                       className="fr-select"
@@ -260,7 +260,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-col-12 fr-col-md-6">
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="zone-dest">
-                    Zone dans laquelle est localisé l'établissement destinataire des viandes *
+                    Zone dans laquelle est localisé l'établissement destinataire des viandes
                     <CarteZonesHint />
                   </label>
                   <select
@@ -287,7 +287,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="mca-dest">
                       L'établissement destinataire est-il en possession d'un agrément zoosanitaire
-                      MCA ? *
+                      MCA ?
                     </label>
                     <select
                       className="fr-select"

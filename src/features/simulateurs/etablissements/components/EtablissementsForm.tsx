@@ -118,7 +118,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-zone-suides">
-                  Zone d'origine des suidés dont sont issues les viandes *
+                  Zone d'origine des suidés dont sont issues les viandes
                 </label>
                 <select
                   className="fr-select"
@@ -144,7 +144,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-marque-viandes">
-                  Marque sanitaire apposée sur les viandes reçues *
+                  Marque sanitaire apposée sur les viandes reçues
                 </label>
                 <select
                   className="fr-select"
@@ -170,7 +170,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-trait-oblig-fr">
-                  Un traitement d'atténuation est-il obligatoire pour les mouvements nationaux ? *
+                  Un traitement d'atténuation est-il obligatoire pour les mouvements nationaux ?
                 </label>
                 <select
                   className="fr-select"
@@ -193,7 +193,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-trait-oblig-ue">
-                  Un traitement d'atténuation est-il obligatoire pour les échanges UE ? *
+                  Un traitement d'atténuation est-il obligatoire pour les échanges UE ?
                 </label>
                 <select
                   className="fr-select"
@@ -233,7 +233,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-col-12 fr-col-md-6">
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="etb-zone-exp">
-                    Zone dans laquelle est localisé l'établissement expéditeur *
+                    Zone dans laquelle est localisé l'établissement expéditeur
                     <CarteZonesHint />
                   </label>
                   <select
@@ -260,7 +260,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="etb-mca-exp">
                       L'établissement expéditeur est-il en possession d'un agrément zoosanitaire MCA
-                      ? *
+                      ?
                     </label>
                     <select
                       className="fr-select"
@@ -283,7 +283,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
                 <div className="fr-col-12 fr-col-md-6">
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="etb-trait-realise">
-                      Un traitement d'atténuation a-t-il été réalisé ? *
+                      Un traitement d'atténuation a-t-il été réalisé ?
                     </label>
                     <select
                       className="fr-select"
@@ -320,7 +320,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-col-12 fr-col-md-6">
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="etb-zone-dest">
-                    Zone dans laquelle est localisé l'établissement destinataire des viandes *
+                    Zone dans laquelle est localisé l'établissement destinataire des viandes
                     <CarteZonesHint />
                   </label>
                   <select
@@ -347,7 +347,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="etb-mca-dest">
                       L'établissement destinataire est-il en possession d'un agrément zoosanitaire
-                      MCA ? *
+                      MCA ?
                     </label>
                     <select
                       className="fr-select"
