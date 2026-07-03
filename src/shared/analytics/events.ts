@@ -17,6 +17,8 @@ export const MATOMO_STEPS = {
   LANCEE: "simulation_lancee",
   RESULTAT: "resultat_affiche",
   REINITIALISATION: "reinitialisation",
+  // Combinaison complète des réponses, portée par l'Event Name (cf. docs/matomo-funnel.md).
+  COMBINAISON: "combinaison_soumise",
 } as const;
 export type MatomoStep = (typeof MATOMO_STEPS)[keyof typeof MATOMO_STEPS];
 
