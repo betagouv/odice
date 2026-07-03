@@ -19,11 +19,11 @@ import { AbattoirsForm } from "../abattoirs/components/AbattoirsForm";
 import { AbattoirsResult } from "../abattoirs/components/AbattoirsResult";
 import { EtablissementsForm } from "../etablissements/components/EtablissementsForm";
 import { EtablissementsResult } from "../etablissements/components/EtablissementsResult";
-
-type TypeEtablissement = "" | "abattoir" | "autre";
+import { TYPE_ETABLISSEMENT_OPTIONS, familleFor } from "./typeEtablissement";
 
 export function SimulateursIndexPage() {
-  const [type, setType] = useState<TypeEtablissement>("");
+  const [type, setType] = useState<string>("");
+  const famille = familleFor(type);
   const [abattoirsResult, setAbattoirsResult] = useState<AbattoirsOutputs | null>(null);
   const [etablissementsResult, setEtablissementsResult] = useState<EtablissementsOutputs | null>(
     null,
@@ -58,13 +58,14 @@ export function SimulateursIndexPage() {
   // Réinitialisation explicite (bouton du formulaire), distincte des resets implicites (saisie).
   function handleReset() {
     resetResults();
-    if (type !== "") trackEvent(matomoAction(type, MATOMO_STEPS.REINITIALISATION));
+    if (famille !== null) trackEvent(matomoAction(famille, MATOMO_STEPS.REINITIALISATION));
   }
 
-  function handleTypeChange(value: TypeEtablissement) {
+  function handleTypeChange(value: string) {
     setType(value);
     resetResults();
-    if (value !== "") trackEvent(matomoAction(value, MATOMO_STEPS.OUVERT));
+    const familleChoisie = familleFor(value);
+    if (familleChoisie !== null) trackEvent(matomoAction(familleChoisie, MATOMO_STEPS.OUVERT));
   }
 
   return (
@@ -90,19 +91,22 @@ export function SimulateursIndexPage() {
                     className="fr-select"
                     id="type-etablissement"
                     value={type}
-                    onChange={(e) => handleTypeChange(e.target.value as TypeEtablissement)}
+                    onChange={(e) => handleTypeChange(e.target.value)}
                   >
                     <option value="" disabled>
                       Sélectionner un type d'établissement
                     </option>
-                    <option value="abattoir">Abattoir</option>
-                    <option value="autre">Autre établissement du secteur alimentaire</option>
+                    {TYPE_ETABLISSEMENT_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
             </div>
 
-            {type === "abattoir" && (
+            {famille === "abattoir" && (
               <div className="fr-mt-8w">
                 <AbattoirsForm
                   onSubmit={handleAbattoirsSubmit}
@@ -112,7 +116,7 @@ export function SimulateursIndexPage() {
               </div>
             )}
 
-            {type === "autre" && (
+            {famille === "autre" && (
               <div className="fr-mt-8w">
                 <EtablissementsForm
                   onSubmit={handleEtablissementsSubmit}
@@ -123,7 +127,7 @@ export function SimulateursIndexPage() {
             )}
           </div>
 
-          {type === "abattoir" && abattoirsResult !== null && (
+          {famille === "abattoir" && abattoirsResult !== null && (
             <div
               ref={resultRef}
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"
@@ -132,7 +136,7 @@ export function SimulateursIndexPage() {
             </div>
           )}
 
-          {type === "autre" && etablissementsResult !== null && (
+          {famille === "autre" && etablissementsResult !== null && (
             <div
               ref={resultRef}
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"

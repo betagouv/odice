@@ -15,8 +15,15 @@ import {
   type ProgressiveFieldConfig,
 } from "@shared/hooks/useProgressiveFields";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
+import { DocumentAnimauxHint } from "@shared/components/DocumentAnimauxHint";
+import {
+  deriveTraitementObligatoire,
+  isTraitementObligatoireApplicable,
+  isTraitementUeApplicable,
+  type OuiNon,
+} from "./traitementFields";
 
-type OuiNon = "oui" | "non" | "";
+const zoneOrNull = (zone: Zone | ""): Zone | null => (zone === "" ? null : zone);
 
 type FormState = {
   zoneSuides: Zone | "";
@@ -42,12 +49,20 @@ const EMPTY_FORM: FormState = {
   mcaDestinataire: "",
 };
 
-// Séquence de révélation des 9 champs (aucun conditionnel métier ici).
+// Séquence de révélation des 9 champs. Les deux champs "traitement obligatoire"
+// sont masqués selon la zone d'origine (R2) et la réponse FR (R1). Voir traitementFields.ts.
 const FIELDS: ProgressiveFieldConfig<FormState>[] = [
   { key: "zoneSuides" },
   { key: "marqueViandes" },
-  { key: "traitementObligatoireFr" },
-  { key: "traitementObligatoireUe" },
+  {
+    key: "traitementObligatoireFr",
+    isApplicable: (f) => isTraitementObligatoireApplicable(zoneOrNull(f.zoneSuides)),
+  },
+  {
+    key: "traitementObligatoireUe",
+    isApplicable: (f) =>
+      isTraitementUeApplicable(zoneOrNull(f.zoneSuides), f.traitementObligatoireFr),
+  },
   { key: "zoneExpediteur" },
   { key: "mcaExpediteur" },
   { key: "traitementRealise" },
@@ -65,7 +80,11 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const { isVisible, advance, revealAll } = useProgressiveFields(FIELDS, EMPTY_FORM);
 
-  const canSubmit = Object.values(form).every((v) => v !== "");
+  // Ne pas exiger les champs masqués (restés "") : seuls les champs applicables comptent.
+  const canSubmit = FIELDS.every((field) => {
+    const applicable = field.isApplicable ? field.isApplicable(form) : true;
+    return !applicable || form[field.key] !== "";
+  });
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     const next = { ...form, [key]: value };
@@ -77,11 +96,16 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!canSubmit) return;
+    const traitementObligatoire = deriveTraitementObligatoire(
+      zoneOrNull(form.zoneSuides),
+      form.traitementObligatoireFr,
+      form.traitementObligatoireUe,
+    );
     onSubmit({
       zoneSuides: form.zoneSuides as Zone,
       marqueViandes: form.marqueViandes as Marque,
-      traitementObligatoireFr: form.traitementObligatoireFr === "oui",
-      traitementObligatoireUe: form.traitementObligatoireUe === "oui",
+      traitementObligatoireFr: traitementObligatoire.fr,
+      traitementObligatoireUe: traitementObligatoire.ue,
       zoneExpediteur: form.zoneExpediteur as Zone,
       mcaExpediteur: form.mcaExpediteur === "oui",
       traitementRealise: form.traitementRealise === "oui",
@@ -105,10 +129,10 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
       <section className="fr-mb-3w">
         <h4 className="fr-h6 fr-mb-2w flex items-center gap-2">
           <img
-            src="/icons/cochon.png"
+            src="/icons/viande.svg"
             alt=""
             aria-hidden="true"
-            className="h-6 w-5 shrink-0 object-contain"
+            className="h-6 w-6 shrink-0 object-contain"
           />
           <span>Informations à la réception des viandes</span>
         </h4>
@@ -118,7 +142,8 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-zone-suides">
-                  Zone d'origine des suidés dont sont issues les viandes *
+                  Zone d'origine des suidés dont sont issues les viandes
+                  <DocumentAnimauxHint />
                 </label>
                 <select
                   className="fr-select"
@@ -144,7 +169,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-marque-viandes">
-                  Marque sanitaire apposée sur les viandes reçues *
+                  Marque sanitaire apposée sur les viandes reçues
                 </label>
                 <select
                   className="fr-select"
@@ -170,7 +195,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-trait-oblig-fr">
-                  Un traitement d'atténuation est-il obligatoire pour les mouvements nationaux ? *
+                  Un traitement d'atténuation est-il obligatoire pour les mouvements nationaux ?
                 </label>
                 <select
                   className="fr-select"
@@ -193,7 +218,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
             <div className="fr-col-12 fr-col-md-6">
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-trait-oblig-ue">
-                  Un traitement d'atténuation est-il obligatoire pour les échanges UE ? *
+                  Un traitement d'atténuation est-il obligatoire pour les échanges UE ?
                 </label>
                 <select
                   className="fr-select"
@@ -233,7 +258,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-col-12 fr-col-md-6">
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="etb-zone-exp">
-                    Zone dans laquelle est localisé l'établissement expéditeur *
+                    Zone dans laquelle est localisé l'établissement expéditeur
                     <CarteZonesHint />
                   </label>
                   <select
@@ -260,7 +285,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="etb-mca-exp">
                       L'établissement expéditeur est-il en possession d'un agrément zoosanitaire MCA
-                      ? *
+                      ?
                     </label>
                     <select
                       className="fr-select"
@@ -283,7 +308,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
                 <div className="fr-col-12 fr-col-md-6">
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="etb-trait-realise">
-                      Un traitement d'atténuation a-t-il été réalisé ? *
+                      Un traitement d'atténuation a-t-il été réalisé ?
                     </label>
                     <select
                       className="fr-select"
@@ -320,7 +345,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
               <div className="fr-col-12 fr-col-md-6">
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="etb-zone-dest">
-                    Zone dans laquelle est localisé l'établissement destinataire des viandes *
+                    Zone dans laquelle est localisé l'établissement destinataire des viandes
                     <CarteZonesHint />
                   </label>
                   <select
@@ -347,7 +372,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="etb-mca-dest">
                       L'établissement destinataire est-il en possession d'un agrément zoosanitaire
-                      MCA ? *
+                      MCA ?
                     </label>
                     <select
                       className="fr-select"
