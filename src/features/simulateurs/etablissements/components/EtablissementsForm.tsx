@@ -16,8 +16,14 @@ import {
 } from "@shared/hooks/useProgressiveFields";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 import { DocumentAnimauxHint } from "@shared/components/DocumentAnimauxHint";
+import {
+  deriveTraitementObligatoire,
+  isTraitementObligatoireApplicable,
+  isTraitementUeApplicable,
+  type OuiNon,
+} from "./traitementFields";
 
-type OuiNon = "oui" | "non" | "";
+const zoneOrNull = (zone: Zone | ""): Zone | null => (zone === "" ? null : zone);
 
 type FormState = {
   zoneSuides: Zone | "";
@@ -43,12 +49,20 @@ const EMPTY_FORM: FormState = {
   mcaDestinataire: "",
 };
 
-// Séquence de révélation des 9 champs (aucun conditionnel métier ici).
+// Séquence de révélation des 9 champs. Les deux champs "traitement obligatoire"
+// sont masqués selon la zone d'origine (R2) et la réponse FR (R1). Voir traitementFields.ts.
 const FIELDS: ProgressiveFieldConfig<FormState>[] = [
   { key: "zoneSuides" },
   { key: "marqueViandes" },
-  { key: "traitementObligatoireFr" },
-  { key: "traitementObligatoireUe" },
+  {
+    key: "traitementObligatoireFr",
+    isApplicable: (f) => isTraitementObligatoireApplicable(zoneOrNull(f.zoneSuides)),
+  },
+  {
+    key: "traitementObligatoireUe",
+    isApplicable: (f) =>
+      isTraitementUeApplicable(zoneOrNull(f.zoneSuides), f.traitementObligatoireFr),
+  },
   { key: "zoneExpediteur" },
   { key: "mcaExpediteur" },
   { key: "traitementRealise" },
@@ -66,7 +80,11 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const { isVisible, advance, revealAll } = useProgressiveFields(FIELDS, EMPTY_FORM);
 
-  const canSubmit = Object.values(form).every((v) => v !== "");
+  // Ne pas exiger les champs masqués (restés "") : seuls les champs applicables comptent.
+  const canSubmit = FIELDS.every((field) => {
+    const applicable = field.isApplicable ? field.isApplicable(form) : true;
+    return !applicable || form[field.key] !== "";
+  });
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     const next = { ...form, [key]: value };
@@ -78,11 +96,16 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!canSubmit) return;
+    const traitementObligatoire = deriveTraitementObligatoire(
+      zoneOrNull(form.zoneSuides),
+      form.traitementObligatoireFr,
+      form.traitementObligatoireUe,
+    );
     onSubmit({
       zoneSuides: form.zoneSuides as Zone,
       marqueViandes: form.marqueViandes as Marque,
-      traitementObligatoireFr: form.traitementObligatoireFr === "oui",
-      traitementObligatoireUe: form.traitementObligatoireUe === "oui",
+      traitementObligatoireFr: traitementObligatoire.fr,
+      traitementObligatoireUe: traitementObligatoire.ue,
       zoneExpediteur: form.zoneExpediteur as Zone,
       mcaExpediteur: form.mcaExpediteur === "oui",
       traitementRealise: form.traitementRealise === "oui",
