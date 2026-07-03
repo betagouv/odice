@@ -14,7 +14,14 @@ import {
 } from "@engine";
 import { Notice } from "@shared/components/Notice";
 import { PageTitle } from "@shared/components/PageTitle";
-import { useMatomo, matomoAction, MATOMO_SIMULATEURS, MATOMO_STEPS } from "@shared/analytics";
+import {
+  useMatomo,
+  matomoAction,
+  MATOMO_SIMULATEURS,
+  MATOMO_STEPS,
+  serialiseCombinaisonAbattoirs,
+  serialiseCombinaisonEtablissements,
+} from "@shared/analytics";
 import { AbattoirsForm } from "../abattoirs/components/AbattoirsForm";
 import { AbattoirsResult } from "../abattoirs/components/AbattoirsResult";
 import { EtablissementsForm } from "../etablissements/components/EtablissementsForm";
@@ -40,12 +47,18 @@ export function SimulateursIndexPage() {
 
   function handleAbattoirsSubmit(inputs: AbattoirsInputs) {
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.LANCEE));
+    trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.COMBINAISON), {
+      name: serialiseCombinaisonAbattoirs(inputs),
+    });
     setAbattoirsResult(evaluateAbattoir(inputs));
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.RESULTAT));
   }
 
   function handleEtablissementsSubmit(inputs: EtablissementsInputs) {
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.LANCEE));
+    trackEvent(matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.COMBINAISON), {
+      name: serialiseCombinaisonEtablissements(inputs),
+    });
     setEtablissementsResult(evaluateEtablissements(inputs));
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.RESULTAT));
   }

@@ -25,13 +25,26 @@ vi.mock("../etablissements/components/EtablissementsResult", () => ({
   EtablissementsResult: () => null,
 }));
 
+// Inputs réalistes soumis par les mocks, pour asserter la signature de combinaison.
+// vi.hoisted : la valeur doit exister quand les factories vi.mock (hoistées) s'exécutent.
+const { ABATTOIRS_INPUTS } = vi.hoisted(() => ({
+  ABATTOIRS_INPUTS: {
+    zoneSuides: "zrii",
+    statut: "mr-ppa",
+    zoneAbattoir: "zs",
+    mcaAbattoir: true,
+    zoneEtbDestinataire: "zri",
+    mcaEtbDestinataire: false,
+  },
+}));
+
 // Formulaires mockés : de simples boutons qui déclenchent les callbacks de la page.
 type FormMock = { onSubmit: (inputs: unknown) => void; onReset: () => void; onChange?: () => void };
-function formMock(prefix: string) {
+function formMock(prefix: string, inputs: unknown) {
   return function MockForm({ onSubmit, onReset, onChange }: FormMock) {
     return (
       <div>
-        <button type="button" onClick={() => onSubmit({})}>
+        <button type="button" onClick={() => onSubmit(inputs)}>
           {prefix}-submit
         </button>
         <button type="button" onClick={() => onReset()}>
@@ -44,13 +57,21 @@ function formMock(prefix: string) {
     );
   };
 }
-vi.mock("../abattoirs/components/AbattoirsForm", () => ({ AbattoirsForm: formMock("abattoir") }));
+vi.mock("../abattoirs/components/AbattoirsForm", () => ({
+  AbattoirsForm: formMock("abattoir", ABATTOIRS_INPUTS),
+}));
 vi.mock("../etablissements/components/EtablissementsForm", () => ({
-  EtablissementsForm: formMock("etab"),
+  EtablissementsForm: formMock("etab", {}),
 }));
 
 import { SimulateursIndexPage } from "./SimulateursIndexPage";
-import { matomoAction, MATOMO_SIMULATEURS, MATOMO_STEPS } from "@shared/analytics";
+import {
+  matomoAction,
+  MATOMO_SIMULATEURS,
+  MATOMO_STEPS,
+  serialiseCombinaisonAbattoirs,
+} from "@shared/analytics";
+import type { AbattoirsInputs } from "@engine";
 
 const A = MATOMO_SIMULATEURS.ABATTOIRS;
 
@@ -88,6 +109,17 @@ describe("SimulateursIndexPage — tracking Matomo", () => {
     const affiche = events.indexOf(matomoAction(A, MATOMO_STEPS.RESULTAT));
     expect(lancee).toBeGreaterThanOrEqual(0);
     expect(affiche).toBeGreaterThan(lancee);
+  });
+
+  it("émet la combinaison (Event Name = signature) à une soumission valide", () => {
+    renderPage();
+    selectAbattoir();
+    trackEvent.mockClear();
+    fireEvent.click(screen.getByRole("button", { name: "abattoir-submit" }));
+
+    expect(trackEvent).toHaveBeenCalledWith(matomoAction(A, MATOMO_STEPS.COMBINAISON), {
+      name: serialiseCombinaisonAbattoirs(ABATTOIRS_INPUTS as AbattoirsInputs),
+    });
   });
 
   it("émet reinitialisation au clic sur le bouton Réinitialiser", () => {

@@ -12,3 +12,4 @@ export {
   type MatomoEventName,
 } from "./events";
 export { matomoSettings, parseMatomoEnv, type MatomoSettings } from "./matomo.env";
+export { serialiseCombinaisonAbattoirs, serialiseCombinaisonEtablissements } from "./combinaison";

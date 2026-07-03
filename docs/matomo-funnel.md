@@ -10,6 +10,7 @@ Tous les événements portent la **catégorie** `Simulateur PPA`. Le **simulateu
 |---|---|---|---|
 | Ouvert | `abattoir_simulateur_ouvert` | `autre_simulateur_ouvert` | Choix d'un type d'établissement |
 | Lancée | `abattoir_simulation_lancee` | `autre_simulation_lancee` | Soumission valide du formulaire |
+| Combinaison | `abattoir_combinaison_soumise` | `autre_combinaison_soumise` | Soumission valide — **Event Name = signature des réponses** |
 | Résultat | `abattoir_resultat_affiche` | `autre_resultat_affiche` | Résultat calculé et affiché |
 | Réinitialisation | `abattoir_reinitialisation` | `autre_reinitialisation` | Clic sur « Réinitialiser » (pas une simple saisie) |
 
@@ -46,6 +47,35 @@ Laisser les funnels en mode **non strict** : les étapes se suivent dans l'ordre
 - **Étape 3 → 4 ≈ 100 %.** L'évaluation est synchrone et n'échoue jamais côté utilisateur : un écart `*_simulation_lancee → *_resultat_affiche` signale une **erreur JS** (captée par l'ErrorBoundary), pas un abandon. Pour un funnel purement comportemental, on peut fusionner les étapes 3 et 4 en une seule « Simulation aboutie » sur `*_resultat_affiche`.
 - **La réinitialisation n'est pas une étape de funnel** (c'est une friction, pas une progression). La créer comme **Objectif** séparé (Action = `abattoir_reinitialisation` / `autre_reinitialisation`) pour mesurer le taux de remise à zéro.
 - Les points d'abandon réellement utiles à observer sont **1 → 2** (arrivée sans choix de type) et **2 → 3** (formulaire ouvert mais non soumis = formulaire trop long ou complexe).
+
+## Combinaisons de réponses (polarisation des besoins)
+
+Pour mesurer **quelles combinaisons de réponses sont les plus soumises**, chaque soumission valide émet un event `*_combinaison_soumise` dont l'**Event Name est une signature** de toutes les réponses. Décision : [ADR-0010](./adr/0010-tracking-combinaisons-event-name.md). Sérialisation : [`src/shared/analytics/combinaison.ts`](../src/shared/analytics/combinaison.ts).
+
+### Où lire le classement
+
+**Comportement → Événements**, filtrer sur la catégorie `Simulateur PPA`, ouvrir l'action `abattoir_combinaison_soumise` (ou `autre_combinaison_soumise`), puis le sous-tableau **Nom de l'événement** trié par nombre décroissant. Les combinaisons en tête = besoins dominants.
+
+### Format de la signature
+
+Les réponses sont jointes par `>` **dans l'ordre des questions du formulaire**. La position encode la question, la valeur encode la réponse. Booléens → `oui`/`non`, `statut` non applicable → `na`.
+
+**Abattoirs** (6 champs) : `zoneSuides > statut > zoneAbattoir > mcaAbattoir > zoneEtbDestinataire > mcaEtbDestinataire`
+
+> Exemple : `zrii>mr-ppa>zs>oui>zri>non`
+> = suidés en ZRII, statut MR-PPA, abattoir en ZS avec agrément MCA, établissement destinataire en ZRI sans agrément MCA.
+
+**Autres établissements** (9 champs) : `zoneSuides > marqueViandes > traitementObligatoireFr > traitementObligatoireUe > zoneExpediteur > mcaExpediteur > traitementRealise > zoneDestinataire > mcaDestinataire`
+
+> Exemple : `zp>ovale-barree>oui>non>zs>oui>non>zone-indemne>oui`
+
+Codes de zones : `zone-indemne`, `zp`, `zs`, `zi-fs`, `zri`, `zrii`, `zriii`. Statuts : `mr-ppa`, `mnr-ppa`. Marques : `ovale`, `ovale-barree`, `ovale-diagonales-paralleles`.
+
+### Points d'attention
+
+- **Stabilité** : l'ordre des champs et le format sont figés (cf. ADR-0010). Les modifier fragmente les agrégats historiques.
+- **Cardinalité** : jusqu'à 2 744 combinaisons Abattoirs (plus pour Établissements). Matomo ne conserve que le top ~500 Names par action, le reste tombe dans « Others » — sans impact pour l'analyse de polarisation (top-N). Pour l'exhaustivité, augmenter `datatable_archiving_maximum_rows_events` côté serveur.
+- **Analyse par question** (indépendante des combinaisons) : non implémentée, décrite en Phase 2 de l'[ADR-0010](./adr/0010-tracking-combinaisons-event-name.md).
 
 ## `VITE_MATOMO_FUNNEL_ID`
 
