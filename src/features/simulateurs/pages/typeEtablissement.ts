@@ -14,7 +14,6 @@ export type TypeEtablissementOption = {
 
 export const TYPE_ETABLISSEMENT_OPTIONS: TypeEtablissementOption[] = [
   { value: "abattoir", label: "Abattoir", famille: "abattoir" },
-  { value: "autre", label: "Autre établissement du secteur alimentaire", famille: "autre" },
   { value: "atelier-decoupe", label: "Atelier de découpe", famille: "autre" },
   { value: "entrepot", label: "Entrepôt", famille: "autre" },
   { value: "transformation", label: "Établissement de transformation", famille: "autre" },

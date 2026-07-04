@@ -13,13 +13,11 @@ describe("familleFor", () => {
     expect(familleFor("cuisine-centrale")).toBe("autre");
   });
 
-  it("mappe le type historique autre sur son simulateur", () => {
-    expect(familleFor("autre")).toBe("autre");
-  });
-
   it("retourne null pour le placeholder ou une valeur inconnue", () => {
     expect(familleFor("")).toBeNull();
     expect(familleFor("inconnu")).toBeNull();
+    // La mention générique "autre" a été retirée du sélecteur.
+    expect(familleFor("autre")).toBeNull();
   });
 });
 

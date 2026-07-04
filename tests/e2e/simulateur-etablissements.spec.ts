@@ -5,7 +5,7 @@ import { test, expect } from "@playwright/test";
 // En zone d'origine saine, les champs "traitement obligatoire FR/UE" sont masqués
 // (cf. traitementFields.ts) : le cas sain ne compte donc que 7 champs visibles.
 async function remplirCasSain(page: import("@playwright/test").Page) {
-  await page.getByLabel(/Type d'établissement/i).selectOption("autre");
+  await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
   await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
   await page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i).selectOption("ovale");
   await page
@@ -22,7 +22,7 @@ async function remplirCasSain(page: import("@playwright/test").Page) {
 test.describe("Simulateur Autres Établissements", () => {
   test("sélectionner 'Autre établissement' affiche le formulaire dédié", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("autre");
+    await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
 
     await expect(
       page.getByRole("heading", { name: /Mouvement entre établissements/i }),
@@ -34,7 +34,7 @@ test.describe("Simulateur Autres Établissements", () => {
     page,
   }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("autre");
+    await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
 
     const valider = page.getByRole("button", { name: "Valider" });
     await expect(valider).toBeDisabled();
@@ -71,7 +71,7 @@ test.describe("Simulateur Autres Établissements", () => {
 test.describe("Simulateur Autres Établissements — affichage progressif", () => {
   test("au démarrage, seul le premier champ est visible", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("autre");
+    await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
 
     await expect(page.getByLabel(/Zone d'origine des suidés/i)).toBeVisible();
     await expect(page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i)).toHaveCount(
@@ -81,7 +81,7 @@ test.describe("Simulateur Autres Établissements — affichage progressif", () =
 
   test("chaque saisie révèle le champ suivant un par un", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("autre");
+    await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
 
     // Zone réglementée : le champ "traitement obligatoire national" s'applique.
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zp");
@@ -121,7 +121,7 @@ test.describe("Simulateur Autres Établissements — champs traitement condition
     page,
   }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("autre");
+    await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
     await page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i).selectOption("ovale");
 
@@ -135,7 +135,7 @@ test.describe("Simulateur Autres Établissements — champs traitement condition
 
   test("zone réglementée : 'obligatoire UE' masqué si 'obligatoire FR' = oui", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("autre");
+    await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zp");
     await page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i).selectOption("ovale");
 

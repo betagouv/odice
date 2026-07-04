@@ -229,7 +229,7 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
     await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).toBeVisible();
 
-    await page.getByLabel(/Type d'établissement/i).selectOption("autre");
+    await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).not.toBeVisible();
     await expect(
       page.getByRole("heading", { name: /Mouvement entre établissements/i }),
