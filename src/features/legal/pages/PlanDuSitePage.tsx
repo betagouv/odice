@@ -5,7 +5,6 @@ import { PageContainer } from "@shared/components/PageContainer";
 import { PageTitle } from "@shared/components/PageTitle";
 
 export function PlanDuSitePage() {
-  // TODO: remplir avec le plan du site réel (arborescence complète des pages)
   return (
     <PageContainer>
       <PageTitle>Plan du site</PageTitle>
@@ -15,8 +14,7 @@ export function PlanDuSitePage() {
         <div className="fr-col-12 fr-col-md-8">
           <h1>Plan du site</h1>
           <p className="fr-text--lead">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi
-            tristique senectus et netus et malesuada.
+            Retrouvez l'ensemble des pages du site Odicé, organisées par thématique.
           </p>
 
           <h2>Pages principales</h2>
@@ -31,7 +29,7 @@ export function PlanDuSitePage() {
               <Link to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}>Documentation réglementaire</Link>
             </li>
             <li>
-              <Link to={ROUTES.NOTICE_UTILISATION}>Notice d'utilisation</Link>
+              <Link to={ROUTES.AIDE_UTILISATION}>Aide à l'utilisation</Link>
             </li>
             <li>
               <Link to={ROUTES.HISTORIQUE_VERSIONS}>Historique des versions</Link>
