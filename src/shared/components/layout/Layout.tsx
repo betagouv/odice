@@ -92,8 +92,8 @@ export function Layout({ children }: LayoutProps) {
                   </NavLink>
                 </li>
                 <li className="fr-nav__item">
-                  <NavLink to={ROUTES.NOTICE_UTILISATION} className="fr-nav__link">
-                    Notice d'utilisation
+                  <NavLink to={ROUTES.AIDE_UTILISATION} className="fr-nav__link">
+                    Aide à l'utilisation
                   </NavLink>
                 </li>
               </ul>
