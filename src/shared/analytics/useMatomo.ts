@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { matomoSettings } from "./matomo.env";
 import { push } from "./matomo.client";
-import { MATOMO_EVENT_CATEGORY, type MatomoEventName } from "./events";
+import { MATOMO_EVENT_CATEGORY, type MatomoAction } from "./events";
 
 interface TrackEventOptions {
   name?: string;
@@ -15,7 +15,7 @@ type CustomDimensions = Record<number, string>;
 
 export interface UseMatomo {
   trackEvent: (
-    event: MatomoEventName,
+    event: MatomoAction,
     options?: TrackEventOptions,
     customDimensions?: CustomDimensions,
   ) => void;
