@@ -53,9 +53,11 @@ type Props = {
   onSubmit: (inputs: AbattoirsInputs) => void;
   onReset: () => void;
   onChange?: () => void;
+  // Premier renseignement de la zone d'origine des suidés (démarrage du chrono de saisie).
+  onStart?: () => void;
 };
 
-export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
+export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const { isVisible, advance, revealAll } = useProgressiveFields(FIELDS, EMPTY_FORM);
 
@@ -74,6 +76,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange }: Props) {
     (!statutRequired || form.statut !== "");
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
+    if (key === "zoneSuides" && value !== "") onStart?.();
     const next = { ...form, [key]: value };
     setForm(next);
     advance(next);

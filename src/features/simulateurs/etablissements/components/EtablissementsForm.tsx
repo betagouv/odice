@@ -74,9 +74,11 @@ type Props = {
   onSubmit: (inputs: EtablissementsInputs) => void;
   onReset: () => void;
   onChange?: () => void;
+  // Premier renseignement de la zone d'origine des suidés (démarrage du chrono de saisie).
+  onStart?: () => void;
 };
 
-export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
+export function EtablissementsForm({ onSubmit, onReset, onChange, onStart }: Props) {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const { isVisible, advance, revealAll } = useProgressiveFields(FIELDS, EMPTY_FORM);
 
@@ -87,6 +89,7 @@ export function EtablissementsForm({ onSubmit, onReset, onChange }: Props) {
   });
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
+    if (key === "zoneSuides" && value !== "") onStart?.();
     const next = { ...form, [key]: value };
     setForm(next);
     advance(next);

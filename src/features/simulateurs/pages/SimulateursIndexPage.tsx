@@ -19,8 +19,11 @@ import {
   matomoAction,
   MATOMO_SIMULATEURS,
   MATOMO_STEPS,
+  MATOMO_DIMENSIONS,
+  buildCustomDimensions,
   serialiseCombinaisonAbattoirs,
   serialiseCombinaisonEtablissements,
+  type MatomoSimulateur,
 } from "@shared/analytics";
 import { AbattoirsForm } from "../abattoirs/components/AbattoirsForm";
 import { AbattoirsResult } from "../abattoirs/components/AbattoirsResult";
@@ -36,6 +39,8 @@ export function SimulateursIndexPage() {
     null,
   );
   const resultRef = useRef<HTMLDivElement>(null);
+  // Horodatage de la 1ère saisie (zone d'origine), pour mesurer la durée jusqu'à la validation.
+  const debutSaisieRef = useRef<number | null>(null);
   const { trackEvent } = useMatomo();
 
   // Scroll vers le panneau de résultats à chaque nouvelle évaluation.
@@ -45,13 +50,38 @@ export function SimulateursIndexPage() {
     }
   }, [abattoirsResult, etablissementsResult]);
 
+  // Profils utilisateurs : type d'établissement (valeur fine) + zone d'origine des suidés.
+  function dimensionsValidation(zoneSuides: string) {
+    return buildCustomDimensions({
+      [MATOMO_DIMENSIONS.TYPE_ETABLISSEMENT]: type,
+      [MATOMO_DIMENSIONS.ZONE_SUIDES]: zoneSuides,
+    });
+  }
+
+  function handleStart() {
+    debutSaisieRef.current ??= Date.now();
+  }
+
+  // Émet la durée (secondes) depuis la 1ère saisie, puis réarme le chrono.
+  function trackDureeSaisie(simulateur: MatomoSimulateur) {
+    if (debutSaisieRef.current === null) return;
+    const secondes = Math.round((Date.now() - debutSaisieRef.current) / 1000);
+    trackEvent(matomoAction(simulateur, MATOMO_STEPS.DUREE), { value: secondes });
+    debutSaisieRef.current = null;
+  }
+
   function handleAbattoirsSubmit(inputs: AbattoirsInputs) {
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.LANCEE));
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.COMBINAISON), {
       name: serialiseCombinaisonAbattoirs(inputs),
     });
     setAbattoirsResult(evaluateAbattoir(inputs));
-    trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.RESULTAT));
+    trackEvent(
+      matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.RESULTAT),
+      undefined,
+      dimensionsValidation(inputs.zoneSuides),
+    );
+    trackDureeSaisie(MATOMO_SIMULATEURS.ABATTOIRS);
   }
 
   function handleEtablissementsSubmit(inputs: EtablissementsInputs) {
@@ -60,7 +90,12 @@ export function SimulateursIndexPage() {
       name: serialiseCombinaisonEtablissements(inputs),
     });
     setEtablissementsResult(evaluateEtablissements(inputs));
-    trackEvent(matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.RESULTAT));
+    trackEvent(
+      matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.RESULTAT),
+      undefined,
+      dimensionsValidation(inputs.zoneSuides),
+    );
+    trackDureeSaisie(MATOMO_SIMULATEURS.ETABLISSEMENTS);
   }
 
   function resetResults() {
@@ -71,12 +106,14 @@ export function SimulateursIndexPage() {
   // Réinitialisation explicite (bouton du formulaire), distincte des resets implicites (saisie).
   function handleReset() {
     resetResults();
+    debutSaisieRef.current = null;
     if (famille !== null) trackEvent(matomoAction(famille, MATOMO_STEPS.REINITIALISATION));
   }
 
   function handleTypeChange(value: string) {
     setType(value);
     resetResults();
+    debutSaisieRef.current = null;
     const familleChoisie = familleFor(value);
     if (familleChoisie !== null) trackEvent(matomoAction(familleChoisie, MATOMO_STEPS.OUVERT));
   }
@@ -125,6 +162,7 @@ export function SimulateursIndexPage() {
                   onSubmit={handleAbattoirsSubmit}
                   onReset={handleReset}
                   onChange={resetResults}
+                  onStart={handleStart}
                 />
               </div>
             )}
@@ -135,6 +173,7 @@ export function SimulateursIndexPage() {
                   onSubmit={handleEtablissementsSubmit}
                   onReset={handleReset}
                   onChange={resetResults}
+                  onStart={handleStart}
                 />
               </div>
             )}
