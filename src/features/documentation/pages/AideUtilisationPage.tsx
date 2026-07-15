@@ -6,46 +6,23 @@ import { PageContainer } from "@shared/components/PageContainer";
 import { PageTitle } from "@shared/components/PageTitle";
 
 // Guide pas à pas d'utilisation du simulateur, en 2 colonnes (texte / capture).
-// Chaque capture est appariée au paragraphe à sa gauche : la carte image épouse
-// la hauteur du texte (technique image absolue, cf. HomePage). Captures dans
+// Chaque capture est appariée au paragraphe à sa gauche. Captures dans
 // public/images/image-aide-1..6.png. Un séparateur (hr) marque chaque étape.
-// padding / minHeight ajustables par carte (l'image absolue est bornée par la
-// hauteur de la carte : augmenter minHeight agrandit l'image et l'écart au bloc suivant).
-// maxWidth (ex. "max-w-52") plafonne l'image et la centre au lieu de remplir la
-// carte : utile pour les petites captures (boutons) qui seraient sinon étirées.
-type Illustration = {
-  src: string;
-  alt: string;
-  padding?: string;
-  minHeight?: string;
-  maxWidth?: string;
-};
+// padding ajustable par carte ; maxWidth (ex. "max-w-44") plafonne l'image et la
+// centre : utile pour les petites captures (boutons) qui seraient sinon étirées.
+type Illustration = { src: string; alt: string; padding?: string; maxWidth?: string };
 
-// Carte capture d'écran : bordure, ombre, coins droits, image contenue (jamais rognée),
-// hauteur alignée sur la colonne texte appariée.
-function IllustrationCard({
-  src,
-  alt,
-  padding = "p-6",
-  minHeight = "min-h-48",
-  maxWidth,
-}: Illustration) {
+// Carte capture d'écran : bordure, ombre, coins droits, image contenue (jamais rognée).
+// La carte épouse la hauteur de son image (pas d'étirement) : marges verticales minimales.
+function IllustrationCard({ src, alt, padding = "px-6 py-3", maxWidth }: Illustration) {
+  // maxWidth => image plafonnée et centrée (flex) ; sinon image pleine largeur (bloc).
+  const layout = maxWidth ? "flex items-center justify-center" : "";
   return (
     <div className="fr-col-12 fr-col-md-5">
       <div
-        className={`relative h-full ${minHeight} border border-[color:var(--border-default-grey)] bg-white shadow-lg md:ml-6`}
+        className={`border border-[color:var(--border-default-grey)] bg-white shadow-lg md:ml-6 ${padding} ${layout}`}
       >
-        {maxWidth ? (
-          <div className={`absolute inset-0 flex items-center justify-center ${padding}`}>
-            <img className={`${maxWidth} h-auto w-full object-contain`} src={src} alt={alt} />
-          </div>
-        ) : (
-          <img
-            className={`absolute inset-0 h-full w-full object-contain ${padding}`}
-            src={src}
-            alt={alt}
-          />
-        )}
+        <img className={`${maxWidth ?? "w-full"} h-auto object-contain`} src={src} alt={alt} />
       </div>
     </div>
   );
@@ -75,7 +52,7 @@ export function AideUtilisationPage() {
         <hr className="fr-my-6w" />
 
         {/* Étape 1 — un paragraphe, une capture */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch">
+        <section className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-7">
             <h2>1. Sélectionner votre situation</h2>
             <p>
@@ -93,15 +70,13 @@ export function AideUtilisationPage() {
           <IllustrationCard
             src="/images/image-aide-1.png"
             alt="Encart « Votre situation » avec le menu déroulant de sélection du type d'établissement"
-            padding="p-6"
-            minHeight="min-h-80"
           />
         </section>
 
         <hr className="fr-my-6w" />
 
         {/* Étape 2 — deux paragraphes appariés à deux captures */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-4w">
+        <section className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
           <div className="fr-col-12 fr-col-md-7">
             <h2>2. Compléter le formulaire</h2>
             <p className="fr-mb-0">
@@ -113,11 +88,10 @@ export function AideUtilisationPage() {
           <IllustrationCard
             src="/images/image-aide-2.png"
             alt="Champ « Zone d'origine des suidés » avec son menu déroulant ouvert"
-            padding="p-2"
-            minHeight="min-h-80"
+            padding="px-2 py-1"
           />
         </section>
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch">
+        <section className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-7">
             <p className="fr-mb-0">
               Pour certains champs, des liens sont mis à disposition afin de vous aider à retrouver
@@ -134,7 +108,7 @@ export function AideUtilisationPage() {
 
         {/* Étape 3 — résultat : intro + sous-sections, deux captures appariées.
             image-aide-4 s'étend sur l'intro ET « Possibilité de mouvement ». */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-4w">
+        <section className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
           <div className="fr-col-12 fr-col-md-7">
             <h2>3. Lire le résultat</h2>
             <p>
@@ -154,7 +128,7 @@ export function AideUtilisationPage() {
           />
         </section>
 
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-4w">
+        <section className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
           <div className="fr-col-12 fr-col-md-7">
             <h3>Marque à apposer sur les viandes</h3>
             <p className="fr-mb-0">
@@ -188,7 +162,7 @@ export function AideUtilisationPage() {
         <hr className="fr-my-6w" />
 
         {/* Étape 4 — un paragraphe apparié à une capture des boutons */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-2w">
+        <section className="fr-grid-row fr-grid-row--gutters fr-mb-2w">
           <div className="fr-col-12 fr-col-md-7">
             <h2>4. Lancer une nouvelle simulation</h2>
             <p>Pour tester une autre situation, vous pouvez :</p>
