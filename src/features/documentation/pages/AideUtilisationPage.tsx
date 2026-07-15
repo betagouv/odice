@@ -6,26 +6,23 @@ import { PageContainer } from "@shared/components/PageContainer";
 import { PageTitle } from "@shared/components/PageTitle";
 
 // Guide pas à pas d'utilisation du simulateur, en 2 colonnes (texte / capture).
-// Chaque capture est appariée au paragraphe à sa gauche : la carte image épouse
-// la hauteur du texte (technique image absolue, cf. HomePage). Captures dans
-// public/images/image-aide-1..5.png.
-// padding / minHeight ajustables par carte (l'image absolue est bornée par la
-// hauteur de la carte : augmenter minHeight agrandit l'image et l'écart au bloc suivant).
-type Illustration = { src: string; alt: string; padding?: string; minHeight?: string };
+// Chaque capture est appariée au paragraphe à sa gauche. Captures dans
+// public/images/image-aide-1..6.png. Un séparateur (hr) marque chaque étape.
+// padding ajustable par carte ; maxWidth (ex. "max-w-44") plafonne l'image et la
+// centre : utile pour les petites captures (boutons) qui seraient sinon étirées.
+type Illustration = { src: string; alt: string; padding?: string; maxWidth?: string };
 
-// Carte capture d'écran : padding, ombre, image contenue (jamais rognée),
-// hauteur alignée sur la colonne texte appariée.
-function IllustrationCard({ src, alt, padding = "p-6", minHeight = "min-h-48" }: Illustration) {
+// Carte capture d'écran : bordure, ombre, coins droits, image contenue (jamais rognée).
+// La carte épouse la hauteur de son image (pas d'étirement) : marges verticales minimales.
+function IllustrationCard({ src, alt, padding = "px-6 py-3", maxWidth }: Illustration) {
+  // maxWidth => image plafonnée et centrée (flex) ; sinon image pleine largeur (bloc).
+  const layout = maxWidth ? "flex items-center justify-center" : "";
   return (
     <div className="fr-col-12 fr-col-md-5">
       <div
-        className={`relative h-full ${minHeight} rounded-lg border border-[color:var(--border-default-grey)] bg-white shadow-lg md:ml-6`}
+        className={`border border-[color:var(--border-default-grey)] bg-white shadow-lg md:ml-6 ${padding} ${layout}`}
       >
-        <img
-          className={`absolute inset-0 h-full w-full object-contain ${padding}`}
-          src={src}
-          alt={alt}
-        />
+        <img className={`${maxWidth ?? "w-full"} h-auto object-contain`} src={src} alt={alt} />
       </div>
     </div>
   );
@@ -48,12 +45,14 @@ export function AideUtilisationPage() {
           Le simulateur Odicé vous permet d'identifier les conditions réglementaires applicables à
           un mouvement de produits, en fonction de votre situation.
         </p>
-        <Link to={ROUTES.SIMULATEURS} className="fr-btn fr-mb-6w">
+        <Link to={ROUTES.SIMULATEURS} className="fr-btn">
           Démarrer une simulation
         </Link>
 
+        <hr className="fr-my-6w" />
+
         {/* Étape 1 — un paragraphe, une capture */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-6w">
+        <section className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-7">
             <h2>1. Sélectionner votre situation</h2>
             <p>
@@ -71,13 +70,13 @@ export function AideUtilisationPage() {
           <IllustrationCard
             src="/images/image-aide-1.png"
             alt="Encart « Votre situation » avec le menu déroulant de sélection du type d'établissement"
-            padding="p-2"
-            minHeight="min-h-80"
           />
         </section>
 
+        <hr className="fr-my-6w" />
+
         {/* Étape 2 — deux paragraphes appariés à deux captures */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-4w">
+        <section className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
           <div className="fr-col-12 fr-col-md-7">
             <h2>2. Compléter le formulaire</h2>
             <p className="fr-mb-0">
@@ -89,11 +88,10 @@ export function AideUtilisationPage() {
           <IllustrationCard
             src="/images/image-aide-2.png"
             alt="Champ « Zone d'origine des suidés » avec son menu déroulant ouvert"
-            padding="p-2"
-            minHeight="min-h-80"
+            padding="px-2 py-1"
           />
         </section>
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-6w">
+        <section className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-7">
             <p className="fr-mb-0">
               Pour certains champs, des liens sont mis à disposition afin de vous aider à retrouver
@@ -106,9 +104,11 @@ export function AideUtilisationPage() {
           />
         </section>
 
+        <hr className="fr-my-6w" />
+
         {/* Étape 3 — résultat : intro + sous-sections, deux captures appariées.
             image-aide-4 s'étend sur l'intro ET « Possibilité de mouvement ». */}
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-4w">
+        <section className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
           <div className="fr-col-12 fr-col-md-7">
             <h2>3. Lire le résultat</h2>
             <p>
@@ -128,7 +128,7 @@ export function AideUtilisationPage() {
           />
         </section>
 
-        <section className="fr-grid-row fr-grid-row--gutters items-stretch fr-mb-4w">
+        <section className="fr-grid-row fr-grid-row--gutters fr-mb-4w">
           <div className="fr-col-12 fr-col-md-7">
             <h3>Marque à apposer sur les viandes</h3>
             <p className="fr-mb-0">
@@ -151,37 +151,35 @@ export function AideUtilisationPage() {
           </p>
 
           <h3>Document d'accompagnement</h3>
-          <p>
+          <p className="fr-mb-0">
             Précise les documents qui doivent accompagner le mouvement des produits. Selon la
             situation, un laissez-passer sanitaire peut être nécessaire pour les mouvements sur le
             territoire national, et un certificat zoosanitaire pour les échanges
             intracommunautaires.
           </p>
-
-          <p className="fr-mb-6w">
-            <em>
-              Exemple de résultat : un abattoir reçoit des suidés issus d'une zone réglementée II,
-              de statut MR-PPA. L'abattoir est lui-même situé en zone réglementée II et dispose d'un
-              agrément MCA. Il souhaite expédier les viandes issues de ces animaux vers un
-              établissement destinataire également situé en zone réglementée II et agréé MCA. Le
-              simulateur affiche alors les conditions de mouvement correspondant à cette situation.
-            </em>
-          </p>
         </div>
 
-        {/* Étape 4 — colonne 60 (md-7), rien en face dans la colonne 40 */}
-        <div className="fr-col-12 fr-col-md-7 fr-mb-2w">
-          <h2>4. Lancer une nouvelle simulation</h2>
-          <p>Pour tester une autre situation, vous pouvez :</p>
-          <ul>
-            <li>modifier directement les champs du formulaire ;</li>
-            <li>ou cliquer sur « Réinitialiser » pour remettre tous les champs à zéro.</li>
-          </ul>
-          <p>
-            L'encart de résultat disparaît alors. Cliquez à nouveau sur « Valider » pour obtenir les
-            conditions de mouvement correspondant aux nouveaux paramètres.
-          </p>
-        </div>
+        <hr className="fr-my-6w" />
+
+        {/* Étape 4 — un paragraphe apparié à une capture des boutons */}
+        <section className="fr-grid-row fr-grid-row--gutters fr-mb-2w">
+          <div className="fr-col-12 fr-col-md-7">
+            <h2>4. Lancer une nouvelle simulation</h2>
+            <p>Pour tester une autre situation, vous pouvez :</p>
+            <ul className="fr-mb-0">
+              <li>
+                modifier directement les champs du formulaire et cliquer sur « Valider » de nouveau
+                ;
+              </li>
+              <li>ou cliquer sur « Réinitialiser » pour remettre tous les champs à zéro.</li>
+            </ul>
+          </div>
+          <IllustrationCard
+            src="/images/image-aide-6.png"
+            alt="Boutons « Valider » et « Réinitialiser » du formulaire"
+            maxWidth="max-w-44"
+          />
+        </section>
       </PageContainer>
 
       <AvertissementNotice />

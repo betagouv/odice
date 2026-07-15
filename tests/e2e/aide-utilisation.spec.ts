@@ -20,8 +20,8 @@ test.describe("Aide à l'utilisation", () => {
       await expect(page.getByRole("heading", { name: titre })).toBeVisible();
     }
 
-    // Les 5 captures sont référencées (assertion par src, indépendante du chargement du fichier).
-    await expect(page.locator('img[src^="/images/image-aide-"]')).toHaveCount(5);
+    // Les 6 captures sont référencées (assertion par src, indépendante du chargement du fichier).
+    await expect(page.locator('img[src^="/images/image-aide-"]')).toHaveCount(6);
   });
 
   test("le CTA « Démarrer une simulation » mène aux simulateurs", async ({ page }) => {
