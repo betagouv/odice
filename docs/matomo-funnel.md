@@ -126,6 +126,8 @@ Où lire chaque indicateur demandé. « Personnes / mois » = **nombre de visite
 
 **Région** : aucun champ région/département n'existe dans le formulaire (la géographie métier est en « zones » réglementaires PPA). L'axe « région » repose sur la **géolocalisation par IP** native de Matomo (rapport **Visiteurs → Lieux**) — approximatif (localisation du navigateur, pas de l'établissement). Un champ région dédié serait une évolution produit à part entière.
 
+> **Évolution envisagée** : un pilotage plus fin (cross-tabs profils exacts, comptage de personnes mesuré via un identifiant anonyme persistant, distributions de durée) via un sink d'événements Postgres + Metabase, en complément de Matomo. Orientation et prérequis RGPD détaillés dans [ADR-0012](./adr/0012-pilotage-hybride-matomo-postgres-metabase.md).
+
 ## `VITE_MATOMO_FUNNEL_ID`
 
 La variable est lue et validée par le module mais **pas encore consommée** par le code. Une fois le funnel créé, Matomo lui attribue un ID : le poser dans cette variable n'est utile que si l'on souhaite plus tard référencer le funnel côté code (API Funnels, tracking explicite). Pour un funnel défini entièrement dans l'UI Matomo, ce n'est pas nécessaire.
