@@ -19,6 +19,8 @@ export const MATOMO_STEPS = {
   REINITIALISATION: "reinitialisation",
   // Combinaison complète des réponses, portée par l'Event Name (cf. docs/matomo-funnel.md).
   COMBINAISON: "combinaison_soumise",
+  // Durée (secondes) entre la 1ère saisie (zone d'origine) et la validation, portée par l'Event Value.
+  DUREE: "duree_saisie",
 } as const;
 export type MatomoStep = (typeof MATOMO_STEPS)[keyof typeof MATOMO_STEPS];
 
@@ -28,3 +30,14 @@ export type MatomoEventName = `${MatomoSimulateur}_${MatomoStep}`;
 export function matomoAction(simulateur: MatomoSimulateur, step: MatomoStep): MatomoEventName {
   return `${simulateur}_${step}`;
 }
+
+// Clics vers les pages/annexes (hors funnel simulateur), pilotés séparément.
+export const MATOMO_ANNEXES = {
+  AIDE_UTILISATION: "clic_aide_utilisation",
+  DOCUMENTATION_REGLEMENTAIRE: "clic_documentation_reglementaire",
+  CARTE_ZONES: "clic_carte_zones",
+} as const;
+export type MatomoAnnexe = (typeof MATOMO_ANNEXES)[keyof typeof MATOMO_ANNEXES];
+
+// Toute action Matomo acceptée par trackEvent (parcours simulateur ou clic annexe).
+export type MatomoAction = MatomoEventName | MatomoAnnexe;

@@ -21,6 +21,7 @@ import {
 } from "@shared/labels/etablissements.labels";
 import { ROUTES } from "@shared/config/routes.config";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
+import { useMatomo, MATOMO_ANNEXES } from "@shared/analytics";
 
 type Props = {
   result: EtablissementsOutputs;
@@ -29,6 +30,7 @@ type Props = {
 const BLUE = { color: "var(--text-title-blue-france)" } as const;
 
 export function EtablissementsResult({ result }: Props) {
+  const { trackEvent } = useMatomo();
   return (
     <div>
       <Header />
@@ -64,9 +66,14 @@ export function EtablissementsResult({ result }: Props) {
         <p>
           En contexte de PPA, des informations de traçabilité complémentaires doivent être
           transmises au destinataire des produits.{" "}
-          <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
+          <Link
+            to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent(MATOMO_ANNEXES.DOCUMENTATION_REGLEMENTAIRE)}
+          >
             Consulter la documentation réglementaire
-          </a>
+          </Link>
           .
         </p>
       </div>

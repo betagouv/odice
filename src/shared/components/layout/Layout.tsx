@@ -2,12 +2,14 @@ import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
 import { APP_VERSION } from "@shared/config/version.config";
+import { useMatomo, MATOMO_ANNEXES } from "@shared/analytics";
 
 type LayoutProps = {
   children: ReactNode;
 };
 
 export function Layout({ children }: LayoutProps) {
+  const { trackEvent } = useMatomo();
   return (
     <>
       <header role="banner" className="fr-header">
@@ -87,12 +89,20 @@ export function Layout({ children }: LayoutProps) {
                   </NavLink>
                 </li>
                 <li className="fr-nav__item">
-                  <NavLink to={ROUTES.DOCUMENTATION_REGLEMENTAIRE} className="fr-nav__link">
+                  <NavLink
+                    to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
+                    className="fr-nav__link"
+                    onClick={() => trackEvent(MATOMO_ANNEXES.DOCUMENTATION_REGLEMENTAIRE)}
+                  >
                     Documentation réglementaire
                   </NavLink>
                 </li>
                 <li className="fr-nav__item">
-                  <NavLink to={ROUTES.AIDE_UTILISATION} className="fr-nav__link">
+                  <NavLink
+                    to={ROUTES.AIDE_UTILISATION}
+                    className="fr-nav__link"
+                    onClick={() => trackEvent(MATOMO_ANNEXES.AIDE_UTILISATION)}
+                  >
                     Aide à l'utilisation
                   </NavLink>
                 </li>
