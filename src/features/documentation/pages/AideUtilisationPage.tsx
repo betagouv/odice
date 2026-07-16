@@ -49,8 +49,6 @@ export function AideUtilisationPage() {
           Démarrer une simulation
         </Link>
 
-        <hr className="fr-my-6w" />
-
         {/* Étape 1 — un paragraphe, une capture */}
         <section className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-12 fr-col-md-7">
