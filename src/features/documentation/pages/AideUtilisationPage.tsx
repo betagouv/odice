@@ -50,7 +50,7 @@ export function AideUtilisationPage() {
         </Link>
 
         {/* Étape 1 — un paragraphe, une capture */}
-        <section className="fr-grid-row fr-grid-row--gutters">
+        <section className="fr-grid-row fr-grid-row--gutters fr-mt-4w">
           <div className="fr-col-12 fr-col-md-7">
             <h2>1. Sélectionner votre situation</h2>
             <p>
