@@ -13,6 +13,15 @@ interface TrackEventOptions {
 // dimensionId Matomo -> valeur.
 type CustomDimensions = Record<number, string>;
 
+// Signature Matomo : ['trackEvent', category, action, name, value].
+// On ne retire que les positions absentes EN FIN : filtrer tout le tableau décalerait
+// la valeur dans le slot "name" quand name est absent (cas duree_saisie).
+function buildTrackEventArgs(event: MatomoAction, options: TrackEventOptions): unknown[] {
+  const args: unknown[] = [MATOMO_EVENT_CATEGORY, event, options.name, options.value];
+  while (args.length > 2 && args[args.length - 1] === undefined) args.pop();
+  return ["trackEvent", ...args];
+}
+
 export interface UseMatomo {
   trackEvent: (
     event: MatomoAction,
@@ -34,11 +43,7 @@ export function useMatomo(): UseMatomo {
         const dimensionIds = Object.keys(customDimensions).map(Number);
         // set -> track -> delete : sinon les dimensions fuitent sur les events suivants.
         for (const id of dimensionIds) push(["setCustomDimension", id, customDimensions[id]]);
-        push(
-          ["trackEvent", MATOMO_EVENT_CATEGORY, event, options.name, options.value].filter(
-            (value) => value !== undefined,
-          ),
-        );
+        push(buildTrackEventArgs(event, options));
         for (const id of dimensionIds) push(["deleteCustomDimension", id]);
       } catch (error) {
         console.warn("[ODICE matomo] trackEvent a échoué", error);
