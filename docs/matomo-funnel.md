@@ -12,7 +12,7 @@ Tous les événements portent la **catégorie** `Simulateur PPA`. Le **simulateu
 | Lancée | `abattoir_simulation_lancee` | `autre_simulation_lancee` | Soumission valide du formulaire |
 | Combinaison | `abattoir_combinaison_soumise` | `autre_combinaison_soumise` | Soumission valide — **Event Name = signature des réponses** |
 | Résultat | `abattoir_resultat_affiche` | `autre_resultat_affiche` | Résultat calculé et affiché — **porte les dimensions type + zone** (cf. plus bas) |
-| Durée de saisie | `abattoir_duree_saisie` | `autre_duree_saisie` | Validation — **Event Value = secondes** depuis la 1ère saisie (zone d'origine) |
+| Durée de saisie | `abattoir_duree_saisie` | `autre_duree_saisie` | Validation — **Event Value = secondes** depuis la 1ère saisie (1er champ du formulaire : zone de l'abattoir pour Abattoirs, zone d'origine pour Autres établissements) |
 | Réinitialisation | `abattoir_reinitialisation` | `autre_reinitialisation` | Clic sur « Réinitialiser » (pas une simple saisie) |
 
 ### Événements de clic vers les pages annexes
