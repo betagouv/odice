@@ -39,7 +39,7 @@ export function SimulateursIndexPage() {
     null,
   );
   const resultRef = useRef<HTMLDivElement>(null);
-  // Horodatage de la 1ère saisie (zone d'origine), pour mesurer la durée jusqu'à la validation.
+  // Horodatage de la 1ère saisie (1er champ du formulaire), pour mesurer la durée jusqu'à la validation.
   const debutSaisieRef = useRef<number | null>(null);
   const { trackEvent } = useMatomo();
 
