@@ -12,7 +12,7 @@ const L = {
   mcaAbattoir: /Êtes-vous en possession/i,
   zoneSuides: /Zone d'origine des porcs/i,
   statut: /Statut réglementaire/i,
-  zoneDest: /Zone dans laquelle est localisé l'établissement destinataire/i,
+  zoneDest: /Zone de l'établissement destinataire/i,
   mcaDest: /L'établissement destinataire est-il en possession/i,
 };
 
@@ -265,12 +265,20 @@ test.describe("Simulateur Abattoirs — affichage progressif", () => {
 });
 
 test.describe("Simulateur Abattoirs — infobulles", () => {
-  test("l'infobulle MCA de l'abattoir est reliée au bouton d'aide", async ({ page }) => {
+  test("la question MCA de l'abattoir porte l'infobulle MCA", async ({ page }) => {
     await ouvrirAbattoir(page);
     await page.getByLabel(L.zoneAbattoir).selectOption("zone-indemne");
 
     const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /maladie de catégorie A/ });
     await expect(tooltip).toHaveCount(1);
+  });
+
+  test("la question MCA du destinataire porte aussi l'infobulle MCA", async ({ page }) => {
+    await ouvrirAbattoir(page);
+    await remplir(page, CAS_SAIN);
+
+    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /maladie de catégorie A/ });
+    await expect(tooltip).toHaveCount(2);
   });
 
   test("l'infobulle du statut définit MR-PPA et MNR-PPA", async ({ page }) => {

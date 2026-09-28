@@ -1,6 +1,6 @@
 // Formulaire de saisie du simulateur Abattoirs.
 // Affichage progressif : un seul champ au départ, chaque saisie révèle le suivant.
-// Layout : pleine largeur, fieldsets en 2 colonnes, HR entre les blocs (cf. maquette).
+// Layout : abattoir, puis 1. provenance et 2. destination, champs en 2 colonnes (cf. maquette).
 
 import { Fragment, useMemo, useState, type FormEvent } from "react";
 import { Statut, Zone, type AbattoirsInputs } from "@engine";
@@ -254,19 +254,20 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
 
       {isVisible("zoneEtbDestinataire", form) && (
         <>
+          <h2 className="fr-h5 fr-mt-6w fr-mb-2w">2. Destination des viandes</h2>
           <hr />
 
           <section className="fr-mb-3w">
-            <h4 className="fr-h6 fr-mb-2w flex items-center gap-2">
+            <h3 className="fr-h6 fr-mb-2w flex items-center gap-2">
               <img src="/icons/truck.png" alt="" aria-hidden="true" className="h-6 w-6 shrink-0" />
               <span>Informations sur l'établissement destinataire des viandes</span>
-            </h4>
+            </h3>
 
             <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
               <div className="fr-col-12 fr-col-md-6">
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="zone-dest">
-                    Zone dans laquelle est localisé l'établissement destinataire des viandes
+                    Zone de l'établissement destinataire des viandes.
                     <CarteZonesHint />
                   </label>
                   <select
@@ -293,7 +294,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="mca-dest">
                       L'établissement destinataire est-il en possession d'un agrément zoosanitaire
-                      MCA ?
+                      MCA ?<InfoTooltip>{MCA_TOOLTIP}</InfoTooltip>
                     </label>
                     <select
                       className="fr-select"
