@@ -9,7 +9,7 @@ test.describe("Simulateur Abattoirs — chargement initial", () => {
   test("la page /simulateurs affiche la carte 'Votre situation'", async ({ page }) => {
     await page.goto("/simulateurs");
     await expect(page.getByRole("heading", { name: "Votre situation" })).toBeVisible();
-    await expect(page.getByLabel(/Type d'établissement/i)).toBeVisible();
+    await expect(page.getByLabel(/nature de votre établissement/i)).toBeVisible();
   });
 
   test("aucun formulaire ni résultat tant que le type n'est pas sélectionné", async ({ page }) => {
@@ -22,7 +22,7 @@ test.describe("Simulateur Abattoirs — chargement initial", () => {
     page,
   }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
 
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
@@ -32,7 +32,7 @@ test.describe("Simulateur Abattoirs — chargement initial", () => {
 test.describe("Simulateur Abattoirs — champ statut conditionnel", () => {
   test("statut masqué pour zone indemne", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
 
     await expect(page.getByLabel(/Statut réglementaire/i)).toHaveCount(0);
@@ -40,7 +40,7 @@ test.describe("Simulateur Abattoirs — champ statut conditionnel", () => {
 
   test("statut visible et requis pour ZRII", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zrii");
 
     await expect(page.getByLabel(/Statut réglementaire/i)).toBeVisible();
@@ -49,7 +49,7 @@ test.describe("Simulateur Abattoirs — champ statut conditionnel", () => {
 
   test("statut re-masqué en revenant sur zone indemne", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zrii");
     await expect(page.getByLabel(/Statut réglementaire/i)).toBeVisible();
 
@@ -61,7 +61,7 @@ test.describe("Simulateur Abattoirs — champ statut conditionnel", () => {
 test.describe("Simulateur Abattoirs — bouton Valider", () => {
   test("Valider désactivé tant que le formulaire est incomplet", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
 
     const validerBtn = page.getByRole("button", { name: "Valider" });
     await expect(validerBtn).toBeDisabled();
@@ -85,7 +85,7 @@ test.describe("Simulateur Abattoirs — bouton Valider", () => {
     page,
   }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zrii");
 
     // En ZRII, le statut s'insère dans la séquence : tant qu'il n'est pas rempli,
@@ -112,7 +112,7 @@ test.describe("Simulateur Abattoirs — bouton Valider", () => {
 test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
   test("Zone indemne + MCA partout → ovale, autorisé FR + UE", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
     await page
       .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
@@ -136,7 +136,7 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
 
   test("ZP + abattoir non MCA → AUCUNE MARQUE, mouvement interdit FR + UE", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zp");
     await page
       .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
@@ -159,7 +159,7 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     page,
   }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zriii");
     await page.getByLabel(/Statut réglementaire/i).selectOption("mnr-ppa");
     await page
@@ -183,7 +183,7 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
 test.describe("Simulateur Abattoirs — interactions post-validation", () => {
   test("modifier un champ après Valider masque le panneau de résultats", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
     await page
       .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
@@ -204,7 +204,7 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
 
   test("Réinitialiser vide le formulaire et masque le panneau de résultats", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
     await page
       .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
@@ -226,10 +226,10 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
 
   test("changer de type d'établissement remplace le formulaire affiché", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).toBeVisible();
 
-    await page.getByLabel(/Type d'établissement/i).selectOption("atelier-decoupe");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
     await expect(page.getByRole("heading", { name: /Mouvement abattoir/i })).not.toBeVisible();
     await expect(
       page.getByRole("heading", { name: /Mouvement entre établissements/i }),
@@ -240,7 +240,7 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
 test.describe("Simulateur Abattoirs — affichage progressif", () => {
   test("au démarrage, seul le premier champ est visible", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
 
     await expect(page.getByLabel(/Zone d'origine des suidés/i)).toBeVisible();
     await expect(page.getByLabel(/Zone dans laquelle est localisé votre abattoir/i)).toHaveCount(0);
@@ -249,7 +249,7 @@ test.describe("Simulateur Abattoirs — affichage progressif", () => {
 
   test("chaque saisie révèle le champ suivant un par un", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
 
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
     await expect(page.getByLabel(/Zone dans laquelle est localisé votre abattoir/i)).toBeVisible();
@@ -264,7 +264,7 @@ test.describe("Simulateur Abattoirs — affichage progressif", () => {
 
   test("modifier une valeur ne masque pas les champs déjà révélés", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
     await page
       .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
@@ -288,7 +288,7 @@ test.describe("Simulateur Abattoirs — affichage progressif", () => {
 
   test("Réinitialiser vide les champs mais les garde visibles", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
     await page
       .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)
@@ -316,7 +316,7 @@ test.describe("Simulateur Abattoirs — affichage progressif", () => {
 test.describe("Simulateur Abattoirs — lien vers l'historique des versions", () => {
   test("la date du résultat ouvre l'historique dans un nouvel onglet", async ({ page }) => {
     await page.goto("/simulateurs");
-    await page.getByLabel(/Type d'établissement/i).selectOption("abattoir");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
     await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
     await page
       .getByLabel(/Zone dans laquelle est localisé votre abattoir/i)

@@ -130,12 +130,7 @@ export function SimulateursIndexPage() {
 
                 <div className="fr-select-group fr-mb-0">
                   <label className="fr-label" htmlFor="type-etablissement">
-                    Type d'établissement d'origine du mouvement des viandes
-                    <span className="fr-hint-text">
-                      Les viandes fraîches y compris sang et viscères, les viandes hachées, les
-                      préparations de viandes, les produits à base de viande, les viandes séparées
-                      mécaniquement et les produits contenant des viandes.
-                    </span>
+                    La nature de votre établissement.
                   </label>
                   <select
                     className="fr-select"
