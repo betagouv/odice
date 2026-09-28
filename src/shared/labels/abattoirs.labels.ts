@@ -12,6 +12,7 @@ export {
   LPS_LABELS,
   CERTIFICATION_LABELS,
   ZONE_ORDER,
+  MCA_TOOLTIP,
 } from "./common.labels";
 
 export const STATUT_LABELS: Record<Statut, string> = {
