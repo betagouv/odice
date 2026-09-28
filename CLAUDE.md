@@ -6,6 +6,10 @@ ODICE (Outil de Décision pour les mouvements de viandes en contexte de Peste Po
 
 Projet Beta.gouv / gouvernement français.
 
+## Langue
+
+**Tout se fait en français** : réponses et comptes rendus à l'utilisateur, plans, questions, messages de commit, ADR, commentaires de code et textes affichés. Ne jamais répondre en anglais, même si le contexte technique ou les outils sont en anglais.
+
 ## Stack technique
 
 - **UI** : React 19 + Vite 8 (TypeScript strict)
