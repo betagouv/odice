@@ -3,6 +3,7 @@
 // sont mutualisés dans common.labels.ts ; ici seulement le spécifique Abattoirs.
 
 import { Statut, Zone } from "@engine";
+import { ZONE_LABELS, ZONE_ORDER } from "./common.labels";
 
 export {
   ZONE_LABELS,
@@ -31,4 +32,27 @@ export const STATUT_TOOLTIP: string[] = [
 // statut applicable uniquement à ZRII / ZRIII (vérifié sur l'oracle 2 744 cas).
 export function isStatutApplicable(zoneSuides: Zone | null): boolean {
   return zoneSuides === Zone.ZRII || zoneSuides === Zone.ZRIII;
+}
+
+// Choix « ZI FS réflexe » propre à la zone de l'abattoir : même conditionnalité que ZI FS,
+// donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
+export const ZONE_ABATTOIR_ZIFS_REFLEXE = "zi-fs-reflexe";
+export type ZoneAbattoirChoix = Zone | typeof ZONE_ABATTOIR_ZIFS_REFLEXE;
+
+export const ZONE_ABATTOIR_OPTIONS: { value: ZoneAbattoirChoix; label: string }[] =
+  ZONE_ORDER.flatMap((zone) => {
+    const option = { value: zone, label: ZONE_LABELS[zone] };
+    return zone === Zone.ZIFS
+      ? [
+          option,
+          {
+            value: ZONE_ABATTOIR_ZIFS_REFLEXE,
+            label: "ZI FS réflexe — Zone infectée faune sauvage réflexe",
+          },
+        ]
+      : [option];
+  });
+
+export function zoneAbattoirMoteur(choix: ZoneAbattoirChoix): Zone {
+  return choix === ZONE_ABATTOIR_ZIFS_REFLEXE ? Zone.ZIFS : choix;
 }

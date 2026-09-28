@@ -180,6 +180,23 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
   });
 });
 
+test.describe("Simulateur Abattoirs — abattoir en ZI FS réflexe", () => {
+  test("donne le même résultat qu'un abattoir en ZI FS", async ({ page }) => {
+    await ouvrirAbattoir(page);
+    await remplir(page, { ...CAS_SAIN, zoneAbattoir: "zi-fs" });
+    await page.getByRole("button", { name: "Valider" }).click();
+    await expect(page.getByText("CERTIFICATION ZOOSANITAIRE OBLIGATOIRE")).toBeVisible();
+    const attendu = await page.locator(".fr-badge").allInnerTexts();
+    expect(attendu.length).toBeGreaterThan(0);
+
+    await page.getByLabel(L.zoneAbattoir).selectOption("zi-fs-reflexe");
+    await page.getByRole("button", { name: "Valider" }).click();
+
+    await expect(page.getByText("CERTIFICATION ZOOSANITAIRE OBLIGATOIRE")).toBeVisible();
+    expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
+  });
+});
+
 test.describe("Simulateur Abattoirs — interactions post-validation", () => {
   test("modifier un champ après Valider masque le panneau de résultats", async ({ page }) => {
     await ouvrirAbattoir(page);
