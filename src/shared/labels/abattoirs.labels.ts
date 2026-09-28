@@ -22,6 +22,12 @@ export const STATUT_LABELS: Record<Statut, string> = {
 
 export const STATUT_ORDER: Statut[] = [Statut.MrPpa, Statut.MnrPpa];
 
+// Infobulle du champ statut : un paragraphe par statut (cf. maquette refonte Abattoirs).
+export const STATUT_TOOLTIP: string[] = [
+  "MR-PPA = mouvements des animaux reconnus comme appliquant les dispositions réglementaires vis-à-vis de la PPA",
+  "MNR-PPA = mouvements des animaux non reconnus comme appliquant les dispositions réglementaires vis-à-vis de la PPA",
+];
+
 // statut applicable uniquement à ZRII / ZRIII (vérifié sur l'oracle 2 744 cas).
 export function isStatutApplicable(zoneSuides: Zone | null): boolean {
   return zoneSuides === Zone.ZRII || zoneSuides === Zone.ZRIII;
