@@ -2,11 +2,12 @@
 // Affichage progressif : un seul champ au départ, chaque saisie révèle le suivant.
 // Layout : pleine largeur, fieldsets en 2 colonnes, HR entre les blocs (cf. maquette).
 
-import { useMemo, useState, type FormEvent } from "react";
+import { Fragment, useMemo, useState, type FormEvent } from "react";
 import { Statut, Zone, type AbattoirsInputs } from "@engine";
 import {
   STATUT_LABELS,
   STATUT_ORDER,
+  STATUT_TOOLTIP,
   ZONE_LABELS,
   ZONE_ORDER,
   MCA_TOOLTIP,
@@ -108,10 +109,10 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
   return (
     <form onSubmit={handleSubmit}>
       <section className="fr-mb-3w">
-        <h4 className="fr-h6 fr-mb-2w flex items-center gap-2">
+        <h2 className="fr-h6 fr-mb-2w flex items-center gap-2">
           <img src="/icons/building.png" alt="" aria-hidden="true" className="h-6 w-6 shrink-0" />
           <span>Informations sur votre abattoir</span>
-        </h4>
+        </h2>
 
         <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
           <div className="fr-col-12 fr-col-md-6">
@@ -167,24 +168,25 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
 
       {isVisible("zoneSuides", form) && (
         <>
+          <h2 className="fr-h5 fr-mt-6w fr-mb-2w">1. Provenance des porcs</h2>
           <hr />
 
           <section className="fr-mb-3w">
-            <h4 className="fr-h6 fr-mb-2w flex items-center gap-2">
+            <h3 className="fr-h6 fr-mb-2w flex items-center gap-2">
               <img
                 src="/icons/cochon.png"
                 alt=""
                 aria-hidden="true"
                 className="h-6 w-5 shrink-0 object-contain"
               />
-              <span>Informations à la réception des suidés</span>
-            </h4>
+              <span>Informations sur l'établissement d'élevage</span>
+            </h3>
 
             <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
               <div className="fr-col-12 fr-col-md-6">
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="zone-suides">
-                    Zone d'origine des suidés dont sont issues les viandes
+                    Zone d'origine des porcs.
                     <DocumentAnimauxHint />
                   </label>
                   <select
@@ -210,7 +212,20 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                 <div className="fr-col-12 fr-col-md-6">
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="statut">
-                      Statut réglementaire du mouvement des animaux
+                      Statut réglementaire des mouvements des animaux.
+                      <InfoTooltip>
+                        {STATUT_TOOLTIP.map((ligne, i) => (
+                          <Fragment key={ligne}>
+                            {i > 0 && (
+                              <>
+                                <br />
+                                <br />
+                              </>
+                            )}
+                            {ligne}
+                          </Fragment>
+                        ))}
+                      </InfoTooltip>
                       <DocumentAnimauxHint />
                     </label>
                     <select

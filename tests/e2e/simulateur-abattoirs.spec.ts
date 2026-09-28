@@ -10,7 +10,7 @@ const L = {
   type: /nature de votre établissement/i,
   zoneAbattoir: /Zone de votre abattoir/i,
   mcaAbattoir: /Êtes-vous en possession/i,
-  zoneSuides: /Zone d'origine des suidés/i,
+  zoneSuides: /Zone d'origine des porcs/i,
   statut: /Statut réglementaire/i,
   zoneDest: /Zone dans laquelle est localisé l'établissement destinataire/i,
   mcaDest: /L'établissement destinataire est-il en possession/i,
@@ -50,7 +50,7 @@ async function remplir(page: Page, saisie: Saisie) {
   await page.getByLabel(L.mcaDest).selectOption(saisie.mcaDest);
 }
 
-// Remplit jusqu'à la zone d'origine des suidés incluse.
+// Remplit jusqu'à la zone d'origine des porcs incluse.
 async function remplirJusquaSuides(page: Page, zoneSuides: string) {
   await page.getByLabel(L.zoneAbattoir).selectOption("zone-indemne");
   await page.getByLabel(L.mcaAbattoir).selectOption("oui");
@@ -243,7 +243,7 @@ test.describe("Simulateur Abattoirs — affichage progressif", () => {
     await ouvrirAbattoir(page);
     await remplir(page, CAS_SAIN);
 
-    // Changer la zone des suidés (vers une zone sans statut) ne masque aucun autre champ.
+    // Changer la zone d'origine des porcs (vers une zone sans statut) ne masque aucun autre champ.
     await page.getByLabel(L.zoneSuides).selectOption("zp");
 
     await expect(page.getByLabel(L.zoneAbattoir)).toHaveValue("zone-indemne");
@@ -271,6 +271,14 @@ test.describe("Simulateur Abattoirs — infobulles", () => {
 
     const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /maladie de catégorie A/ });
     await expect(tooltip).toHaveCount(1);
+  });
+
+  test("l'infobulle du statut définit MR-PPA et MNR-PPA", async ({ page }) => {
+    await ouvrirAbattoir(page);
+    await remplirJusquaSuides(page, "zrii");
+
+    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /MR-PPA =/ });
+    await expect(tooltip).toContainText("MNR-PPA =");
   });
 });
 
