@@ -8,6 +8,9 @@ import {
   STATUT_LABELS,
   STATUT_ORDER,
   STATUT_TOOLTIP,
+  ZONE_ABATTOIR_OPTIONS,
+  zoneAbattoirMoteur,
+  type ZoneAbattoirChoix,
   ZONE_LABELS,
   ZONE_ORDER,
   MCA_TOOLTIP,
@@ -24,7 +27,7 @@ import {
 type FormState = {
   zoneSuides: Zone | "";
   statut: Statut | "";
-  zoneAbattoir: Zone | "";
+  zoneAbattoir: ZoneAbattoirChoix | "";
   mcaAbattoir: "oui" | "non" | "";
   zoneEtbDestinataire: Zone | "";
   mcaEtbDestinataire: "oui" | "non" | "";
@@ -92,7 +95,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
     onSubmit({
       zoneSuides: form.zoneSuides as Zone,
       statut: statutRequired && form.statut !== "" ? (form.statut as Statut) : null,
-      zoneAbattoir: form.zoneAbattoir as Zone,
+      zoneAbattoir: zoneAbattoirMoteur(form.zoneAbattoir as ZoneAbattoirChoix),
       mcaAbattoir: form.mcaAbattoir === "oui",
       zoneEtbDestinataire: form.zoneEtbDestinataire as Zone,
       mcaEtbDestinataire: form.mcaEtbDestinataire === "oui",
@@ -126,14 +129,14 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                 id="zone-abattoir"
                 required
                 value={form.zoneAbattoir}
-                onChange={(e) => update("zoneAbattoir", e.target.value as Zone | "")}
+                onChange={(e) => update("zoneAbattoir", e.target.value as ZoneAbattoirChoix | "")}
               >
                 <option value="" disabled>
                   Sélectionner une option
                 </option>
-                {ZONE_ORDER.map((z) => (
-                  <option key={z} value={z}>
-                    {ZONE_LABELS[z]}
+                {ZONE_ABATTOIR_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
