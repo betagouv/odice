@@ -1,6 +1,6 @@
 import { Notice } from "./Notice";
 
-// Avertissement légal commun (simulateurs + aide à l'utilisation) : Odicé est une
+// Avertissement légal commun (simulateurs) : Odicé est une
 // aide à la décision indicative, sans valeur réglementaire.
 export function AvertissementNotice() {
   return (
