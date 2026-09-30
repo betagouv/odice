@@ -205,7 +205,7 @@ export function EtablissementsForm({
             {PERIMETRE_VIANDES}{" "}
             <strong>
               Si vous avez un produit composé d'un mélange de viandes issues de zones différentes,{" "}
-              {/* Cible provisoire en attendant le tableau des mélanges (à fournir par le métier). */}
+              {/* TODO : remplacer par l'URL du tableau des mélanges (non fournie à date). */}
               <Link to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}>référez-vous à ce tableau</Link>.
             </strong>
           </p>
