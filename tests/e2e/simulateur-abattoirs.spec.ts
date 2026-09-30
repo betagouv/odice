@@ -271,7 +271,7 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
     await page.getByLabel(L.type).selectOption("atelier-decoupe");
     await expect(page.getByRole("heading", { name: SECTION_ABATTOIR })).not.toBeVisible();
     await expect(
-      page.getByRole("heading", { name: /Mouvement entre établissements/i }),
+      page.getByRole("heading", { name: /Informations sur votre atelier de découpe/i }),
     ).toBeVisible();
   });
 });

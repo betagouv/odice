@@ -29,7 +29,7 @@ import { AbattoirsForm } from "../abattoirs/components/AbattoirsForm";
 import { AbattoirsResult } from "../abattoirs/components/AbattoirsResult";
 import { EtablissementsForm } from "../etablissements/components/EtablissementsForm";
 import { EtablissementsResult } from "../etablissements/components/EtablissementsResult";
-import { TYPE_ETABLISSEMENT_OPTIONS, familleFor } from "./typeEtablissement";
+import { TYPE_ETABLISSEMENT_OPTIONS, familleFor, nomEtablissementFor } from "./typeEtablissement";
 
 export function SimulateursIndexPage() {
   const [type, setType] = useState<string>("");
@@ -165,6 +165,7 @@ export function SimulateursIndexPage() {
             {famille === "autre" && (
               <div className="fr-mt-8w">
                 <EtablissementsForm
+                  nomEtablissement={nomEtablissementFor(type)}
                   onSubmit={handleEtablissementsSubmit}
                   onReset={handleReset}
                   onChange={resetResults}
