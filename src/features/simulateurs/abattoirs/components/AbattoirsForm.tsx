@@ -3,7 +3,7 @@
 // Layout : abattoir, puis 1. provenance et 2. destination, champs en 2 colonnes (cf. maquette).
 
 import { Fragment, useMemo, useState, type FormEvent } from "react";
-import { Statut, Zone, type AbattoirsInputs } from "@engine";
+import { Statut, type AbattoirsInputs } from "@engine";
 import {
   STATUT_LABELS,
   STATUT_ORDER,
@@ -11,8 +11,6 @@ import {
   ZONE_OPTIONS_AVEC_REFLEXE,
   zoneMoteur,
   type ZoneChoix,
-  ZONE_LABELS,
-  ZONE_ORDER,
   MCA_TOOLTIP,
   isStatutApplicable,
 } from "@shared/labels/abattoirs.labels";
@@ -29,7 +27,7 @@ type FormState = {
   statut: Statut | "";
   zoneAbattoir: ZoneChoix | "";
   mcaAbattoir: "oui" | "non" | "";
-  zoneEtbDestinataire: Zone | "";
+  zoneEtbDestinataire: ZoneChoix | "";
   mcaEtbDestinataire: "oui" | "non" | "";
 };
 
@@ -97,7 +95,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
       statut: statutRequired && form.statut !== "" ? (form.statut as Statut) : null,
       zoneAbattoir: zoneMoteur(form.zoneAbattoir as ZoneChoix),
       mcaAbattoir: form.mcaAbattoir === "oui",
-      zoneEtbDestinataire: form.zoneEtbDestinataire as Zone,
+      zoneEtbDestinataire: zoneMoteur(form.zoneEtbDestinataire as ZoneChoix),
       mcaEtbDestinataire: form.mcaEtbDestinataire === "oui",
     });
   }
@@ -278,14 +276,16 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                     id="zone-dest"
                     required
                     value={form.zoneEtbDestinataire}
-                    onChange={(e) => update("zoneEtbDestinataire", e.target.value as Zone | "")}
+                    onChange={(e) =>
+                      update("zoneEtbDestinataire", e.target.value as ZoneChoix | "")
+                    }
                   >
                     <option value="" disabled>
                       Sélectionner une option
                     </option>
-                    {ZONE_ORDER.map((z) => (
-                      <option key={z} value={z}>
-                        {ZONE_LABELS[z]}
+                    {ZONE_OPTIONS_AVEC_REFLEXE.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
                       </option>
                     ))}
                   </select>

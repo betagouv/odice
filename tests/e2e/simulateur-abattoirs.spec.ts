@@ -197,6 +197,28 @@ test.describe("Simulateur Abattoirs — abattoir en ZI FS réflexe", () => {
   });
 });
 
+test.describe("Simulateur Abattoirs — destinataire en ZI FS réflexe", () => {
+  test("donne le même résultat qu'un destinataire en ZI FS", async ({ page }) => {
+    await ouvrirAbattoir(page);
+    await remplir(page, {
+      ...CAS_SAIN,
+      zoneSuides: "zrii",
+      statut: "mr-ppa",
+      zoneDest: "zi-fs",
+      mcaDest: "non",
+    });
+    await page.getByRole("button", { name: "Valider" }).click();
+    await expect(page.getByText("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
+    const attendu = await page.locator(".fr-badge").allInnerTexts();
+
+    await page.getByLabel(L.zoneDest).selectOption("zi-fs-reflexe");
+    await page.getByRole("button", { name: "Valider" }).click();
+
+    await expect(page.getByText("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
+    expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
+  });
+});
+
 test.describe("Simulateur Abattoirs — porcs en ZI FS réflexe", () => {
   test("donne le même résultat que des porcs en ZI FS, sans demander le statut", async ({
     page,
