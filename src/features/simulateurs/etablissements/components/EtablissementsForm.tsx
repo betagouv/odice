@@ -10,8 +10,9 @@ import {
   MARQUE_ORDER,
   MCA_TOOLTIP,
   PERIMETRE_VIANDES,
-  ZONE_LABELS,
-  ZONE_ORDER,
+  ZONE_OPTIONS_AVEC_REFLEXE,
+  zoneMoteur,
+  type ZoneChoix,
 } from "@shared/labels/etablissements.labels";
 import {
   useProgressiveFields,
@@ -27,17 +28,17 @@ import {
   type OuiNon,
 } from "./traitementFields";
 
-const zoneOrNull = (zone: Zone | ""): Zone | null => (zone === "" ? null : zone);
+const zoneOrNull = (zone: ZoneChoix | ""): Zone | null => (zone === "" ? null : zoneMoteur(zone));
 
 type FormState = {
-  zoneExpediteur: Zone | "";
+  zoneExpediteur: ZoneChoix | "";
   mcaExpediteur: OuiNon;
-  zoneSuides: Zone | "";
+  zoneSuides: ZoneChoix | "";
   marqueViandes: Marque | "";
   traitementObligatoireFr: OuiNon;
   traitementObligatoireUe: OuiNon;
   traitementRealise: OuiNon;
-  zoneDestinataire: Zone | "";
+  zoneDestinataire: ZoneChoix | "";
   mcaDestinataire: OuiNon;
 };
 
@@ -117,14 +118,14 @@ export function EtablissementsForm({
       form.traitementObligatoireUe,
     );
     onSubmit({
-      zoneSuides: form.zoneSuides as Zone,
+      zoneSuides: zoneMoteur(form.zoneSuides as ZoneChoix),
       marqueViandes: form.marqueViandes as Marque,
       traitementObligatoireFr: traitementObligatoire.fr,
       traitementObligatoireUe: traitementObligatoire.ue,
-      zoneExpediteur: form.zoneExpediteur as Zone,
+      zoneExpediteur: zoneMoteur(form.zoneExpediteur as ZoneChoix),
       mcaExpediteur: form.mcaExpediteur === "oui",
       traitementRealise: form.traitementRealise === "oui",
-      zoneDestinataire: form.zoneDestinataire as Zone,
+      zoneDestinataire: zoneMoteur(form.zoneDestinataire as ZoneChoix),
       mcaDestinataire: form.mcaDestinataire === "oui",
     });
   }
@@ -156,14 +157,14 @@ export function EtablissementsForm({
                 id="etb-zone-exp"
                 required
                 value={form.zoneExpediteur}
-                onChange={(e) => update("zoneExpediteur", e.target.value as Zone | "")}
+                onChange={(e) => update("zoneExpediteur", e.target.value as ZoneChoix | "")}
               >
                 <option value="" disabled>
                   Sélectionner une option
                 </option>
-                {ZONE_ORDER.map((z) => (
-                  <option key={z} value={z}>
-                    {ZONE_LABELS[z]}
+                {ZONE_OPTIONS_AVEC_REFLEXE.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
                   </option>
                 ))}
               </select>
@@ -232,14 +233,14 @@ export function EtablissementsForm({
                     id="etb-zone-suides"
                     required
                     value={form.zoneSuides}
-                    onChange={(e) => update("zoneSuides", e.target.value as Zone | "")}
+                    onChange={(e) => update("zoneSuides", e.target.value as ZoneChoix | "")}
                   >
                     <option value="" disabled>
                       Sélectionner une option
                     </option>
-                    {ZONE_ORDER.map((z) => (
-                      <option key={z} value={z}>
-                        {ZONE_LABELS[z]}
+                    {ZONE_OPTIONS_AVEC_REFLEXE.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
                       </option>
                     ))}
                   </select>
@@ -396,14 +397,14 @@ export function EtablissementsForm({
                     id="etb-zone-dest"
                     required
                     value={form.zoneDestinataire}
-                    onChange={(e) => update("zoneDestinataire", e.target.value as Zone | "")}
+                    onChange={(e) => update("zoneDestinataire", e.target.value as ZoneChoix | "")}
                   >
                     <option value="" disabled>
                       Sélectionner une option
                     </option>
-                    {ZONE_ORDER.map((z) => (
-                      <option key={z} value={z}>
-                        {ZONE_LABELS[z]}
+                    {ZONE_OPTIONS_AVEC_REFLEXE.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
                       </option>
                     ))}
                   </select>

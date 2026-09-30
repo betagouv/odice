@@ -171,3 +171,37 @@ test.describe("Simulateur Autres Établissements — champs traitement condition
     await expect(page.getByLabel(L.traitementUe)).toBeVisible();
   });
 });
+
+test.describe("Simulateur Autres Établissements — ZI FS réflexe", () => {
+  test("proposée dans les trois listes de zones", async ({ page }) => {
+    await ouvrirAtelier(page);
+    await remplirCasSain(page);
+
+    for (const id of ["#etb-zone-exp", "#etb-zone-suides", "#etb-zone-dest"]) {
+      await expect(page.locator(`${id} option[value="zi-fs-reflexe"]`)).toHaveCount(1);
+    }
+  });
+
+  test("porcs en ZI FS réflexe : même résultat qu'en ZI FS", async ({ page }) => {
+    await ouvrirAtelier(page);
+    await remplirJusquaSuides(page, "zi-fs");
+    await choisirMarque(page, "ovale");
+    await page.getByLabel(L.traitementFr).selectOption("non");
+    await page.getByLabel(L.traitementUe).selectOption("non");
+    await page.getByLabel(L.traitementRealise).selectOption("non");
+    await page.getByLabel(L.zoneDest).selectOption("zone-indemne");
+    await page.getByLabel(L.mcaDest).selectOption("oui");
+    await page.getByRole("button", { name: "Valider" }).click();
+    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toBeVisible();
+    const attendu = await page.locator(".fr-badge").allInnerTexts();
+    expect(attendu.length).toBeGreaterThan(0);
+
+    await page.getByLabel(L.zoneSuides).selectOption("zi-fs-reflexe");
+    // Les questions de traitement restent applicables, comme en ZI FS.
+    await expect(page.getByLabel(L.traitementFr)).toHaveValue("non");
+    await page.getByRole("button", { name: "Valider" }).click();
+
+    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toBeVisible();
+    expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
+  });
+});
