@@ -61,3 +61,27 @@ export const MARQUE_ORDER: Marque[] = [
 // Infobulle des questions « agrément zoosanitaire MCA » (cf. maquette refonte Abattoirs).
 export const MCA_TOOLTIP =
   "Agrément zoosanitaire « Maladie de catégorie A » délivré par l’autorité compétente (DDecPP) à certains établissements pour leur permettre de recevoir des animaux ou des produits soumis à des restrictions sanitaires liées à une maladie de catégorie A, telle que la peste porcine africaine (PPA)";
+
+// Choix « ZI FS réflexe » (toutes les zones des deux simulateurs) : même conditionnalité
+// que ZI FS, donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
+export const ZONE_ZIFS_REFLEXE = "zi-fs-reflexe";
+export type ZoneChoix = Zone | typeof ZONE_ZIFS_REFLEXE;
+
+export const ZONE_OPTIONS_AVEC_REFLEXE: { value: ZoneChoix; label: string }[] = ZONE_ORDER.flatMap(
+  (zone) => {
+    const option = { value: zone, label: ZONE_LABELS[zone] };
+    return zone === Zone.ZIFS
+      ? [
+          option,
+          {
+            value: ZONE_ZIFS_REFLEXE,
+            label: "ZI FS réflexe — Zone infectée faune sauvage réflexe",
+          },
+        ]
+      : [option];
+  },
+);
+
+export function zoneMoteur(choix: ZoneChoix): Zone {
+  return choix === ZONE_ZIFS_REFLEXE ? Zone.ZIFS : choix;
+}

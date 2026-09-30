@@ -1,13 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { Zone } from "@engine";
-import {
-  ZONE_OPTIONS_AVEC_REFLEXE,
-  ZONE_ZIFS_REFLEXE,
-  isStatutApplicable,
-  zoneMoteur,
-} from "./abattoirs.labels";
+import { ZONE_OPTIONS_AVEC_REFLEXE, ZONE_ZIFS_REFLEXE, zoneMoteur } from "./common.labels";
+import { isStatutApplicable } from "./abattoirs.labels";
 
-describe("zones du simulateur Abattoirs — option ZI FS réflexe", () => {
+describe("zones des simulateurs — option ZI FS réflexe", () => {
   it("est proposée juste après ZI FS", () => {
     const valeurs = ZONE_OPTIONS_AVEC_REFLEXE.map((option) => option.value);
     expect(valeurs.indexOf(ZONE_ZIFS_REFLEXE)).toBe(valeurs.indexOf(Zone.ZIFS) + 1);
