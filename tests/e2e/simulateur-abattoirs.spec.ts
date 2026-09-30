@@ -286,7 +286,7 @@ test.describe("Simulateur Abattoirs — infobulles", () => {
     await ouvrirAbattoir(page);
     await page.getByLabel(L.zoneAbattoir).selectOption("zone-indemne");
 
-    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /maladie de catégorie A/ });
+    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /Maladie de catégorie A/i });
     await expect(tooltip).toHaveCount(1);
   });
 
@@ -294,7 +294,7 @@ test.describe("Simulateur Abattoirs — infobulles", () => {
     await ouvrirAbattoir(page);
     await remplir(page, CAS_SAIN);
 
-    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /maladie de catégorie A/ });
+    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /Maladie de catégorie A/i });
     await expect(tooltip).toHaveCount(2);
   });
 

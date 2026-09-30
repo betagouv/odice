@@ -60,4 +60,4 @@ export const MARQUE_ORDER: Marque[] = [
 
 // Infobulle des questions « agrément zoosanitaire MCA » (cf. maquette refonte Abattoirs).
 export const MCA_TOOLTIP =
-  "L'agrément MCA (« maladie de catégorie A ») est une autorisation spécifique permettant à un établissement de recevoir et de manipuler, pour les activités autorisées, des animaux ou des viandes soumis à des restrictions liées à la PPA.";
+  "Agrément zoosanitaire « Maladie de catégorie A » délivré par l’autorité compétente (DDecPP) à certains établissements pour leur permettre de recevoir des animaux ou des produits soumis à des restrictions sanitaires liées à une maladie de catégorie A, telle que la peste porcine africaine (PPA)";
