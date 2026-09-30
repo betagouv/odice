@@ -6,7 +6,6 @@ import { Matomo } from "@shared/analytics";
 import { HomePage } from "@features/home/pages/HomePage";
 import { SimulateursIndexPage } from "@features/simulateurs/pages/SimulateursIndexPage";
 import { DocumentationReglementairePage } from "@features/documentation/pages/DocumentationReglementairePage";
-import { AideUtilisationPage } from "@features/documentation/pages/AideUtilisationPage";
 import { HistoriqueVersionsPage } from "@features/historique/pages/HistoriqueVersionsPage";
 import { ErrorFallbackPage } from "@features/error/pages/ErrorFallbackPage";
 import { NotFoundPage } from "@features/error/pages/NotFoundPage";
@@ -28,7 +27,6 @@ function App() {
             path={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
             element={<DocumentationReglementairePage />}
           />
-          <Route path={ROUTES.AIDE_UTILISATION} element={<AideUtilisationPage />} />
           <Route path={ROUTES.HISTORIQUE_VERSIONS} element={<HistoriqueVersionsPage />} />
           <Route path={ROUTES.PLAN_DU_SITE} element={<PlanDuSitePage />} />
           <Route path={ROUTES.ACCESSIBILITE} element={<AccessibilitePage />} />

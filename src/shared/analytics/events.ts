@@ -33,7 +33,6 @@ export function matomoAction(simulateur: MatomoSimulateur, step: MatomoStep): Ma
 
 // Clics vers les pages/annexes (hors funnel simulateur), pilotés séparément.
 export const MATOMO_ANNEXES = {
-  AIDE_UTILISATION: "clic_aide_utilisation",
   DOCUMENTATION_REGLEMENTAIRE: "clic_documentation_reglementaire",
   CARTE_ZONES: "clic_carte_zones",
 } as const;

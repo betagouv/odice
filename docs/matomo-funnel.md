@@ -21,7 +21,6 @@ Catégorie identique (`Simulateur PPA`), hors funnel. Émis depuis la navigation
 
 | Action | Déclencheur |
 |---|---|
-| `clic_aide_utilisation` | Clic sur « Aide à l'utilisation » (menu) |
 | `clic_documentation_reglementaire` | Clic sur « Documentation réglementaire » (menu **ou** lien du panneau résultat) |
 | `clic_carte_zones` | Clic sur le lien « carte » sous un champ de zone (carte des zones réglementées) |
 
@@ -120,7 +119,6 @@ Où lire chaque indicateur demandé. « Personnes / mois » = **nombre de visite
 | Temps moyen 1ère saisie → validation | Événements → `*_duree_saisie` → colonne **Valeur moyenne** (secondes) |
 | Validations par type d'établissement (+ région) / mois | Dimension `type_etablissement` (ci-dessus), croisée avec **Visiteurs → Lieux → Région** (géolocalisation IP) |
 | Validations par zone d'origine des suidés | Dimension `zone_suides` (ci-dessus) |
-| Clics vers notice (aide) / mois | Événements → `clic_aide_utilisation` |
 | Clics vers documentation réglementaire / mois | Événements → `clic_documentation_reglementaire` |
 | Clics vers « carte des zones réglementées » / mois | Événements → `clic_carte_zones` |
 
