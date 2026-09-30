@@ -11,3 +11,9 @@ export {
   ZONE_ORDER,
   MARQUE_ORDER,
 } from "./common.labels";
+
+export { MCA_TOOLTIP } from "./common.labels";
+
+// Périmètre des produits, rappelé en tête des sections provenance et destination (maquette).
+export const PERIMETRE_VIANDES =
+  "On considère ici les viandes fraîches y compris sang et viscères, les viandes hachées, les préparations de viandes, les produits à base de viande, les viandes séparées mécaniquement et les produits contenant des viandes.";

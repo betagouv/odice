@@ -1,52 +1,85 @@
-import { test, expect } from "@playwright/test";
+// Tests E2E du simulateur Autres Établissements.
+// Couvre : libellés adaptés au type, affichage progressif, champs traitement
+// conditionnels, validation, reset.
 
-// Remplit le formulaire Autres Établissements avec un cas "tout sain"
-// (zone indemne partout, ovale, MCA OUI) → marque ovale, mouvements autorisés.
-// En zone d'origine saine, les champs "traitement obligatoire FR/UE" sont masqués
-// (cf. traitementFields.ts) : le cas sain ne compte donc que 7 champs visibles.
-async function remplirCasSain(page: import("@playwright/test").Page) {
-  await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
-  await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
-  await page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i).selectOption("ovale");
-  await page
-    .getByLabel(/Zone dans laquelle est localisé l'établissement expéditeur/i)
-    .selectOption("zone-indemne");
-  await page.getByLabel(/L'établissement expéditeur est-il en possession/i).selectOption("oui");
-  await page.getByLabel(/traitement d'atténuation a-t-il été réalisé/i).selectOption("non");
-  await page
-    .getByLabel(/Zone dans laquelle est localisé l'établissement destinataire/i)
-    .selectOption("zone-indemne");
-  await page.getByLabel(/L'établissement destinataire est-il en possession/i).selectOption("oui");
+import { test, expect, type Page } from "@playwright/test";
+
+// Libellés des champs, centralisés pour absorber les évolutions de wording.
+const L = {
+  type: /nature de votre établissement/i,
+  zoneEtb: /Zone de votre atelier de découpe/i,
+  mcaEtb: /Êtes-vous en possession/i,
+  zoneSuides: /Zone d'origine des porcs/i,
+  marque: /Marque sanitaire présente sur les viandes/i,
+  traitementFr: /traitement d'atténuation est-il obligatoire pour les mouvements nationaux/i,
+  traitementUe: /traitement d'atténuation est-il obligatoire pour les échanges UE/i,
+  traitementRealise: /traitement d'atténuation a-t-il été réalisé/i,
+  zoneDest: /Zone de l'établissement destinataire/i,
+  mcaDest: /L'établissement destinataire est-il en possession/i,
+};
+
+const SECTION_ETB = /Informations sur votre atelier de découpe/i;
+
+async function ouvrirAtelier(page: Page) {
+  await page.goto("/simulateurs");
+  await page.getByLabel(L.type).selectOption("atelier-decoupe");
+}
+
+async function choisirMarque(page: Page, marque: string) {
+  await page.getByLabel(L.marque).selectOption(marque);
+}
+
+// Remplit l'établissement puis la zone d'origine des porcs.
+async function remplirJusquaSuides(page: Page, zoneSuides: string) {
+  await page.getByLabel(L.zoneEtb).selectOption("zone-indemne");
+  await page.getByLabel(L.mcaEtb).selectOption("oui");
+  await page.getByLabel(L.zoneSuides).selectOption(zoneSuides);
+}
+
+// Cas "tout sain" (zone indemne partout, ovale, MCA oui) → marque ovale, mouvements autorisés.
+// En zone d'origine saine, les champs "traitement obligatoire FR/UE" sont masqués.
+async function remplirCasSain(page: Page) {
+  await remplirJusquaSuides(page, "zone-indemne");
+  await choisirMarque(page, "ovale");
+  await page.getByLabel(L.traitementRealise).selectOption("non");
+  await page.getByLabel(L.zoneDest).selectOption("zone-indemne");
+  await page.getByLabel(L.mcaDest).selectOption("oui");
 }
 
 test.describe("Simulateur Autres Établissements", () => {
-  test("sélectionner 'Autre établissement' affiche le formulaire dédié", async ({ page }) => {
-    await page.goto("/simulateurs");
-    await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
+  test("sélectionner un atelier de découpe affiche le formulaire dédié", async ({ page }) => {
+    await ouvrirAtelier(page);
+
+    await expect(page.getByRole("heading", { name: SECTION_ETB })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
+  });
+
+  test("les libellés reprennent le type d'établissement choisi", async ({ page }) => {
+    await ouvrirAtelier(page);
+    await page.getByLabel(L.type).selectOption("entrepot");
 
     await expect(
-      page.getByRole("heading", { name: /Mouvement entre établissements/i }),
+      page.getByRole("heading", { name: /Informations sur votre entrepôt/i }),
     ).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
+    await expect(page.getByLabel(/Zone de votre entrepôt/i)).toBeVisible();
   });
 
   test("Valider reste désactivé tant que les champs requis ne sont pas remplis", async ({
     page,
   }) => {
-    await page.goto("/simulateurs");
-    await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
+    await ouvrirAtelier(page);
 
     const valider = page.getByRole("button", { name: "Valider" });
     await expect(valider).toBeDisabled();
 
-    await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
+    await remplirJusquaSuides(page, "zone-indemne");
     await expect(valider).toBeDisabled();
   });
 
   test("cas zone indemne / ovale / MCA → marque ovale et mouvements autorisés", async ({
     page,
   }) => {
-    await page.goto("/simulateurs");
+    await ouvrirAtelier(page);
     await remplirCasSain(page);
     await page.getByRole("button", { name: "Valider" }).click();
 
@@ -56,95 +89,83 @@ test.describe("Simulateur Autres Établissements", () => {
   });
 
   test("modifier un champ après Valider masque le panneau de résultats", async ({ page }) => {
-    await page.goto("/simulateurs");
+    await ouvrirAtelier(page);
     await remplirCasSain(page);
     await page.getByRole("button", { name: "Valider" }).click();
     await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toBeVisible();
 
-    await page
-      .getByLabel(/Marque sanitaire apposée sur les viandes reçues/i)
-      .selectOption("ovale-barree");
+    await choisirMarque(page, "ovale-barree");
     await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
+  });
+
+  test("les deux questions MCA portent l'infobulle MCA", async ({ page }) => {
+    await ouvrirAtelier(page);
+    await remplirCasSain(page);
+
+    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /Maladie de catégorie A/i });
+    await expect(tooltip).toHaveCount(2);
   });
 });
 
 test.describe("Simulateur Autres Établissements — affichage progressif", () => {
   test("au démarrage, seul le premier champ est visible", async ({ page }) => {
-    await page.goto("/simulateurs");
-    await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
+    await ouvrirAtelier(page);
 
-    await expect(page.getByLabel(/Zone d'origine des suidés/i)).toBeVisible();
-    await expect(page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i)).toHaveCount(
-      0,
-    );
+    await expect(page.getByLabel(L.zoneEtb)).toBeVisible();
+    await expect(page.getByLabel(L.mcaEtb)).toHaveCount(0);
+    await expect(page.getByLabel(L.zoneSuides)).toHaveCount(0);
   });
 
   test("chaque saisie révèle le champ suivant un par un", async ({ page }) => {
-    await page.goto("/simulateurs");
-    await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
+    await ouvrirAtelier(page);
 
     // Zone réglementée : le champ "traitement obligatoire national" s'applique.
-    await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zp");
-    await expect(page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i)).toBeVisible();
-    await expect(
-      page.getByLabel(/traitement d'atténuation est-il obligatoire pour les mouvements nationaux/i),
-    ).toHaveCount(0);
+    await remplirJusquaSuides(page, "zp");
+    await expect(page.getByLabel(L.marque).first()).toBeVisible();
+    await expect(page.getByLabel(L.traitementFr)).toHaveCount(0);
 
-    await page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i).selectOption("ovale");
-    await expect(
-      page.getByLabel(/traitement d'atténuation est-il obligatoire pour les mouvements nationaux/i),
-    ).toBeVisible();
+    await choisirMarque(page, "ovale");
+    await expect(page.getByLabel(L.traitementFr)).toBeVisible();
   });
 
   test("Réinitialiser vide les champs mais les garde visibles", async ({ page }) => {
-    await page.goto("/simulateurs");
+    await ouvrirAtelier(page);
     await remplirCasSain(page);
 
     await page.getByRole("button", { name: "Réinitialiser" }).click();
 
-    await expect(page.getByLabel(/Zone d'origine des suidés/i)).toHaveValue("");
-    await expect(page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i)).toBeVisible();
-    await expect(page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i)).toHaveValue(
-      "",
-    );
-    await expect(
-      page.getByLabel(/L'établissement destinataire est-il en possession/i),
-    ).toBeVisible();
+    await expect(page.getByLabel(L.zoneEtb)).toHaveValue("");
+    await expect(page.getByLabel(L.zoneSuides)).toBeVisible();
+    await expect(page.getByLabel(L.zoneSuides)).toHaveValue("");
+    await expect(page.getByLabel(L.mcaDest)).toBeVisible();
   });
 });
 
 test.describe("Simulateur Autres Établissements — champs traitement conditionnels", () => {
-  const frOblig = /traitement d'atténuation est-il obligatoire pour les mouvements nationaux/i;
-  const ueOblig = /traitement d'atténuation est-il obligatoire pour les échanges UE/i;
-
   test("zone d'origine saine : les champs traitement obligatoire ne s'affichent pas", async ({
     page,
   }) => {
-    await page.goto("/simulateurs");
-    await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
-    await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zone-indemne");
-    await page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i).selectOption("ovale");
+    await ouvrirAtelier(page);
+    await remplirJusquaSuides(page, "zone-indemne");
+    await choisirMarque(page, "ovale");
 
-    await expect(page.getByLabel(frOblig)).toHaveCount(0);
-    await expect(page.getByLabel(ueOblig)).toHaveCount(0);
-    // Le parcours passe directement à l'établissement expéditeur.
-    await expect(
-      page.getByLabel(/Zone dans laquelle est localisé l'établissement expéditeur/i),
-    ).toBeVisible();
+    await expect(page.getByLabel(L.traitementFr)).toHaveCount(0);
+    await expect(page.getByLabel(L.traitementUe)).toHaveCount(0);
+    // Le parcours passe directement au traitement réalisé.
+    await expect(page.getByLabel(L.traitementRealise)).toBeVisible();
   });
 
   test("zone réglementée : 'obligatoire UE' masqué si 'obligatoire FR' = oui", async ({ page }) => {
-    await page.goto("/simulateurs");
-    await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
-    await page.getByLabel(/Zone d'origine des suidés/i).selectOption("zp");
-    await page.getByLabel(/Marque sanitaire apposée sur les viandes reçues/i).selectOption("ovale");
+    await ouvrirAtelier(page);
+    await remplirJusquaSuides(page, "zp");
+    await choisirMarque(page, "ovale");
 
-    await expect(page.getByLabel(frOblig)).toBeVisible();
+    await expect(page.getByLabel(L.traitementFr)).toBeVisible();
 
-    await page.getByLabel(frOblig).selectOption("oui");
-    await expect(page.getByLabel(ueOblig)).toHaveCount(0);
+    await page.getByLabel(L.traitementFr).selectOption("oui");
+    await expect(page.getByLabel(L.traitementUe)).toHaveCount(0);
 
-    await page.getByLabel(frOblig).selectOption("non");
-    await expect(page.getByLabel(ueOblig)).toBeVisible();
+    await page.getByLabel(L.traitementFr).selectOption("non");
+    await expect(page.getByLabel(L.traitementUe)).toBeVisible();
   });
 });
