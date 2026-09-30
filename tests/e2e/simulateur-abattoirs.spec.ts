@@ -197,6 +197,25 @@ test.describe("Simulateur Abattoirs — abattoir en ZI FS réflexe", () => {
   });
 });
 
+test.describe("Simulateur Abattoirs — porcs en ZI FS réflexe", () => {
+  test("donne le même résultat que des porcs en ZI FS, sans demander le statut", async ({
+    page,
+  }) => {
+    await ouvrirAbattoir(page);
+    await remplir(page, { ...CAS_SAIN, zoneSuides: "zi-fs", mcaDest: "non" });
+    await page.getByRole("button", { name: "Valider" }).click();
+    await expect(page.getByText("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
+    const attendu = await page.locator(".fr-badge").allInnerTexts();
+
+    await page.getByLabel(L.zoneSuides).selectOption("zi-fs-reflexe");
+    await expect(page.getByLabel(L.statut)).toHaveCount(0);
+    await page.getByRole("button", { name: "Valider" }).click();
+
+    await expect(page.getByText("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
+    expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
+  });
+});
+
 test.describe("Simulateur Abattoirs — interactions post-validation", () => {
   test("modifier un champ après Valider masque le panneau de résultats", async ({ page }) => {
     await ouvrirAbattoir(page);
