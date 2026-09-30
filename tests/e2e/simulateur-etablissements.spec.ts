@@ -25,8 +25,9 @@ async function ouvrirAtelier(page: Page) {
   await page.getByLabel(L.type).selectOption("atelier-decoupe");
 }
 
+// DSFR masque l'input radio : on clique sur son libellé, comme un utilisateur.
 async function choisirMarque(page: Page, marque: string) {
-  await page.getByLabel(L.marque).selectOption(marque);
+  await page.locator(`label[for="etb-marque-${marque}"]`).click();
 }
 
 // Remplit l'établissement puis la zone d'origine des porcs.
@@ -121,7 +122,7 @@ test.describe("Simulateur Autres Établissements — affichage progressif", () =
 
     // Zone réglementée : le champ "traitement obligatoire national" s'applique.
     await remplirJusquaSuides(page, "zp");
-    await expect(page.getByLabel(L.marque).first()).toBeVisible();
+    await expect(page.getByRole("group", { name: L.marque })).toBeVisible();
     await expect(page.getByLabel(L.traitementFr)).toHaveCount(0);
 
     await choisirMarque(page, "ovale");
@@ -134,6 +135,7 @@ test.describe("Simulateur Autres Établissements — affichage progressif", () =
 
     await page.getByRole("button", { name: "Réinitialiser" }).click();
 
+    await expect(page.locator("#etb-marque-ovale")).not.toBeChecked();
     await expect(page.getByLabel(L.zoneEtb)).toHaveValue("");
     await expect(page.getByLabel(L.zoneSuides)).toBeVisible();
     await expect(page.getByLabel(L.zoneSuides)).toHaveValue("");
