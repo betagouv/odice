@@ -7,7 +7,7 @@ import {
   zoneMoteur,
 } from "./abattoirs.labels";
 
-describe("zones abattoir et origine des porcs — option ZI FS réflexe", () => {
+describe("zones du simulateur Abattoirs — option ZI FS réflexe", () => {
   it("est proposée juste après ZI FS", () => {
     const valeurs = ZONE_OPTIONS_AVEC_REFLEXE.map((option) => option.value);
     expect(valeurs.indexOf(ZONE_ZIFS_REFLEXE)).toBe(valeurs.indexOf(Zone.ZIFS) + 1);

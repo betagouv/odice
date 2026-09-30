@@ -35,7 +35,7 @@ export function isStatutApplicable(zoneSuides: Zone | null): boolean {
   return zoneSuides === Zone.ZRII || zoneSuides === Zone.ZRIII;
 }
 
-// Choix « ZI FS réflexe » (zones de l'abattoir et d'origine des porcs) : même conditionnalité
+// Choix « ZI FS réflexe » (toutes les zones du simulateur Abattoirs) : même conditionnalité
 // que ZI FS, donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
 export const ZONE_ZIFS_REFLEXE = "zi-fs-reflexe";
 export type ZoneChoix = Zone | typeof ZONE_ZIFS_REFLEXE;
