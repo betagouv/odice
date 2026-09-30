@@ -260,31 +260,35 @@ export function EtablissementsForm({
                 <span>Informations sur les viandes</span>
               </h3>
 
-              <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
-                <div className="fr-col-12 fr-col-md-6">
-                  <div className="fr-select-group">
-                    <label className="fr-label" htmlFor="etb-marque-viandes">
-                      Marque sanitaire présente sur les viandes à réception.
-                    </label>
-                    <select
-                      className="fr-select"
-                      id="etb-marque-viandes"
-                      required
-                      value={form.marqueViandes}
-                      onChange={(e) => update("marqueViandes", e.target.value as Marque | "")}
-                    >
-                      <option value="" disabled>
-                        Sélectionner une option
-                      </option>
-                      {MARQUE_ORDER.map((m) => (
-                        <option key={m} value={m}>
-                          {MARQUE_LABELS[m]}
-                        </option>
-                      ))}
-                    </select>
+              <fieldset className="fr-fieldset" aria-labelledby="etb-marque-viandes-legend">
+                <legend
+                  className="fr-fieldset__legend fr-fieldset__legend--regular"
+                  id="etb-marque-viandes-legend"
+                >
+                  Marque sanitaire présente sur les viandes à réception.
+                </legend>
+                {MARQUE_ORDER.map((m) => (
+                  <div key={m} className="fr-fieldset__element fr-fieldset__element--inline">
+                    <div className="fr-radio-group fr-radio-rich">
+                      <input
+                        type="radio"
+                        id={`etb-marque-${m}`}
+                        name="etb-marque-viandes"
+                        value={m}
+                        required
+                        checked={form.marqueViandes === m}
+                        onChange={() => update("marqueViandes", m)}
+                      />
+                      <label className="fr-label" htmlFor={`etb-marque-${m}`}>
+                        {MARQUE_LABELS[m]}
+                      </label>
+                      <div className="fr-radio-rich__pictogram">
+                        <img src={`/images/marques/${m}.svg`} alt="" />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                ))}
+              </fieldset>
 
               <div className="fr-grid-row fr-grid-row--gutters fr-grid-row--bottom">
                 {isVisible("traitementObligatoireFr", form) && (
