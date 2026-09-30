@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none">
-  <ellipse cx="40" cy="40" rx="36" ry="22" fill="#fff" stroke="#161616" stroke-width="1.5"/>
-  <g fill="#161616" font-family="Marianne, Arial, sans-serif" font-size="8" text-anchor="middle">
-    <text x="40" y="30">FR</text>
-    <text x="40" y="43">01.001.001</text>
-    <text x="40" y="56">UE</text>
-  </g>
-  <g stroke="#161616" stroke-width="1.5"><line x1="24" y1="56" x2="50" y2="22"/><line x1="32" y1="58" x2="58" y2="24"/></g>
-</svg>

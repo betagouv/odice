@@ -284,7 +284,7 @@ export function EtablissementsForm({
                         {MARQUE_LABELS[m]}
                       </label>
                       <div className="fr-radio-rich__pictogram">
-                        <img src={`/images/marques/${m}.svg`} alt="" />
+                        <img src={`/images/marques/${m}.png`} alt="" />
                       </div>
                     </div>
                   </div>
