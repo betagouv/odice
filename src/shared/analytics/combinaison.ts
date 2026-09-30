@@ -1,6 +1,6 @@
 // Sérialise les réponses d'un simulateur en une signature stable, utilisée comme
 // Event Name Matomo pour classer les combinaisons les plus sélectionnées.
-// L'ordre des champs est FIGÉ (= ordre des questions du formulaire) : la position
+// L'ordre des champs est FIGÉ (ordre historique des questions) : la position
 // encode la question, la valeur encode la réponse. Toute modification de l'ordre ou
 // du format fragmente les agrégats Matomo. Légende : docs/matomo-funnel.md.
 
@@ -15,7 +15,7 @@ function ouiNon(value: boolean): string {
   return value ? "oui" : "non";
 }
 
-// Ordre = questions du formulaire Abattoirs (AbattoirsForm).
+// Ordre historique des questions Abattoirs, conservé malgré la refonte du formulaire.
 export function serialiseCombinaisonAbattoirs(inputs: AbattoirsInputs): string {
   return [
     inputs.zoneSuides,
@@ -27,7 +27,7 @@ export function serialiseCombinaisonAbattoirs(inputs: AbattoirsInputs): string {
   ].join(SEPARATEUR);
 }
 
-// Ordre = questions du formulaire Autres établissements (EtablissementsForm).
+// Ordre historique des questions Autres établissements, conservé malgré la refonte du formulaire.
 export function serialiseCombinaisonEtablissements(inputs: EtablissementsInputs): string {
   return [
     inputs.zoneSuides,
