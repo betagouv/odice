@@ -34,25 +34,26 @@ export function isStatutApplicable(zoneSuides: Zone | null): boolean {
   return zoneSuides === Zone.ZRII || zoneSuides === Zone.ZRIII;
 }
 
-// Choix « ZI FS réflexe » propre à la zone de l'abattoir : même conditionnalité que ZI FS,
-// donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
-export const ZONE_ABATTOIR_ZIFS_REFLEXE = "zi-fs-reflexe";
-export type ZoneAbattoirChoix = Zone | typeof ZONE_ABATTOIR_ZIFS_REFLEXE;
+// Choix « ZI FS réflexe » (zones de l'abattoir et d'origine des porcs) : même conditionnalité
+// que ZI FS, donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
+export const ZONE_ZIFS_REFLEXE = "zi-fs-reflexe";
+export type ZoneChoix = Zone | typeof ZONE_ZIFS_REFLEXE;
 
-export const ZONE_ABATTOIR_OPTIONS: { value: ZoneAbattoirChoix; label: string }[] =
-  ZONE_ORDER.flatMap((zone) => {
+export const ZONE_OPTIONS_AVEC_REFLEXE: { value: ZoneChoix; label: string }[] = ZONE_ORDER.flatMap(
+  (zone) => {
     const option = { value: zone, label: ZONE_LABELS[zone] };
     return zone === Zone.ZIFS
       ? [
           option,
           {
-            value: ZONE_ABATTOIR_ZIFS_REFLEXE,
+            value: ZONE_ZIFS_REFLEXE,
             label: "ZI FS réflexe — Zone infectée faune sauvage réflexe",
           },
         ]
       : [option];
-  });
+  },
+);
 
-export function zoneAbattoirMoteur(choix: ZoneAbattoirChoix): Zone {
-  return choix === ZONE_ABATTOIR_ZIFS_REFLEXE ? Zone.ZIFS : choix;
+export function zoneMoteur(choix: ZoneChoix): Zone {
+  return choix === ZONE_ZIFS_REFLEXE ? Zone.ZIFS : choix;
 }

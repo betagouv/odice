@@ -8,9 +8,9 @@ import {
   STATUT_LABELS,
   STATUT_ORDER,
   STATUT_TOOLTIP,
-  ZONE_ABATTOIR_OPTIONS,
-  zoneAbattoirMoteur,
-  type ZoneAbattoirChoix,
+  ZONE_OPTIONS_AVEC_REFLEXE,
+  zoneMoteur,
+  type ZoneChoix,
   ZONE_LABELS,
   ZONE_ORDER,
   MCA_TOOLTIP,
@@ -25,9 +25,9 @@ import {
 } from "@shared/hooks/useProgressiveFields";
 
 type FormState = {
-  zoneSuides: Zone | "";
+  zoneSuides: ZoneChoix | "";
   statut: Statut | "";
-  zoneAbattoir: ZoneAbattoirChoix | "";
+  zoneAbattoir: ZoneChoix | "";
   mcaAbattoir: "oui" | "non" | "";
   zoneEtbDestinataire: Zone | "";
   mcaEtbDestinataire: "oui" | "non" | "";
@@ -49,7 +49,7 @@ const FIELDS: ProgressiveFieldConfig<FormState>[] = [
   { key: "zoneSuides" },
   {
     key: "statut",
-    isApplicable: (f) => isStatutApplicable(f.zoneSuides === "" ? null : f.zoneSuides),
+    isApplicable: (f) => isStatutApplicable(f.zoneSuides === "" ? null : zoneMoteur(f.zoneSuides)),
   },
   { key: "zoneEtbDestinataire" },
   { key: "mcaEtbDestinataire" },
@@ -69,7 +69,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
 
   // Statut requis (= bloque la validation) uniquement pour ZRII/ZRIII.
   const statutRequired = useMemo(
-    () => isStatutApplicable(form.zoneSuides === "" ? null : form.zoneSuides),
+    () => isStatutApplicable(form.zoneSuides === "" ? null : zoneMoteur(form.zoneSuides)),
     [form.zoneSuides],
   );
 
@@ -93,9 +93,9 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
     e.preventDefault();
     if (!canSubmit) return;
     onSubmit({
-      zoneSuides: form.zoneSuides as Zone,
+      zoneSuides: zoneMoteur(form.zoneSuides as ZoneChoix),
       statut: statutRequired && form.statut !== "" ? (form.statut as Statut) : null,
-      zoneAbattoir: zoneAbattoirMoteur(form.zoneAbattoir as ZoneAbattoirChoix),
+      zoneAbattoir: zoneMoteur(form.zoneAbattoir as ZoneChoix),
       mcaAbattoir: form.mcaAbattoir === "oui",
       zoneEtbDestinataire: form.zoneEtbDestinataire as Zone,
       mcaEtbDestinataire: form.mcaEtbDestinataire === "oui",
@@ -129,12 +129,12 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                 id="zone-abattoir"
                 required
                 value={form.zoneAbattoir}
-                onChange={(e) => update("zoneAbattoir", e.target.value as ZoneAbattoirChoix | "")}
+                onChange={(e) => update("zoneAbattoir", e.target.value as ZoneChoix | "")}
               >
                 <option value="" disabled>
                   Sélectionner une option
                 </option>
-                {ZONE_ABATTOIR_OPTIONS.map((option) => (
+                {ZONE_OPTIONS_AVEC_REFLEXE.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -197,14 +197,14 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                     id="zone-suides"
                     required
                     value={form.zoneSuides}
-                    onChange={(e) => update("zoneSuides", e.target.value as Zone | "")}
+                    onChange={(e) => update("zoneSuides", e.target.value as ZoneChoix | "")}
                   >
                     <option value="" disabled>
                       Sélectionner une option
                     </option>
-                    {ZONE_ORDER.map((z) => (
-                      <option key={z} value={z}>
-                        {ZONE_LABELS[z]}
+                    {ZONE_OPTIONS_AVEC_REFLEXE.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
                       </option>
                     ))}
                   </select>
