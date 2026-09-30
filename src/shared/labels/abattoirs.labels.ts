@@ -23,10 +23,11 @@ export const STATUT_LABELS: Record<Statut, string> = {
 
 export const STATUT_ORDER: Statut[] = [Statut.MrPpa, Statut.MnrPpa];
 
-// Infobulle du champ statut : un paragraphe par statut (cf. maquette refonte Abattoirs).
+// Infobulle du champ statut : une introduction puis un paragraphe par statut.
 export const STATUT_TOOLTIP: string[] = [
-  "MR-PPA = mouvements des animaux reconnus comme appliquant les dispositions réglementaires vis-à-vis de la PPA",
-  "MNR-PPA = mouvements des animaux non reconnus comme appliquant les dispositions réglementaires vis-à-vis de la PPA",
+  "Indique si le mouvement respecte les conditions réglementaires applicables à la PPA",
+  "• MR-PPA — Mouvement respectant la réglementation PPA : toutes les conditions réglementaires applicables au mouvement sont respectées.",
+  "• MNR-PPA — Mouvement ne respectant pas la réglementation PPA : au moins une des conditions réglementaires applicables au mouvement n’est pas respectée. Des règles particulières s’appliquent alors à sa destination et au devenir des produits.",
 ];
 
 // statut applicable uniquement à ZRII / ZRIII (vérifié sur l'oracle 2 744 cas).

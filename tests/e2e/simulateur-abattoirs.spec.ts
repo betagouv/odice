@@ -317,12 +317,14 @@ test.describe("Simulateur Abattoirs — infobulles", () => {
     await expect(tooltip).toHaveCount(2);
   });
 
-  test("l'infobulle du statut définit MR-PPA et MNR-PPA", async ({ page }) => {
+  test("l'infobulle du statut explique MR-PPA et MNR-PPA", async ({ page }) => {
     await ouvrirAbattoir(page);
     await remplirJusquaSuides(page, "zrii");
 
-    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /MR-PPA =/ });
-    await expect(tooltip).toContainText("MNR-PPA =");
+    const tooltip = page
+      .locator('[role="tooltip"]')
+      .filter({ hasText: /MR-PPA — Mouvement respectant/ });
+    await expect(tooltip).toContainText("MNR-PPA — Mouvement ne respectant pas");
   });
 });
 
