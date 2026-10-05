@@ -2,12 +2,11 @@
 // Affichage progressif : un seul champ au départ, chaque saisie révèle le suivant.
 // Layout : abattoir, puis 1. provenance et 2. destination, champs en 2 colonnes (cf. maquette).
 
-import { Fragment, useMemo, useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { Statut, type AbattoirsInputs } from "@engine";
 import {
   STATUT_LABELS,
   STATUT_ORDER,
-  STATUT_TOOLTIP,
   ZONE_OPTIONS_AVEC_REFLEXE,
   zoneMoteur,
   type ZoneChoix,
@@ -15,8 +14,8 @@ import {
 } from "@shared/labels/abattoirs.labels";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 import { DocumentAnimauxHint } from "@shared/components/DocumentAnimauxHint";
-import { InfoTooltip } from "@shared/components/InfoTooltip";
 import { McaInfoTooltip } from "@shared/components/McaInfoTooltip";
+import { StatutInfoTooltip } from "./StatutInfoTooltip";
 import {
   useProgressiveFields,
   type ProgressiveFieldConfig,
@@ -214,19 +213,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="statut">
                       Statut réglementaire du mouvement des animaux.
-                      <InfoTooltip>
-                        {STATUT_TOOLTIP.map((ligne, i) => (
-                          <Fragment key={ligne}>
-                            {i > 0 && (
-                              <>
-                                <br />
-                                <br />
-                              </>
-                            )}
-                            {ligne}
-                          </Fragment>
-                        ))}
-                      </InfoTooltip>
+                      <StatutInfoTooltip />
                       <DocumentAnimauxHint />
                     </label>
                     <select
