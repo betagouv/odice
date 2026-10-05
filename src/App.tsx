@@ -9,6 +9,7 @@ import { DocumentationReglementairePage } from "@features/documentation/pages/Do
 import { AideUtilisationPage } from "@features/documentation/pages/AideUtilisationPage";
 import { HistoriqueVersionsPage } from "@features/historique/pages/HistoriqueVersionsPage";
 import { ErrorFallbackPage } from "@features/error/pages/ErrorFallbackPage";
+import { NotFoundPage } from "@features/error/pages/NotFoundPage";
 import { PlanDuSitePage } from "@features/legal/pages/PlanDuSitePage";
 import { AccessibilitePage } from "@features/legal/pages/AccessibilitePage";
 import { MentionsLegalesPage } from "@features/legal/pages/MentionsLegalesPage";
@@ -34,6 +35,7 @@ function App() {
           <Route path={ROUTES.MENTIONS_LEGALES} element={<MentionsLegalesPage />} />
           <Route path={ROUTES.DONNEES_PERSONNELLES} element={<DonneesPersonnellesPage />} />
           <Route path={ROUTES.GESTION_COOKIES} element={<GestionCookiesPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </ErrorBoundary>
     </Layout>
