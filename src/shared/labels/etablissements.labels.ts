@@ -12,12 +12,7 @@ export {
   MARQUE_ORDER,
 } from "./common.labels";
 
-export {
-  MCA_TOOLTIP,
-  ZONE_OPTIONS_AVEC_REFLEXE,
-  zoneMoteur,
-  type ZoneChoix,
-} from "./common.labels";
+export { ZONE_OPTIONS_AVEC_REFLEXE, zoneMoteur, type ZoneChoix } from "./common.labels";
 
 // Périmètre des produits, rappelé en tête des sections provenance et destination (maquette).
 export const PERIMETRE_VIANDES =

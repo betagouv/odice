@@ -58,9 +58,12 @@ export const MARQUE_ORDER: Marque[] = [
   Marque.OvaleDiagonalesParalleles,
 ];
 
-// Infobulle des questions « agrément zoosanitaire MCA » (cf. maquette refonte Abattoirs).
-export const MCA_TOOLTIP =
-  "Agrément zoosanitaire « Maladie de catégorie A » délivré par l’autorité compétente (DDecPP) à certains établissements pour leur permettre de recevoir des animaux ou des produits soumis à des restrictions sanitaires liées à une maladie de catégorie A, telle que la peste porcine africaine (PPA)";
+// Infobulle des questions « agrément zoosanitaire MCA » : titre en gras puis définition (maquette).
+export const MCA_TOOLTIP = {
+  titre: "Agrément zoosanitaire spécifique « Maladie de Catégorie A » (MCA),",
+  texte:
+    "délivré par l’autorité compétente (DDecPP) aux établissements du secteur alimentaire autorisés à recevoir des animaux ou produits soumis à des restrictions de police sanitaire liées à la PPA.",
+};
 
 // Choix « ZI FS réflexe » (toutes les zones des deux simulateurs) : même conditionnalité
 // que ZI FS, donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).

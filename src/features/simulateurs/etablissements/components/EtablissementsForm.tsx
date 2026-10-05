@@ -8,7 +8,6 @@ import { Marque, Zone, type EtablissementsInputs } from "@engine";
 import {
   MARQUE_LABELS,
   MARQUE_ORDER,
-  MCA_TOOLTIP,
   PERIMETRE_VIANDES,
   ZONE_OPTIONS_AVEC_REFLEXE,
   zoneMoteur,
@@ -20,7 +19,7 @@ import {
 } from "@shared/hooks/useProgressiveFields";
 import { ROUTES } from "@shared/config/routes.config";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
-import { InfoTooltip } from "@shared/components/InfoTooltip";
+import { McaInfoTooltip } from "@shared/components/McaInfoTooltip";
 import {
   deriveTraitementObligatoire,
   isTraitementObligatoireApplicable,
@@ -176,7 +175,7 @@ export function EtablissementsForm({
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-mca-exp">
                   Êtes-vous en possession d'un agrément zoosanitaire MCA ?
-                  <InfoTooltip>{MCA_TOOLTIP}</InfoTooltip>
+                  <McaInfoTooltip />
                 </label>
                 <select
                   className="fr-select"
@@ -416,7 +415,7 @@ export function EtablissementsForm({
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="etb-mca-dest">
                       L'établissement destinataire est-il en possession d'un agrément zoosanitaire
-                      MCA ?<InfoTooltip>{MCA_TOOLTIP}</InfoTooltip>
+                      MCA ?<McaInfoTooltip />
                     </label>
                     <select
                       className="fr-select"

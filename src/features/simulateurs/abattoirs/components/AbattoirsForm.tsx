@@ -11,12 +11,12 @@ import {
   ZONE_OPTIONS_AVEC_REFLEXE,
   zoneMoteur,
   type ZoneChoix,
-  MCA_TOOLTIP,
   isStatutApplicable,
 } from "@shared/labels/abattoirs.labels";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 import { DocumentAnimauxHint } from "@shared/components/DocumentAnimauxHint";
 import { InfoTooltip } from "@shared/components/InfoTooltip";
+import { McaInfoTooltip } from "@shared/components/McaInfoTooltip";
 import {
   useProgressiveFields,
   type ProgressiveFieldConfig,
@@ -146,7 +146,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="mca-abattoir">
                   Êtes-vous en possession d'un agrément zoosanitaire MCA ?
-                  <InfoTooltip>{MCA_TOOLTIP}</InfoTooltip>
+                  <McaInfoTooltip />
                 </label>
                 <select
                   className="fr-select"
@@ -297,7 +297,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="mca-dest">
                       L'établissement destinataire est-il en possession d'un agrément zoosanitaire
-                      MCA ?<InfoTooltip>{MCA_TOOLTIP}</InfoTooltip>
+                      MCA ?<McaInfoTooltip />
                     </label>
                     <select
                       className="fr-select"
