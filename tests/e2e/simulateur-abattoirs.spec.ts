@@ -155,15 +155,18 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     await expect(page.getByText("CERTIFICATION ZOOSANITAIRE NON REQUISE")).toBeVisible();
   });
 
-  test("ZP + abattoir non MCA → AUCUNE MARQUE, mouvement interdit FR + UE", async ({ page }) => {
+  test("ZP + abattoir non MCA → FR interdit : seule la possibilité de mouvement s'affiche", async ({
+    page,
+  }) => {
     await ouvrirAbattoir(page);
     await remplir(page, { ...CAS_SAIN, zoneSuides: "zp", mcaAbattoir: "non" });
     await page.getByRole("button", { name: "Valider" }).click();
 
-    await expect(page.getByText("AUCUNE MARQUE")).toBeVisible();
-    await expect(page.getByText("MOUVEMENT INTERDIT").first()).toBeVisible();
-    // 4 badges « NON APPLICABLE » (traitement FR+UE + document FR+UE)
-    await expect(page.getByText("NON APPLICABLE").first()).toBeVisible();
+    await expect(page.getByText("MOUVEMENT INTERDIT")).toHaveCount(2);
+    await expect(page.getByRole("heading", { name: /Marque à apposer/i })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: /Traitement d'atténuation/i })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: /Document d'accompagnement/i })).toHaveCount(0);
+    await expect(page.locator(".fr-alert--info")).toHaveCount(0);
   });
 
   test("ZRIII MNR-PPA + MCA + dest non MCA → diagonales parallèles, FR autorisé UE interdit", async ({
@@ -177,6 +180,8 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     await expect(page.getByText("MOUVEMENT AUTORISÉ")).toBeVisible();
     await expect(page.getByText("MOUVEMENT INTERDIT")).toBeVisible();
     await expect(page.getByText("LPS SYSTÉMATIQUE")).toBeVisible();
+    // UE interdit : plus de ligne UE dans le traitement ni dans les documents.
+    await expect(page.getByText("UE", { exact: true })).toHaveCount(1);
   });
 });
 

@@ -26,6 +26,7 @@ import {
 import { ROUTES } from "@shared/config/routes.config";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
 import { useMatomo, MATOMO_ANNEXES } from "@shared/analytics";
+import { resultatAffichage } from "./resultatAffichage";
 
 export type SimulationOutputs = AbattoirsOutputs | EtablissementsOutputs;
 
@@ -40,6 +41,7 @@ const BLUE = { color: "var(--text-title-blue-france)" } as const;
 
 export function SimulationResult({ result, sousTitre, versionCourante }: Props) {
   const { trackEvent } = useMatomo();
+  const affichage = resultatAffichage(result);
   return (
     <div>
       <Header sousTitre={sousTitre} versionCourante={versionCourante} />
@@ -51,41 +53,51 @@ export function SimulationResult({ result, sousTitre, versionCourante }: Props) 
             <BadgeRow label="UE" badge={mouvementBadge(result.ueMouvement)} />
           </ResultBlock>
         </div>
-        <div className="fr-col-12 fr-col-md-6">
-          <ResultBlock title="Marque à apposer sur les viandes">
-            <BadgeRow label="" badge={marqueBadge(result.marque)} />
-          </ResultBlock>
-        </div>
-        <div className="fr-col-12 fr-col-md-6">
-          <ResultBlock title="Traitement d'atténuation selon la destination des viandes">
-            <BadgeRow label="France" badge={traitementBadge(result.frTraitement)} />
-            <BadgeRow label="UE" badge={traitementBadge(result.ueTraitement)} />
-          </ResultBlock>
-        </div>
-        <div className="fr-col-12 fr-col-md-6">
-          <ResultBlock title="Document d'accompagnement">
-            <BadgeRow label="France" badge={lpsBadge(result.frDocument)} />
-            <BadgeRow label="UE" badge={certificationBadge(result.ueDocument)} />
-          </ResultBlock>
-        </div>
+        {affichage.detailsFrance && (
+          <>
+            <div className="fr-col-12 fr-col-md-6">
+              <ResultBlock title="Marque à apposer sur les viandes">
+                <BadgeRow label="" badge={marqueBadge(result.marque)} />
+              </ResultBlock>
+            </div>
+            <div className="fr-col-12 fr-col-md-6">
+              <ResultBlock title="Traitement d'atténuation selon la destination des viandes">
+                <BadgeRow label="France" badge={traitementBadge(result.frTraitement)} />
+                {affichage.lignesUe && (
+                  <BadgeRow label="UE" badge={traitementBadge(result.ueTraitement)} />
+                )}
+              </ResultBlock>
+            </div>
+            <div className="fr-col-12 fr-col-md-6">
+              <ResultBlock title="Document d'accompagnement">
+                <BadgeRow label="France" badge={lpsBadge(result.frDocument)} />
+                {affichage.lignesUe && (
+                  <BadgeRow label="UE" badge={certificationBadge(result.ueDocument)} />
+                )}
+              </ResultBlock>
+            </div>
+          </>
+        )}
       </div>
 
-      <div className="fr-alert fr-alert--info fr-mt-4w">
-        <h3 className="fr-alert__title">Ne pas oublier</h3>
-        <p>
-          En contexte de PPA, des informations de traçabilité complémentaires doivent être
-          transmises au destinataire des produits.{" "}
-          <Link
-            to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackEvent(MATOMO_ANNEXES.DOCUMENTATION_REGLEMENTAIRE)}
-          >
-            Consulter la documentation réglementaire
-          </Link>
-          .
-        </p>
-      </div>
+      {affichage.detailsFrance && (
+        <div className="fr-alert fr-alert--info fr-mt-4w">
+          <h3 className="fr-alert__title">Ne pas oublier</h3>
+          <p>
+            En contexte de PPA, des informations de traçabilité complémentaires doivent être
+            transmises au destinataire des produits.{" "}
+            <Link
+              to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => trackEvent(MATOMO_ANNEXES.DOCUMENTATION_REGLEMENTAIRE)}
+            >
+              Consulter la documentation réglementaire
+            </Link>
+            .
+          </p>
+        </div>
+      )}
     </div>
   );
 }
