@@ -23,7 +23,7 @@ export function Notice({ title, children, variant = "warning" }: NoticeProps) {
       <div className="fr-container">
         <div className="fr-notice__body">
           <p className="fr-m-0">
-            <span className="fr-notice__title block!">{title}</span>
+            <span className="fr-notice__title block! fr-mb-1w">{title}</span>
             <span className="fr-notice__desc">{children}</span>
           </p>
         </div>
