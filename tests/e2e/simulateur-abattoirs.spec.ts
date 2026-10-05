@@ -277,24 +277,29 @@ test.describe("Simulateur Abattoirs — interactions post-validation", () => {
 });
 
 test.describe("Simulateur Abattoirs — affichage progressif", () => {
-  test("au démarrage, seul le premier champ est visible", async ({ page }) => {
+  test("au démarrage, seule la section abattoir est visible, en entier", async ({ page }) => {
     await ouvrirAbattoir(page);
 
     await expect(page.getByLabel(L.zoneAbattoir)).toBeVisible();
-    await expect(page.getByLabel(L.mcaAbattoir)).toHaveCount(0);
+    await expect(page.getByLabel(L.mcaAbattoir)).toBeVisible();
     await expect(page.getByLabel(L.zoneSuides)).toHaveCount(0);
   });
 
-  test("chaque saisie révèle le champ suivant un par un", async ({ page }) => {
+  test("chaque section complète révèle la suivante en entier", async ({ page }) => {
     await ouvrirAbattoir(page);
 
+    // Section abattoir incomplète : la provenance n'apparaît pas encore.
     await page.getByLabel(L.zoneAbattoir).selectOption("zone-indemne");
-    await expect(page.getByLabel(L.mcaAbattoir)).toBeVisible();
-    // Le champ d'après n'apparaît pas encore.
     await expect(page.getByLabel(L.zoneSuides)).toHaveCount(0);
 
     await page.getByLabel(L.mcaAbattoir).selectOption("oui");
     await expect(page.getByLabel(L.zoneSuides)).toBeVisible();
+    await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
+
+    // Destination : zone et MCA du destinataire apparaissent ensemble.
+    await page.getByLabel(L.zoneSuides).selectOption("zone-indemne");
+    await expect(page.getByLabel(L.zoneDest)).toBeVisible();
+    await expect(page.getByLabel(L.mcaDest)).toBeVisible();
   });
 
   test("modifier une valeur ne masque pas les champs déjà révélés", async ({ page }) => {

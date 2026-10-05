@@ -1,5 +1,5 @@
 // Formulaire de saisie du simulateur Abattoirs.
-// Affichage progressif : un seul champ au départ, chaque saisie révèle le suivant.
+// Affichage progressif par section : chaque partie s'affiche une fois la précédente complète.
 // Layout : abattoir, puis 1. provenance et 2. destination, champs en 2 colonnes (cf. maquette).
 
 import { useMemo, useState, type FormEvent } from "react";
@@ -39,17 +39,19 @@ const EMPTY_FORM: FormState = {
   mcaEtbDestinataire: "",
 };
 
-// Séquence de révélation. Le statut ne s'insère que pour les zones ZRII/ZRIII.
+// Révélation par section (spec) : abattoir, provenance, destination. Le statut
+// ne s'ajoute à la provenance que pour les zones ZRII/ZRIII.
 const FIELDS: ProgressiveFieldConfig<FormState>[] = [
-  { key: "zoneAbattoir" },
-  { key: "mcaAbattoir" },
-  { key: "zoneSuides" },
+  { key: "zoneAbattoir", section: "abattoir" },
+  { key: "mcaAbattoir", section: "abattoir" },
+  { key: "zoneSuides", section: "provenance" },
   {
     key: "statut",
+    section: "provenance",
     isApplicable: (f) => isStatutApplicable(f.zoneSuides === "" ? null : zoneMoteur(f.zoneSuides)),
   },
-  { key: "zoneEtbDestinataire" },
-  { key: "mcaEtbDestinataire" },
+  { key: "zoneEtbDestinataire", section: "destination" },
+  { key: "mcaEtbDestinataire", section: "destination" },
 ];
 
 type Props = {
