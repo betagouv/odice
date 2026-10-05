@@ -1,7 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { Certification, LPS, Marque, Mouvement, Traitement } from "@engine";
 import type { SimulationOutputs } from "./SimulationResult";
-import { resultatAffichage, ueInterditSansTraitement } from "./resultatAffichage";
+import {
+  mentionTraitement,
+  resultatAffichage,
+  ueInterditSansTraitement,
+} from "./resultatAffichage";
 
 const AUTORISE_PARTOUT: SimulationOutputs = {
   marque: Marque.Ovale,
@@ -48,5 +52,27 @@ describe("ueInterditSansTraitement", () => {
 
   it("faux quand le mouvement UE est autorisé", () => {
     expect(ueInterditSansTraitement(AUTORISE_PARTOUT)).toBe(false);
+  });
+});
+
+describe("mentionTraitement", () => {
+  it("obligatoire dès que le traitement FR l'est", () => {
+    const result = {
+      ...AUTORISE_PARTOUT,
+      frTraitement: Traitement.Obligatoire,
+      ueTraitement: null,
+    };
+    expect(mentionTraitement(result)).toBe("obligatoire");
+  });
+
+  it("obligatoire uniquement pour l'UE quand seul le traitement UE l'est", () => {
+    const result = { ...AUTORISE_PARTOUT, ueTraitement: Traitement.Obligatoire };
+    expect(mentionTraitement(result)).toBe(
+      "obligatoire uniquement pour les échanges intracommunautaires",
+    );
+  });
+
+  it("non obligatoire sinon", () => {
+    expect(mentionTraitement(AUTORISE_PARTOUT)).toBe("non obligatoire");
   });
 });

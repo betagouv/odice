@@ -34,10 +34,15 @@ import { TYPE_ETABLISSEMENT_OPTIONS, familleFor, nomEtablissementFor } from "./t
 export function SimulateursIndexPage() {
   const [type, setType] = useState<string>("");
   const famille = familleFor(type);
-  const [abattoirsResult, setAbattoirsResult] = useState<AbattoirsOutputs | null>(null);
-  const [etablissementsResult, setEtablissementsResult] = useState<EtablissementsOutputs | null>(
-    null,
-  );
+  // Saisies conservées avec le résultat : le bandeau des mentions les reprend.
+  const [abattoirsResult, setAbattoirsResult] = useState<{
+    inputs: AbattoirsInputs;
+    result: AbattoirsOutputs;
+  } | null>(null);
+  const [etablissementsResult, setEtablissementsResult] = useState<{
+    inputs: EtablissementsInputs;
+    result: EtablissementsOutputs;
+  } | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   // Horodatage de la 1ère saisie (1er champ du formulaire), pour mesurer la durée jusqu'à la validation.
   const debutSaisieRef = useRef<number | null>(null);
@@ -75,7 +80,7 @@ export function SimulateursIndexPage() {
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.COMBINAISON), {
       name: serialiseCombinaisonAbattoirs(inputs),
     });
-    setAbattoirsResult(evaluateAbattoir(inputs));
+    setAbattoirsResult({ inputs, result: evaluateAbattoir(inputs) });
     trackEvent(
       matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.RESULTAT),
       undefined,
@@ -89,7 +94,7 @@ export function SimulateursIndexPage() {
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.COMBINAISON), {
       name: serialiseCombinaisonEtablissements(inputs),
     });
-    setEtablissementsResult(evaluateEtablissements(inputs));
+    setEtablissementsResult({ inputs, result: evaluateEtablissements(inputs) });
     trackEvent(
       matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.RESULTAT),
       undefined,
@@ -180,7 +185,7 @@ export function SimulateursIndexPage() {
               ref={resultRef}
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"
             >
-              <AbattoirsResult result={abattoirsResult} />
+              <AbattoirsResult inputs={abattoirsResult.inputs} result={abattoirsResult.result} />
             </div>
           )}
 
@@ -189,7 +194,10 @@ export function SimulateursIndexPage() {
               ref={resultRef}
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"
             >
-              <EtablissementsResult result={etablissementsResult} />
+              <EtablissementsResult
+                inputs={etablissementsResult.inputs}
+                result={etablissementsResult.result}
+              />
             </div>
           )}
         </div>

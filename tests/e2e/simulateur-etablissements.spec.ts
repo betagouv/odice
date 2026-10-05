@@ -87,6 +87,12 @@ test.describe("Simulateur Autres Établissements", () => {
     await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toBeVisible();
     await expect(page.getByText("OVALE", { exact: true })).toBeVisible();
     await expect(page.getByText("MOUVEMENT AUTORISÉ").first()).toBeVisible();
+
+    // Mentions : zone d'origine et traitement, sans statut (non demandé ici).
+    const mentions = page.locator(".fr-alert--info");
+    await expect(mentions).toContainText("Zone indemne");
+    await expect(mentions).toContainText("Traitement d'atténuation : non obligatoire");
+    await expect(mentions).not.toContainText("Statut du mouvement");
   });
 
   test("modifier un champ après Valider masque le panneau de résultats", async ({ page }) => {

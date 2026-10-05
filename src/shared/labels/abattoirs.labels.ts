@@ -25,6 +25,12 @@ export const STATUT_LABELS: Record<Statut, string> = {
 
 export const STATUT_ORDER: Statut[] = [Statut.MrPpa, Statut.MnrPpa];
 
+// Sigle seul, repris dans les mentions des documents commerciaux.
+export const STATUT_SIGLES: Record<Statut, string> = {
+  [Statut.MrPpa]: "MR-PPA",
+  [Statut.MnrPpa]: "MNR-PPA",
+};
+
 // Infobulle du champ statut : introduction, puis intitulé en gras et définition par statut.
 export const STATUT_TOOLTIP = {
   intro: "Indique si le mouvement respecte les conditions réglementaires applicables à la PPA.",

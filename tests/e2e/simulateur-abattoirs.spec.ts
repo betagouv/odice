@@ -180,6 +180,13 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     await expect(page.locator('img[src="/images/marques/ovale-barree.png"]')).toBeVisible();
     await expect(page.getByText("MOUVEMENT INTERDIT SANS TRAITEMENT D'ATTÉNUATION")).toBeVisible();
     await expect(page.getByText("LAISSEZ-PASSER SANITAIRE PERMANENT")).toBeVisible();
+
+    const mentions = page.locator(".fr-alert--info");
+    await expect(mentions).toContainText("Mentions à reporter sur vos documents commerciaux");
+    await expect(mentions).toContainText("Zone de protection");
+    await expect(mentions).toContainText("Traitement d'atténuation : obligatoire");
+    // Zone ZP : pas de statut demandé, donc pas de ligne statut.
+    await expect(mentions).not.toContainText("Statut du mouvement");
   });
 
   test("ZRIII MNR-PPA + MCA + dest non MCA → diagonales parallèles, FR autorisé UE interdit", async ({
@@ -193,6 +200,9 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     await expect(page.getByText("MOUVEMENT AUTORISÉ")).toBeVisible();
     await expect(page.getByText("MOUVEMENT INTERDIT")).toBeVisible();
     await expect(page.getByText("LAISSEZ-PASSER SANITAIRE SYSTÉMATIQUE")).toBeVisible();
+    await expect(page.locator(".fr-alert--info")).toContainText(
+      "Statut du mouvement des animaux dont sont issues les viandes : MNR-PPA",
+    );
     // UE interdit : plus de ligne UE dans le traitement ni dans les documents.
     await expect(page.getByText("UE", { exact: true })).toHaveCount(1);
   });

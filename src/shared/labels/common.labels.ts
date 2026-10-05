@@ -45,6 +45,13 @@ export const CERTIFICATION_LABELS: Record<Certification, string> = {
   [Certification.NonRequise]: "Certificat zoosanitaire non requis",
 };
 
+// Libellé sans sigle (« Zone réglementée II »), pour les mentions des documents commerciaux.
+export function zoneLibelleLong(zone: Zone): string {
+  const libelle = ZONE_LABELS[zone];
+  const separateur = libelle.indexOf(" — ");
+  return separateur === -1 ? libelle : libelle.slice(separateur + 3);
+}
+
 // Ordre d'affichage des zones dans les dropdowns (du moins au plus restrictif).
 export const ZONE_ORDER: Zone[] = [
   Zone.ZoneIndemne,

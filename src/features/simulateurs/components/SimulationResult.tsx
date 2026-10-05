@@ -16,6 +16,7 @@ import {
   type AbattoirsOutputs,
   type EtablissementsOutputs,
   type SimulateurVersion,
+  type Zone,
 } from "@engine";
 import {
   CERTIFICATION_LABELS,
@@ -24,16 +25,27 @@ import {
   MOUVEMENT_INTERDIT_SANS_TRAITEMENT_LABEL,
   MOUVEMENT_LABELS,
   TRAITEMENT_LABELS,
+  zoneLibelleLong,
 } from "@shared/labels/common.labels";
 import { ROUTES } from "@shared/config/routes.config";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
-import { useMatomo, MATOMO_ANNEXES } from "@shared/analytics";
-import { resultatAffichage, ueInterditSansTraitement } from "./resultatAffichage";
+import {
+  mentionTraitement,
+  resultatAffichage,
+  ueInterditSansTraitement,
+} from "./resultatAffichage";
 
 export type SimulationOutputs = AbattoirsOutputs | EtablissementsOutputs;
 
+// Saisies reprises dans le bandeau des mentions ; statut null si non demandé.
+export type SimulationMentions = {
+  zoneSuides: Zone;
+  statut: string | null;
+};
+
 type Props = {
   result: SimulationOutputs;
+  mentions: SimulationMentions;
   // Parcours affiché sous le titre (« Abattoir > autre établissement… »).
   sousTitre: string;
   versionCourante: SimulateurVersion;
@@ -41,8 +53,7 @@ type Props = {
 
 const BLUE = { color: "var(--text-title-blue-france)" } as const;
 
-export function SimulationResult({ result, sousTitre, versionCourante }: Props) {
-  const { trackEvent } = useMatomo();
+export function SimulationResult({ result, mentions, sousTitre, versionCourante }: Props) {
   const affichage = resultatAffichage(result);
   return (
     <div>
@@ -84,19 +95,19 @@ export function SimulationResult({ result, sousTitre, versionCourante }: Props) 
 
       {affichage.detailsFrance && (
         <div className="fr-alert fr-alert--info fr-mt-4w">
-          <h3 className="fr-alert__title">Ne pas oublier</h3>
-          <p>
-            En contexte de PPA, des informations de traçabilité complémentaires doivent être
-            transmises au destinataire des produits.{" "}
-            <Link
-              to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackEvent(MATOMO_ANNEXES.DOCUMENTATION_REGLEMENTAIRE)}
-            >
-              Consulter la documentation réglementaire
-            </Link>
-            .
+          <h3 className="fr-alert__title">Mentions à reporter sur vos documents commerciaux :</h3>
+          <p className="fr-mb-0">
+            Zone de provenance des animaux dont sont issues les viandes :{" "}
+            <strong>{zoneLibelleLong(mentions.zoneSuides)}</strong>
+          </p>
+          {mentions.statut !== null && (
+            <p className="fr-mb-0">
+              Statut du mouvement des animaux dont sont issues les viandes :{" "}
+              <strong>{mentions.statut}</strong>
+            </p>
+          )}
+          <p className="fr-mb-0">
+            Traitement d'atténuation : <strong>{mentionTraitement(result)}</strong>
           </p>
         </div>
       )}

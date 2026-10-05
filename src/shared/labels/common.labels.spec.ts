@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { Zone } from "@engine";
-import { ZONE_OPTIONS_AVEC_REFLEXE, ZONE_ZIFS_REFLEXE, zoneMoteur } from "./common.labels";
+import {
+  ZONE_OPTIONS_AVEC_REFLEXE,
+  ZONE_ZIFS_REFLEXE,
+  zoneLibelleLong,
+  zoneMoteur,
+} from "./common.labels";
 import { isStatutApplicable } from "./abattoirs.labels";
 
 describe("zones des simulateurs — option ZI FS réflexe", () => {
@@ -21,5 +26,15 @@ describe("zones des simulateurs — option ZI FS réflexe", () => {
 
   it("n'active pas le statut (réservé à ZRII / ZRIII)", () => {
     expect(isStatutApplicable(zoneMoteur(ZONE_ZIFS_REFLEXE))).toBe(false);
+  });
+});
+
+describe("zoneLibelleLong", () => {
+  it("retire le sigle d'une zone réglementée", () => {
+    expect(zoneLibelleLong(Zone.ZRII)).toBe("Zone réglementée II");
+  });
+
+  it("laisse la zone indemne telle quelle", () => {
+    expect(zoneLibelleLong(Zone.ZoneIndemne)).toBe("Zone indemne");
   });
 });
