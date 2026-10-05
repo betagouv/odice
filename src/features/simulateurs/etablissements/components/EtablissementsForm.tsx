@@ -1,5 +1,5 @@
 // Formulaire de saisie du simulateur Autres Établissements.
-// Affichage progressif : un seul champ au départ, chaque saisie révèle le suivant.
+// Affichage progressif par section : chaque partie s'affiche une fois la précédente complète.
 // Layout : votre établissement, puis 1. provenance et 2. destination (cf. maquette).
 
 import { useState, type FormEvent } from "react";
@@ -53,25 +53,28 @@ const EMPTY_FORM: FormState = {
   mcaDestinataire: "",
 };
 
-// Séquence de révélation des 9 champs. Les deux champs "traitement obligatoire"
-// sont masqués selon la zone d'origine (R2) et la réponse FR (R1). Voir traitementFields.ts.
+// Révélation par section (spec) : votre établissement, provenance, destination.
+// Les deux champs "traitement obligatoire" sont masqués selon la zone d'origine (R2)
+// et la réponse FR (R1). Voir traitementFields.ts.
 const FIELDS: ProgressiveFieldConfig<FormState>[] = [
-  { key: "zoneExpediteur" },
-  { key: "mcaExpediteur" },
-  { key: "zoneSuides" },
-  { key: "marqueViandes" },
+  { key: "zoneExpediteur", section: "etablissement" },
+  { key: "mcaExpediteur", section: "etablissement" },
+  { key: "zoneSuides", section: "provenance" },
+  { key: "marqueViandes", section: "provenance" },
   {
     key: "traitementObligatoireFr",
+    section: "provenance",
     isApplicable: (f) => isTraitementObligatoireApplicable(zoneOrNull(f.zoneSuides)),
   },
   {
     key: "traitementObligatoireUe",
+    section: "provenance",
     isApplicable: (f) =>
       isTraitementUeApplicable(zoneOrNull(f.zoneSuides), f.traitementObligatoireFr),
   },
-  { key: "traitementRealise" },
-  { key: "zoneDestinataire" },
-  { key: "mcaDestinataire" },
+  { key: "traitementRealise", section: "provenance" },
+  { key: "zoneDestinataire", section: "destination" },
+  { key: "mcaDestinataire", section: "destination" },
 ];
 
 type Props = {

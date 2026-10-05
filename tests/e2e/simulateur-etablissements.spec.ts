@@ -109,24 +109,31 @@ test.describe("Simulateur Autres Établissements", () => {
 });
 
 test.describe("Simulateur Autres Établissements — affichage progressif", () => {
-  test("au démarrage, seul le premier champ est visible", async ({ page }) => {
+  test("au démarrage, seule la section établissement est visible, en entier", async ({ page }) => {
     await ouvrirAtelier(page);
 
     await expect(page.getByLabel(L.zoneEtb)).toBeVisible();
-    await expect(page.getByLabel(L.mcaEtb)).toHaveCount(0);
+    await expect(page.getByLabel(L.mcaEtb)).toBeVisible();
     await expect(page.getByLabel(L.zoneSuides)).toHaveCount(0);
   });
 
-  test("chaque saisie révèle le champ suivant un par un", async ({ page }) => {
+  test("chaque section complète révèle la suivante en entier", async ({ page }) => {
     await ouvrirAtelier(page);
 
-    // Zone réglementée : le champ "traitement obligatoire national" s'applique.
+    // Zone réglementée : toute la provenance s'affiche, traitements compris.
     await remplirJusquaSuides(page, "zp");
     await expect(page.getByRole("group", { name: L.marque })).toBeVisible();
-    await expect(page.getByLabel(L.traitementFr)).toHaveCount(0);
+    await expect(page.getByLabel(L.traitementFr)).toBeVisible();
+    await expect(page.getByLabel(L.traitementRealise)).toBeVisible();
+    await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
 
     await choisirMarque(page, "ovale");
-    await expect(page.getByLabel(L.traitementFr)).toBeVisible();
+    await page.getByLabel(L.traitementFr).selectOption("oui");
+    await page.getByLabel(L.traitementRealise).selectOption("non");
+
+    // Destination : zone et MCA du destinataire apparaissent ensemble.
+    await expect(page.getByLabel(L.zoneDest)).toBeVisible();
+    await expect(page.getByLabel(L.mcaDest)).toBeVisible();
   });
 
   test("Réinitialiser vide les champs mais les garde visibles", async ({ page }) => {
