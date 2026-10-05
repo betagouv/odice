@@ -96,7 +96,7 @@ export function SimulationResult({ result, mentions, sousTitre, versionCourante 
 
       {affichage.detailsFrance && (
         <div className="fr-alert fr-alert--info fr-mt-4w">
-          <h3 className="fr-alert__title">Mentions à reporter sur vos documents commerciaux :</h3>
+          <h3 className="fr-alert__title">Mentions à reporter sur les documents commerciaux :</h3>
           <p className="fr-mb-0">
             Zone de provenance des animaux dont sont issues les viandes :{" "}
             <strong>{zoneLibelleLong(mentions.zoneSuides)}</strong>

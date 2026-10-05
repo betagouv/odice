@@ -182,7 +182,7 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     await expect(page.getByText("LAISSEZ-PASSER SANITAIRE PERMANENT")).toBeVisible();
 
     const mentions = page.locator(".fr-alert--info");
-    await expect(mentions).toContainText("Mentions à reporter sur vos documents commerciaux");
+    await expect(mentions).toContainText("Mentions à reporter sur les documents commerciaux");
     await expect(mentions).toContainText("Zone de protection");
     await expect(mentions).toContainText(
       "Traitement d'atténuation obligatoire pour une mise sur le marché sur le territoire national et pour les échanges intracommunautaires",
