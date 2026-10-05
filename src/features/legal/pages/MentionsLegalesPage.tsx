@@ -5,7 +5,7 @@ import { PageContainer } from "@shared/components/PageContainer";
 import { PageTitle } from "@shared/components/PageTitle";
 
 // TODO: confirmer avant mise en ligne l'entité éditrice exacte, le directeur de la
-// publication et les coordonnées de contact (cf. équipe ODICE / DGAL).
+// publication et les coordonnées de contact (cf. équipe Odice / DGAL).
 export function MentionsLegalesPage() {
   return (
     <PageContainer>
@@ -21,7 +21,7 @@ export function MentionsLegalesPage() {
 
           <h2>Éditeur</h2>
           <p>
-            ODICE est édité par la Direction générale de l'alimentation (DGAL) du ministère de
+            Odice est édité par la Direction générale de l'alimentation (DGAL) du ministère de
             l'Agriculture et de la Souveraineté alimentaire, 251 rue de Vaugirard, 75732 Paris Cedex
             15.
           </p>
@@ -41,7 +41,7 @@ export function MentionsLegalesPage() {
 
           <h2>Contact</h2>
           <p>
-            Pour toute question relative au service, vous pouvez écrire à l'équipe ODICE via les
+            Pour toute question relative au service, vous pouvez écrire à l'équipe Odice via les
             coordonnées indiquées sur le site du ministère de l'Agriculture et de la Souveraineté
             alimentaire.
           </p>

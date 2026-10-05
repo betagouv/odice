@@ -1,4 +1,4 @@
-// API publique du moteur ODICE.
+// API publique du moteur Odice.
 
 export * from "./shared";
 export * from "./abattoirs";

@@ -9,7 +9,7 @@ export function HomePage() {
     <>
       <PageTitle>Accueil</PageTitle>
       <PageContainer>
-        <h1 className="fr-mt-4w">Bienvenue sur Odicé</h1>
+        <h1 className="fr-mt-4w">Bienvenue sur Odice</h1>
         <hr className="fr-mt-2w fr-mb-4w" />
 
         {/* Section 1 — Aide à la décision : texte à gauche, image à droite, CTA simulation */}
@@ -25,7 +25,7 @@ export function HomePage() {
             </p>
             <p>
               <strong>
-                Odicé est un simulateur conçu pour faciliter l'accès à ces règles et accompagner les
+                Odice est un simulateur conçu pour faciliter l'accès à ces règles et accompagner les
                 acteurs concernés dans leur mise en œuvre.
               </strong>{" "}
               En décrivant leur situation, les utilisateurs peuvent identifier les dispositions
@@ -33,7 +33,7 @@ export function HomePage() {
               sanitaire.
             </p>
             <p>
-              En favorisant une interprétation homogène de la réglementation, Odicé contribue à
+              En favorisant une interprétation homogène de la réglementation, Odice contribue à
               renforcer la prévention, la gestion et la maîtrise des risques en santé animale.
             </p>
             <Link to={ROUTES.SIMULATEURS} className="fr-btn fr-mt-2w">
@@ -85,7 +85,7 @@ export function HomePage() {
               maîtrise du risque sanitaire et continuité des activités économiques.
             </p>
             <p className="fr-mb-0">
-              C'est pourquoi Odicé propose, dans un premier temps, un parcours dédié au devenir des
+              C'est pourquoi Odice propose, dans un premier temps, un parcours dédié au devenir des
               produits carnés en contexte de peste porcine africaine, afin d'accompagner les acteurs
               dans l'application des règles sanitaires associées.
             </p>
@@ -114,7 +114,7 @@ export function HomePage() {
             </p>
             <p className="fr-mb-0">
               La prévention est une responsabilité collective. En contribuant à une meilleure
-              compréhension des mesures applicables en situation de crise sanitaire, Odicé participe
+              compréhension des mesures applicables en situation de crise sanitaire, Odice participe
               à la diffusion d'une culture commune de la biosécurité et à la protection durable de
               la santé animale.
             </p>

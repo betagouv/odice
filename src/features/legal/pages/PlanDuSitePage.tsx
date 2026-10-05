@@ -14,7 +14,7 @@ export function PlanDuSitePage() {
         <div className="fr-col-12 fr-col-md-8">
           <h1>Plan du site</h1>
           <p className="fr-text--lead">
-            Retrouvez l'ensemble des pages du site Odicé, organisées par thématique.
+            Retrouvez l'ensemble des pages du site Odice, organisées par thématique.
           </p>
 
           <h2>Pages principales</h2>

@@ -1,6 +1,6 @@
 # Simulateur Abattoirs — Documentation métier
 
-> Documentation de référence pour les règles métier du simulateur Abattoirs d'ODICE.
+> Documentation de référence pour les règles métier du simulateur Abattoirs d'Odice.
 > Toutes les règles décrites ci-dessous ont été vérifiées sur les 2 744 combinaisons
 > du fichier `20260512_Test_formules.xlsx` (couverture 100 %).
 

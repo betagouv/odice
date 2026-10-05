@@ -16,13 +16,13 @@ export function GestionCookiesPage() {
         <div className="fr-col-12 fr-col-md-8">
           <h1>Gestion des cookies</h1>
           <p className="fr-text--lead">
-            ODICE ne dépose aucun cookie de suivi ni traceur publicitaire. Aucune bannière de
+            Odice ne dépose aucun cookie de suivi ni traceur publicitaire. Aucune bannière de
             consentement n'est donc nécessaire.
           </p>
 
           <h2>Cookies déposés sur ce site</h2>
           <p>
-            ODICE est une application sans compte ni authentification. Elle ne dépose aucun cookie
+            Odice est une application sans compte ni authentification. Elle ne dépose aucun cookie
             publicitaire, ni traceur tiers, ni cookie de mesure d'audience.
           </p>
 

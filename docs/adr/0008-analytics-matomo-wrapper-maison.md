@@ -5,7 +5,7 @@
 
 ## Contexte
 
-ODICE doit mesurer son audience (pages vues, parcours dans les simulateurs) avec Matomo, solution déjà acceptée et hébergée côté Beta.gouv (RGPD natif). Une intégration de référence existe sur un projet Next.js de l'équipe, basée sur `@socialgouv/matomo-next` — package **spécifique à Next.js** (couplé au routeur Next), donc inutilisable tel quel sur la stack ODICE (React 19 + Vite + React Router).
+Odice doit mesurer son audience (pages vues, parcours dans les simulateurs) avec Matomo, solution déjà acceptée et hébergée côté Beta.gouv (RGPD natif). Une intégration de référence existe sur un projet Next.js de l'équipe, basée sur `@socialgouv/matomo-next` — package **spécifique à Next.js** (couplé au routeur Next), donc inutilisable tel quel sur la stack Odice (React 19 + Vite + React Router).
 
 Il faut donc reproduire l'architecture (validation d'env, provider, hook typé, constantes d'events) en l'adaptant à React/Vite. La question ouverte : comment alimenter `window._paq` — via une lib React générique ou via un petit wrapper maison.
 

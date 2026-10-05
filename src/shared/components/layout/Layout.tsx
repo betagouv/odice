@@ -31,7 +31,7 @@ export function Layout({ children }: LayoutProps) {
                     <img
                       className="fr-responsive-img"
                       src="/logo/logo.png"
-                      alt="Odicé"
+                      alt="Odice"
                       style={{ maxWidth: "5rem" }}
                     />
                   </div>
@@ -49,9 +49,9 @@ export function Layout({ children }: LayoutProps) {
                   </div>
                 </div>
                 <div className="fr-header__service">
-                  <Link to={ROUTES.HOME} title="Accueil - Odicé">
+                  <Link to={ROUTES.HOME} title="Accueil - Odice">
                     <p className="fr-header__service-title">
-                      Odicé{" "}
+                      Odice{" "}
                       <span className="fr-badge fr-badge--sm fr-badge--green-emeraude fr-ml-1w">
                         BETA
                       </span>
@@ -123,7 +123,7 @@ export function Layout({ children }: LayoutProps) {
             </div>
             <div className="fr-footer__content">
               <p className="fr-footer__content-desc">
-                Odicé est un outil d’aide à la décision à destination des professionnels des
+                Odice est un outil d’aide à la décision à destination des professionnels des
                 abattoirs et des établissements de transformation du secteur alimentaire, ainsi que
                 des agents en DDPP.
               </p>

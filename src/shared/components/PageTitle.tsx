@@ -4,5 +4,5 @@
 type Props = { children: string };
 
 export function PageTitle({ children }: Props) {
-  return <title>{`${children} — ODICE`}</title>;
+  return <title>{`${children} — Odice`}</title>;
 }
