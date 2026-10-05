@@ -213,7 +213,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                 <div className="fr-col-12 fr-col-md-6">
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="statut">
-                      Statut réglementaire des mouvements des animaux.
+                      Statut réglementaire du mouvement des animaux.
                       <InfoTooltip>
                         {STATUT_TOOLTIP.map((ligne, i) => (
                           <Fragment key={ligne}>
