@@ -9,7 +9,7 @@ Les deux simulateurs avaient chacun leur panneau de résultats (`AbattoirsResult
 
 - de masquer les sorties sans objet : si le mouvement France est interdit, n'afficher que la possibilité de mouvement ; si le mouvement UE est interdit, retirer les lignes UE du traitement et du document ;
 - une nouvelle nomenclature de badges (laissez-passer sanitaire en toutes lettres, « Mouvement interdit sans traitement d'atténuation » pour l'UE quand la marque est une ovale barrée, visuel de la marque) ;
-- un bandeau « Mentions à reporter sur vos documents commerciaux » reprenant des saisies (zone d'origine, statut) en plus des sorties.
+- un bandeau « Mentions à reporter sur les documents commerciaux » reprenant des saisies (zone d'origine, statut) en plus des sorties.
 
 ## Décision
 
@@ -17,6 +17,7 @@ Les deux simulateurs avaient chacun leur panneau de résultats (`AbattoirsResult
 
 - [`SimulationResult.tsx`](../../src/features/simulateurs/components/SimulationResult.tsx) : rendu commun, paramétré par le sous-titre, la version réglementaire et les mentions. `AbattoirsResult` et `EtablissementsResult` deviennent de simples adaptateurs (sous-titre, version, saisies).
 - [`resultatAffichage.ts`](../../src/features/simulateurs/components/resultatAffichage.ts) : `resultatAffichage` (blocs visibles), `ueInterditSansTraitement` (ovale barrée + UE interdit), `mentionTraitement` (texte du bandeau).
+- Mention de traitement du bandeau (spec « bandeau bleu ») : FR obligatoire + UE interdit → « obligatoire pour une mise sur le marché sur le territoire national » ; FR obligatoire + UE interdit sans traitement → « … et pour les échanges intracommunautaires » ; FR non obligatoire + UE interdit sans traitement → « obligatoire uniquement pour les échanges intracommunautaires » ; tout autre cas → pas de ligne traitement. La ligne statut n'existe que pour le simulateur Abattoirs.
 - Libellés de sortie dans [`common.labels.ts`](../../src/shared/labels/common.labels.ts) ; les valeurs du moteur restent inchangées.
 - Badges DSFR de statut sans icône (`fr-badge--success|error|info fr-badge--no-icon`), conformes aux couleurs de la nomenclature.
 - La page conserve les saisies validées avec le résultat, pour alimenter le bandeau des mentions.
