@@ -10,11 +10,10 @@ describe("AvertissementNotice", () => {
 
   it("précise que les dérogations relèvent de la DDecPP", () => {
     render(<AvertissementNotice />);
+    // Les deux points clés sont mis en gras (maquette).
     expect(
-      screen.getByText(/soumises à l'appréciation de la direction départementale/),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/même lorsque celui-ci entre dans le cadre d'une dérogation/),
-    ).toBeInTheDocument();
+      screen.getByText(/soumises à l'appréciation de la direction départementale/).tagName,
+    ).toBe("STRONG");
+    expect(screen.getByText("interdire le mouvement").tagName).toBe("STRONG");
   });
 });

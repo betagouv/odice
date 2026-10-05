@@ -19,10 +19,14 @@ export function AvertissementNotice() {
       <br />
       <br />
       Les possibilités de dérogation aux interdictions de mouvements présentées dans les résultats
-      d'Odice sont soumises à l'appréciation de la direction départementale en charge de la
-      protection des populations (DDecPP) compétente. La DDecPP peut, au regard de la situation
-      sanitaire et de l'analyse de risques réalisée, interdire le mouvement, même lorsque celui-ci
-      entre dans le cadre d'une dérogation réglementaire.
+      d'Odice{" "}
+      <strong>
+        sont soumises à l'appréciation de la direction départementale en charge de la protection des
+        populations (DDecPP) compétente
+      </strong>
+      . La DDecPP peut, au regard de la situation sanitaire et de l'analyse de risques réalisée,{" "}
+      <strong>interdire le mouvement</strong>, même lorsque celui-ci entre dans le cadre d'une
+      dérogation réglementaire.
     </Notice>
   );
 }
