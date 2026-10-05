@@ -21,12 +21,14 @@ import {
   CERTIFICATION_LABELS,
   LPS_LABELS,
   MARQUE_LABELS,
+  MOUVEMENT_INTERDIT_SANS_TRAITEMENT_LABEL,
   MOUVEMENT_LABELS,
+  TRAITEMENT_LABELS,
 } from "@shared/labels/common.labels";
 import { ROUTES } from "@shared/config/routes.config";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
 import { useMatomo, MATOMO_ANNEXES } from "@shared/analytics";
-import { resultatAffichage } from "./resultatAffichage";
+import { resultatAffichage, ueInterditSansTraitement } from "./resultatAffichage";
 
 export type SimulationOutputs = AbattoirsOutputs | EtablissementsOutputs;
 
@@ -50,14 +52,14 @@ export function SimulationResult({ result, sousTitre, versionCourante }: Props) 
         <div className="fr-col-12 fr-col-md-6">
           <ResultBlock title="Possibilité de mouvement">
             <BadgeRow label="France" badge={mouvementBadge(result.frMouvement)} />
-            <BadgeRow label="UE" badge={mouvementBadge(result.ueMouvement)} />
+            <BadgeRow label="UE" badge={mouvementUeBadge(result)} />
           </ResultBlock>
         </div>
         {affichage.detailsFrance && (
           <>
             <div className="fr-col-12 fr-col-md-6">
               <ResultBlock title="Marque à apposer sur les viandes">
-                <BadgeRow label="" badge={marqueBadge(result.marque)} />
+                <MarqueRow marque={result.marque} />
               </ResultBlock>
             </div>
             <div className="fr-col-12 fr-col-md-6">
@@ -148,62 +150,66 @@ function ResultBlock({ title, children }: { title: string; children: ReactNode }
 }
 
 type BadgeSpec = { label: string; variant: BadgeVariant };
-// Variants d'accent DSFR (badges sans icône, contrairement aux variants
-// status fr-badge--success/error/warning qui ajoutent une icône).
-type BadgeVariant = "green-emeraude" | "pink-tuile" | "blue-cumulus" | "beige-gris-galet";
+// Statuts DSFR sans icône (nomenclature maquette : vert, rouge, bleu).
+type BadgeVariant = "success" | "error" | "info";
 
-function BadgeRow({ label, badge }: { label: string; badge: BadgeSpec }) {
+function Badge({ badge }: { badge: BadgeSpec }) {
+  return (
+    <span className={`fr-badge fr-badge--${badge.variant} fr-badge--no-icon`}>{badge.label}</span>
+  );
+}
+
+// Valeur null : sortie sans objet, ligne non affichée.
+function BadgeRow({ label, badge }: { label: string; badge: BadgeSpec | null }) {
+  if (badge === null) return null;
   return (
     <div className="fr-grid-row fr-grid-row--middle fr-mb-1w">
-      {label !== "" && (
-        <div className="fr-col-3">
-          <span className="fr-text--sm fr-text--bold">{label}</span>
-        </div>
-      )}
-      <div className={label !== "" ? "fr-col-9" : "fr-col-12"}>
-        <span className={`fr-badge fr-badge--${badge.variant}`}>{badge.label}</span>
+      <div className="fr-col-3">
+        <span className="fr-text--sm fr-text--bold">{label}</span>
       </div>
+      <div className="fr-col-9">
+        <Badge badge={badge} />
+      </div>
+    </div>
+  );
+}
+
+function MarqueRow({ marque }: { marque: Marque | null }) {
+  if (marque === null) return null;
+  return (
+    <div className="flex items-center gap-4">
+      <img src={`/images/marques/${marque}.png`} alt="" className="h-14 w-auto" />
+      <Badge badge={{ label: MARQUE_LABELS[marque].toUpperCase(), variant: "info" }} />
     </div>
   );
 }
 
 function mouvementBadge(value: Mouvement): BadgeSpec {
   return value === Mouvement.Autorise
-    ? { label: MOUVEMENT_LABELS[value].toUpperCase(), variant: "green-emeraude" }
-    : { label: MOUVEMENT_LABELS[value].toUpperCase(), variant: "pink-tuile" };
+    ? { label: MOUVEMENT_LABELS[value].toUpperCase(), variant: "success" }
+    : { label: MOUVEMENT_LABELS[value].toUpperCase(), variant: "error" };
 }
 
-function marqueBadge(value: Marque | null): BadgeSpec {
-  if (value === null) {
-    return { label: "AUCUNE MARQUE", variant: "pink-tuile" };
-  }
-  return { label: MARQUE_LABELS[value].toUpperCase(), variant: "blue-cumulus" };
+function mouvementUeBadge(result: SimulationOutputs): BadgeSpec {
+  return ueInterditSansTraitement(result)
+    ? { label: MOUVEMENT_INTERDIT_SANS_TRAITEMENT_LABEL.toUpperCase(), variant: "error" }
+    : mouvementBadge(result.ueMouvement);
 }
 
-function traitementBadge(value: Traitement | null): BadgeSpec {
-  if (value === null) {
-    return { label: "NON APPLICABLE", variant: "beige-gris-galet" };
-  }
-  return value === Traitement.Obligatoire
-    ? { label: "OBLIGATOIRE", variant: "pink-tuile" }
-    : { label: "NON OBLIGATOIRE", variant: "green-emeraude" };
-}
-
-function lpsBadge(value: LPS | null): BadgeSpec {
-  if (value === null) {
-    return { label: "NON APPLICABLE", variant: "beige-gris-galet" };
-  }
-  return { label: LPS_LABELS[value].toUpperCase(), variant: "blue-cumulus" };
-}
-
-function certificationBadge(value: Certification | null): BadgeSpec {
-  if (value === null) {
-    return { label: "NON APPLICABLE", variant: "beige-gris-galet" };
-  }
-  const map: Record<Certification, BadgeVariant> = {
-    [Certification.Obligatoire]: "pink-tuile",
-    [Certification.DerogationPossible]: "blue-cumulus",
-    [Certification.NonRequise]: "green-emeraude",
+function traitementBadge(value: Traitement | null): BadgeSpec | null {
+  if (value === null) return null;
+  return {
+    label: TRAITEMENT_LABELS[value].toUpperCase(),
+    variant: value === Traitement.Obligatoire ? "error" : "success",
   };
-  return { label: CERTIFICATION_LABELS[value].toUpperCase(), variant: map[value] };
+}
+
+function lpsBadge(value: LPS | null): BadgeSpec | null {
+  return value === null ? null : { label: LPS_LABELS[value].toUpperCase(), variant: "info" };
+}
+
+function certificationBadge(value: Certification | null): BadgeSpec | null {
+  return value === null
+    ? null
+    : { label: CERTIFICATION_LABELS[value].toUpperCase(), variant: "info" };
 }

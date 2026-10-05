@@ -1,7 +1,7 @@
 // Règles d'affichage du panneau de résultats (spec « encart sorties »).
 // FR interdit ⇔ aucune marque (vérifié sur les deux oracles) : rien d'autre à montrer.
 
-import { Mouvement } from "@engine";
+import { Marque, Mouvement } from "@engine";
 import type { SimulationOutputs } from "./SimulationResult";
 
 export type ResultatAffichage = {
@@ -17,4 +17,9 @@ export function resultatAffichage(result: SimulationOutputs): ResultatAffichage 
     detailsFrance,
     lignesUe: detailsFrance && result.ueMouvement === Mouvement.Autorise,
   };
+}
+
+// UE interdit avec une marque ovale barrée : le mouvement UE redevient possible après traitement.
+export function ueInterditSansTraitement(result: SimulationOutputs): boolean {
+  return result.ueMouvement === Mouvement.Interdit && result.marque === Marque.OvaleBarree;
 }

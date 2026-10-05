@@ -24,21 +24,25 @@ export const MOUVEMENT_LABELS: Record<Mouvement, string> = {
   [Mouvement.Interdit]: "Mouvement interdit",
 };
 
+// Mouvement UE interdit d'une viande à marque ovale barrée (spec « champs sorties »).
+export const MOUVEMENT_INTERDIT_SANS_TRAITEMENT_LABEL =
+  "Mouvement interdit sans traitement d'atténuation";
+
 export const TRAITEMENT_LABELS: Record<Traitement, string> = {
   [Traitement.Obligatoire]: "Obligatoire",
-  [Traitement.NonObligatoire]: "Non obligatoire",
+  [Traitement.NonObligatoire]: "Non-obligatoire",
 };
 
 export const LPS_LABELS: Record<LPS, string> = {
-  [LPS.Permanent]: "LPS permanent",
-  [LPS.Systematique]: "LPS systématique",
-  [LPS.NonRequis]: "LPS non requis",
+  [LPS.Permanent]: "Laissez-passer sanitaire permanent",
+  [LPS.Systematique]: "Laissez-passer sanitaire systématique",
+  [LPS.NonRequis]: "Laissez-passer sanitaire non requis",
 };
 
 export const CERTIFICATION_LABELS: Record<Certification, string> = {
-  [Certification.Obligatoire]: "Certification zoosanitaire obligatoire",
-  [Certification.DerogationPossible]: "Dérogation à la certification zoosanitaire possible",
-  [Certification.NonRequise]: "Certification zoosanitaire non requise",
+  [Certification.Obligatoire]: "Certificat zoosanitaire",
+  [Certification.DerogationPossible]: "Dérogation au certificat zoosanitaire possible",
+  [Certification.NonRequise]: "Certificat zoosanitaire non requis",
 };
 
 // Ordre d'affichage des zones dans les dropdowns (du moins au plus restrictif).

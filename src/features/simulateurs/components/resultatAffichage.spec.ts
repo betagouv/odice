@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Certification, LPS, Marque, Mouvement, Traitement } from "@engine";
 import type { SimulationOutputs } from "./SimulationResult";
-import { resultatAffichage } from "./resultatAffichage";
+import { resultatAffichage, ueInterditSansTraitement } from "./resultatAffichage";
 
 const AUTORISE_PARTOUT: SimulationOutputs = {
   marque: Marque.Ovale,
@@ -31,5 +31,22 @@ describe("resultatAffichage", () => {
       ueMouvement: Mouvement.Interdit,
     };
     expect(resultatAffichage(result)).toEqual({ detailsFrance: false, lignesUe: false });
+  });
+});
+
+describe("ueInterditSansTraitement", () => {
+  const UE_INTERDIT = { ...AUTORISE_PARTOUT, ueMouvement: Mouvement.Interdit };
+
+  it("vrai pour une ovale barrée interdite en UE", () => {
+    expect(ueInterditSansTraitement({ ...UE_INTERDIT, marque: Marque.OvaleBarree })).toBe(true);
+  });
+
+  it("faux pour une ovale diagonales parallèles interdite en UE", () => {
+    const result = { ...UE_INTERDIT, marque: Marque.OvaleDiagonalesParalleles };
+    expect(ueInterditSansTraitement(result)).toBe(false);
+  });
+
+  it("faux quand le mouvement UE est autorisé", () => {
+    expect(ueInterditSansTraitement(AUTORISE_PARTOUT)).toBe(false);
   });
 });

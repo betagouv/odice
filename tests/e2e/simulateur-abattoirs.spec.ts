@@ -150,9 +150,9 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     await expect(page.getByText(/Cliquez sur valider/i)).not.toBeVisible();
     await expect(page.getByText("MOUVEMENT AUTORISÉ").first()).toBeVisible();
     await expect(page.getByText("OVALE", { exact: true })).toBeVisible();
-    await expect(page.getByText("NON OBLIGATOIRE").first()).toBeVisible();
-    await expect(page.getByText("LPS NON REQUIS")).toBeVisible();
-    await expect(page.getByText("CERTIFICATION ZOOSANITAIRE NON REQUISE")).toBeVisible();
+    await expect(page.getByText("NON-OBLIGATOIRE").first()).toBeVisible();
+    await expect(page.getByText("LAISSEZ-PASSER SANITAIRE NON REQUIS")).toBeVisible();
+    await expect(page.getByText("CERTIFICAT ZOOSANITAIRE NON REQUIS")).toBeVisible();
   });
 
   test("ZP + abattoir non MCA → FR interdit : seule la possibilité de mouvement s'affiche", async ({
@@ -169,6 +169,19 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     await expect(page.locator(".fr-alert--info")).toHaveCount(0);
   });
 
+  test("ZP + MCA partout → ovale barrée, UE interdit sans traitement d'atténuation", async ({
+    page,
+  }) => {
+    await ouvrirAbattoir(page);
+    await remplir(page, { ...CAS_SAIN, zoneSuides: "zp" });
+    await page.getByRole("button", { name: "Valider" }).click();
+
+    await expect(page.getByText("OVALE BARRÉE")).toBeVisible();
+    await expect(page.locator('img[src="/images/marques/ovale-barree.png"]')).toBeVisible();
+    await expect(page.getByText("MOUVEMENT INTERDIT SANS TRAITEMENT D'ATTÉNUATION")).toBeVisible();
+    await expect(page.getByText("LAISSEZ-PASSER SANITAIRE PERMANENT")).toBeVisible();
+  });
+
   test("ZRIII MNR-PPA + MCA + dest non MCA → diagonales parallèles, FR autorisé UE interdit", async ({
     page,
   }) => {
@@ -179,7 +192,7 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     await expect(page.getByText("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
     await expect(page.getByText("MOUVEMENT AUTORISÉ")).toBeVisible();
     await expect(page.getByText("MOUVEMENT INTERDIT")).toBeVisible();
-    await expect(page.getByText("LPS SYSTÉMATIQUE")).toBeVisible();
+    await expect(page.getByText("LAISSEZ-PASSER SANITAIRE SYSTÉMATIQUE")).toBeVisible();
     // UE interdit : plus de ligne UE dans le traitement ni dans les documents.
     await expect(page.getByText("UE", { exact: true })).toHaveCount(1);
   });
@@ -190,14 +203,14 @@ test.describe("Simulateur Abattoirs — abattoir en ZI FS réflexe", () => {
     await ouvrirAbattoir(page);
     await remplir(page, { ...CAS_SAIN, zoneAbattoir: "zi-fs" });
     await page.getByRole("button", { name: "Valider" }).click();
-    await expect(page.getByText("CERTIFICATION ZOOSANITAIRE OBLIGATOIRE")).toBeVisible();
+    await expect(page.getByText("CERTIFICAT ZOOSANITAIRE", { exact: true })).toBeVisible();
     const attendu = await page.locator(".fr-badge").allInnerTexts();
     expect(attendu.length).toBeGreaterThan(0);
 
     await page.getByLabel(L.zoneAbattoir).selectOption("zi-fs-reflexe");
     await page.getByRole("button", { name: "Valider" }).click();
 
-    await expect(page.getByText("CERTIFICATION ZOOSANITAIRE OBLIGATOIRE")).toBeVisible();
+    await expect(page.getByText("CERTIFICAT ZOOSANITAIRE", { exact: true })).toBeVisible();
     expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
   });
 });
