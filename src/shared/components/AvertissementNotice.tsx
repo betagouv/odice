@@ -19,7 +19,7 @@ export function AvertissementNotice() {
       <br />
       <br />
       Les possibilités de dérogation aux interdictions de mouvements présentées dans les résultats
-      d'Odice{" "}
+      d'Odicé{" "}
       <strong>
         sont soumises à l'appréciation de la direction départementale en charge de la protection des
         populations (DDecPP) compétente

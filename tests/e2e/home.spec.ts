@@ -5,24 +5,24 @@ test("la page d'accueil affiche le titre de bienvenue et le CTA Démarrer une si
 }) => {
   await page.goto("/");
 
-  await expect(page).toHaveTitle("Accueil — Odice");
-  await expect(page.getByRole("heading", { name: /Bienvenue sur Odice/i })).toBeVisible();
+  await expect(page).toHaveTitle("Accueil — Odicé");
+  await expect(page.getByRole("heading", { name: /Bienvenue sur Odicé/i })).toBeVisible();
   await expect(
     page.getByRole("heading", { name: /pour quels mouvements et quel périmètre/i }),
   ).toBeVisible();
-  await expect(page.getByText(/Le périmètre d'Odice n'inclut pas/)).toBeVisible();
+  await expect(page.getByText(/Le périmètre d'Odicé n'inclut pas/)).toBeVisible();
   await expect(page.getByRole("link", { name: /Démarrer une simulation/i })).toBeVisible();
 });
 
 test("le titre de l'onglet change selon la page (navigation /simulateurs)", async ({ page }) => {
   await page.goto("/");
-  await expect(page).toHaveTitle("Accueil — Odice");
+  await expect(page).toHaveTitle("Accueil — Odicé");
 
   await page.goto("/simulateurs");
-  await expect(page).toHaveTitle("Simulateur — Odice");
+  await expect(page).toHaveTitle("Simulateur — Odicé");
 
   await page.goto("/historique-versions");
-  await expect(page).toHaveTitle("Historique des versions — Odice");
+  await expect(page).toHaveTitle("Historique des versions — Odicé");
 });
 
 test("depuis l'accueil, le CTA Démarrer une simulation mène à la page des simulateurs", async ({

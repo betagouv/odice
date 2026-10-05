@@ -1,11 +1,11 @@
-# ADR-0002 : Architecture DDD « propre mais simple » pour le moteur Odice
+# ADR-0002 : Architecture DDD « propre mais simple » pour le moteur Odicé
 
 **Date** : 2026-05-23
 **Statut** : Accepté
 
 ## Contexte
 
-Le moteur Odice doit héberger deux simulateurs distincts (Abattoirs, Autres Établissements) qui partagent certains concepts (zones réglementaires, marques sanitaires…) mais ont chacun leur propre logique métier, leurs propres inputs et leurs propres outputs.
+Le moteur Odicé doit héberger deux simulateurs distincts (Abattoirs, Autres Établissements) qui partagent certains concepts (zones réglementaires, marques sanitaires…) mais ont chacun leur propre logique métier, leurs propres inputs et leurs propres outputs.
 
 L'arborescence initiale (`src/engine/{types,rules,evaluate}.ts` à plat) ne tient pas la charge dès qu'on commence à implémenter les 5 fonctions de règles + leurs schémas Zod + leurs tests. On observe :
 

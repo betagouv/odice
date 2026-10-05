@@ -5,7 +5,7 @@
 
 ## Contexte
 
-Odice est une SPA React statique servie par Scalingo. Aucun backend applicatif → les erreurs JS côté client n'apparaissent **pas** dans les logs serveur.
+Odicé est une SPA React statique servie par Scalingo. Aucun backend applicatif → les erreurs JS côté client n'apparaissent **pas** dans les logs serveur.
 
 Sans pipeline de monitoring :
 - Un crash de rendu React produit un écran blanc, sans trace

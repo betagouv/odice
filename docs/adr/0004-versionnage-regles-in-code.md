@@ -5,7 +5,7 @@
 
 ## Contexte
 
-Le simulateur Odice est un outil **à portée réglementaire** : ses règles dérivent d'arrêtés officiels qui évoluent. À chaque nouvel arrêté, le code doit être mis à jour, et il faut pouvoir :
+Le simulateur Odicé est un outil **à portée réglementaire** : ses règles dérivent d'arrêtés officiels qui évoluent. À chaque nouvel arrêté, le code doit être mis à jour, et il faut pouvoir :
 
 1. **Tracer** quelle version du simulateur correspond à quel arrêté
 2. **Afficher** à l'utilisateur la date d'effet de la version courante (« Dernière mise à jour : 4 février 2026 »)

@@ -2,7 +2,7 @@
   "name": "odice",
   "version": "0.15.0",
   "private": true,
-  "description": "Odice — Outil de Décision pour les mouvements de viandes en contexte de Peste Porcine Africaine",
+  "description": "Odicé — Outil de Décision pour les mouvements de viandes en contexte de Peste Porcine Africaine",
   "type": "module",
   "packageManager": "pnpm@10.32.1",
   "engines": {

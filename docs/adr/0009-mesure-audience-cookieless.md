@@ -5,9 +5,9 @@
 
 ## Contexte
 
-Odice mesure sa fréquentation avec Matomo (cf. [ADR-0008](./0008-analytics-matomo-wrapper-maison.md)). Par défaut, le tracker Matomo dépose des cookies (`_pk_id`, `_pk_ses`) pour reconnaître un visiteur d'une session à l'autre.
+Odicé mesure sa fréquentation avec Matomo (cf. [ADR-0008](./0008-analytics-matomo-wrapper-maison.md)). Par défaut, le tracker Matomo dépose des cookies (`_pk_id`, `_pk_ses`) pour reconnaître un visiteur d'une session à l'autre.
 
-Se pose alors la question RGPD : faut-il un bandeau de consentement ? La CNIL impose que toute mesure d'audience soit **soit exemptée de consentement** (sous conditions strictes : anonymisation, finalité limitée, mécanisme d'opposition), **soit soumise à consentement** (bandeau). Odice ne fait *que* de la mesure d'audience anonyme, sans compte ni donnée nominative : on veut la conformité la plus simple possible, sans dégrader l'expérience par un bandeau.
+Se pose alors la question RGPD : faut-il un bandeau de consentement ? La CNIL impose que toute mesure d'audience soit **soit exemptée de consentement** (sous conditions strictes : anonymisation, finalité limitée, mécanisme d'opposition), **soit soumise à consentement** (bandeau). Odicé ne fait *que* de la mesure d'audience anonyme, sans compte ni donnée nominative : on veut la conformité la plus simple possible, sans dégrader l'expérience par un bandeau.
 
 ## Décision
 
@@ -26,7 +26,7 @@ Conséquences directes :
 - Avantages :
   - Conformité RGPD la plus simple : aucun cookie, aucun bandeau, aucun opt-out cookie à implémenter
   - Cohérent avec un outil sans compte, à finalité unique de mesure d'audience
-  - **Fiable pour ce qui compte à Odice** : visites, pages vues, événements et **funnel du simulateur** restent exacts (métriques intra-visite)
+  - **Fiable pour ce qui compte à Odicé** : visites, pages vues, événements et **funnel du simulateur** restent exacts (métriques intra-visite)
 - Inconvénients :
   - **Visiteurs uniques** approximatifs (sur-comptés) : Matomo compte des visites, pas des personnes
   - Pas de « nouveaux vs récurrents » fiable, pas de suivi longitudinal (config_id réinitialisé toutes les 24 h, fenêtre de reconnaissance ~30 min), pas de cohortes ni d'attribution multi-session
@@ -47,7 +47,7 @@ Conséquences directes :
 
 - Aucun cookie déposé → pas de bandeau de consentement, conformité CNIL directe
 - Pages légales simples et cohérentes (« Gestion des cookies » informative, section cookies de la politique de données alignée)
-- Les métriques utiles à Odice (fréquentation, événements, funnel) restent exactes
+- Les métriques utiles à Odicé (fréquentation, événements, funnel) restent exactes
 
 ### Négatives / Risques
 

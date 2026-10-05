@@ -19,7 +19,7 @@ export function DonneesPersonnellesPage() {
           <h1>Politique de protection des données</h1>
           <p className="fr-text--lead">Dernière mise à jour : 1er juillet 2026.</p>
           <p>
-            Odice est un service public qui aide les professionnels à déterminer les règles
+            Odicé est un service public qui aide les professionnels à déterminer les règles
             applicables aux mouvements de viandes en contexte de peste porcine africaine (PPA).
             Cette politique décrit, de façon simple, quelles données sont traitées et pourquoi.
           </p>
@@ -35,7 +35,7 @@ export function DonneesPersonnellesPage() {
 
           <h2>2. Quelles données sont collectées ?</h2>
           <p>
-            Odice fonctionne sans création de compte ni authentification. Les informations que vous
+            Odicé fonctionne sans création de compte ni authentification. Les informations que vous
             saisissez dans le simulateur (zone d'origine, statut sanitaire, marque de salubrité,
             etc.) sont traitées <strong>directement dans votre navigateur</strong> pour produire le
             résultat réglementaire : elles ne sont ni transmises à un serveur, ni enregistrées. Ce
@@ -78,7 +78,7 @@ export function DonneesPersonnellesPage() {
 
           <h2>6. Qui a accès aux données ?</h2>
           <p>
-            Seules les personnes habilitées de l'équipe Odice et de la DGAL accèdent aux
+            Seules les personnes habilitées de l'équipe Odicé et de la DGAL accèdent aux
             statistiques d'usage, pour les finalités décrites ci-dessus. La mesure d'audience est
             assurée par la plateforme de statistiques de beta.gouv (Matomo). L'hébergement est
             assuré par Scalingo (France, Union européenne). Aucune donnée n'est cédée à des tiers à
@@ -87,7 +87,7 @@ export function DonneesPersonnellesPage() {
 
           <h2>7. Cookies et traceurs</h2>
           <p>
-            Odice n'utilise aucun cookie publicitaire ni traceur tiers. La mesure d'audience Matomo
+            Odicé n'utilise aucun cookie publicitaire ni traceur tiers. La mesure d'audience Matomo
             est configurée en mode sans cookie : aucune information n'est stockée sur votre appareil
             à des fins de suivi, et les données recueillies sont anonymisées. Cette configuration
             permet une mesure d'audience exemptée de consentement au sens de la CNIL. Voir la page{" "}

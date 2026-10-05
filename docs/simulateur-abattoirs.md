@@ -1,6 +1,6 @@
 # Simulateur Abattoirs — Documentation métier
 
-> Documentation de référence pour les règles métier du simulateur Abattoirs d'Odice.
+> Documentation de référence pour les règles métier du simulateur Abattoirs d'Odicé.
 > Toutes les règles décrites ci-dessous ont été vérifiées sur les 2 744 combinaisons
 > du fichier `20260512_Test_formules.xlsx` (couverture 100 %).
 
@@ -203,4 +203,4 @@ Si l'abattoir n'est pas agréé MCA, dès lors que les suidés viennent d'une zo
 | `20260520_Entrées_sorties.xlsx` | Référentiel des enums (entrées et sorties) |
 | `20250812_Logigramme.pdf` | Référence conceptuelle historique |
 | `20250910_Formules_Grist.pdf` | Formules Python du formulaire Grist remplacé |
-| [`docs/simulateur-abattoirs-points-a-valider.md`](./simulateur-abattoirs-points-a-valider.md) | Points ouverts à valider avec l'équipe Odice |
+| [`docs/simulateur-abattoirs-points-a-valider.md`](./simulateur-abattoirs-points-a-valider.md) | Points ouverts à valider avec l'équipe Odicé |

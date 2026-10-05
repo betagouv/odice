@@ -1,8 +1,8 @@
-# Odice - Instructions pour Claude Code
+# Odicé - Instructions pour Claude Code
 
 ## Description du projet
 
-Odice (Outil de Décision pour les mouvements de viandes en contexte de Peste Porcine Africaine) est une application web Beta.gouv qui remplace un formulaire Grist. Elle propose deux simulateurs (Abattoirs et Autres Établissements) prenant 5-6 inputs et produisant 5-6 résultats réglementaires : marque sanitaire à apposer, territoire autorisé, LPS, certification zoosanitaire, traitement d'atténuation.
+Odicé (Outil de Décision pour les mouvements de viandes en contexte de Peste Porcine Africaine) est une application web Beta.gouv qui remplace un formulaire Grist. Elle propose deux simulateurs (Abattoirs et Autres Établissements) prenant 5-6 inputs et produisant 5-6 résultats réglementaires : marque sanitaire à apposer, territoire autorisé, LPS, certification zoosanitaire, traitement d'atténuation.
 
 Projet Beta.gouv / gouvernement français.
 
@@ -352,7 +352,7 @@ La spec `versions.spec.ts` garantit l'ordre antéchronologique strict et le form
 
 ## Variables d'environnement
 
-Odice est une **SPA statique** (pas de backend) : toute variable lue par le front est **embarquée dans le bundle** au build. Deux règles :
+Odicé est une **SPA statique** (pas de backend) : toute variable lue par le front est **embarquée dans le bundle** au build. Deux règles :
 
 - **Jamais de secret** dans une variable exposée au client (token d'API, clé privée…). Un secret nécessiterait une brique serveur dédiée, hors périmètre actuel.
 - Seules les variables préfixées **`VITE_`** sont exposées par Vite via `import.meta.env`.

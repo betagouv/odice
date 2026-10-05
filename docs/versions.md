@@ -1,6 +1,6 @@
-# Versionnage des règles métier Odice
+# Versionnage des règles métier Odicé
 
-Chaque simulateur Odice est lié à un arrêté officiel. Toute évolution réglementaire fait l'objet d'une **nouvelle version**, ajoutée via pull request.
+Chaque simulateur Odicé est lié à un arrêté officiel. Toute évolution réglementaire fait l'objet d'une **nouvelle version**, ajoutée via pull request.
 
 ## Où les versions sont stockées
 
