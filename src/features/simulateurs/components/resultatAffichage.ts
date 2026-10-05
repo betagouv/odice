@@ -24,11 +24,19 @@ export function ueInterditSansTraitement(result: SimulationOutputs): boolean {
   return result.ueMouvement === Mouvement.Interdit && result.marque === Marque.OvaleBarree;
 }
 
-// Mention « Traitement d'atténuation » à reporter sur les documents commerciaux.
-export function mentionTraitement(result: SimulationOutputs): string {
-  if (result.frTraitement === Traitement.Obligatoire) return "obligatoire";
-  if (result.ueTraitement === Traitement.Obligatoire) {
+// Fin de la mention « Traitement d'atténuation … » (spec « bandeau bleu ») ; null si
+// rien à afficher. Seuls les cas listés par la spec produisent une mention.
+export function mentionTraitement(result: SimulationOutputs): string | null {
+  const frObligatoire = result.frTraitement === Traitement.Obligatoire;
+  const ueSansTraitement = ueInterditSansTraitement(result);
+  if (frObligatoire && ueSansTraitement) {
+    return "obligatoire pour une mise sur le marché sur le territoire national et pour les échanges intracommunautaires";
+  }
+  if (frObligatoire && result.ueMouvement === Mouvement.Interdit) {
+    return "obligatoire pour une mise sur le marché sur le territoire national";
+  }
+  if (result.frTraitement === Traitement.NonObligatoire && ueSansTraitement) {
     return "obligatoire uniquement pour les échanges intracommunautaires";
   }
-  return "non obligatoire";
+  return null;
 }

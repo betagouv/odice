@@ -184,7 +184,9 @@ test.describe("Simulateur Abattoirs — résultats sur cas connus", () => {
     const mentions = page.locator(".fr-alert--info");
     await expect(mentions).toContainText("Mentions à reporter sur vos documents commerciaux");
     await expect(mentions).toContainText("Zone de protection");
-    await expect(mentions).toContainText("Traitement d'atténuation : obligatoire");
+    await expect(mentions).toContainText(
+      "Traitement d'atténuation obligatoire pour une mise sur le marché sur le territoire national et pour les échanges intracommunautaires",
+    );
     // Zone ZP : pas de statut demandé, donc pas de ligne statut.
     await expect(mentions).not.toContainText("Statut du mouvement");
   });

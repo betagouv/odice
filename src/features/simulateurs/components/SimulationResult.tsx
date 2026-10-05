@@ -55,6 +55,7 @@ const BLUE = { color: "var(--text-title-blue-france)" } as const;
 
 export function SimulationResult({ result, mentions, sousTitre, versionCourante }: Props) {
   const affichage = resultatAffichage(result);
+  const traitement = mentionTraitement(result);
   return (
     <div>
       <Header sousTitre={sousTitre} versionCourante={versionCourante} />
@@ -106,9 +107,11 @@ export function SimulationResult({ result, mentions, sousTitre, versionCourante 
               <strong>{mentions.statut}</strong>
             </p>
           )}
-          <p className="fr-mb-0">
-            Traitement d'atténuation : <strong>{mentionTraitement(result)}</strong>
-          </p>
+          {traitement !== null && (
+            <p className="fr-mb-0">
+              Traitement d'atténuation <strong>{traitement}</strong>
+            </p>
+          )}
         </div>
       )}
     </div>

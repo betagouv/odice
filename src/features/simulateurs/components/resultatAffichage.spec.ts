@@ -56,23 +56,33 @@ describe("ueInterditSansTraitement", () => {
 });
 
 describe("mentionTraitement", () => {
-  it("obligatoire dès que le traitement FR l'est", () => {
-    const result = {
-      ...AUTORISE_PARTOUT,
-      frTraitement: Traitement.Obligatoire,
-      ueTraitement: null,
-    };
-    expect(mentionTraitement(result)).toBe("obligatoire");
+  const UE_INTERDIT = { ...AUTORISE_PARTOUT, ueMouvement: Mouvement.Interdit };
+  const OVALE_BARREE = { ...UE_INTERDIT, marque: Marque.OvaleBarree };
+  const DIAGONALES = { ...UE_INTERDIT, marque: Marque.OvaleDiagonalesParalleles };
+
+  it("FR obligatoire et UE interdit : territoire national", () => {
+    expect(mentionTraitement({ ...DIAGONALES, frTraitement: Traitement.Obligatoire })).toBe(
+      "obligatoire pour une mise sur le marché sur le territoire national",
+    );
   });
 
-  it("obligatoire uniquement pour l'UE quand seul le traitement UE l'est", () => {
-    const result = { ...AUTORISE_PARTOUT, ueTraitement: Traitement.Obligatoire };
-    expect(mentionTraitement(result)).toBe(
+  it("FR obligatoire et UE interdit sans traitement : national et intracommunautaire", () => {
+    expect(mentionTraitement({ ...OVALE_BARREE, frTraitement: Traitement.Obligatoire })).toBe(
+      "obligatoire pour une mise sur le marché sur le territoire national et pour les échanges intracommunautaires",
+    );
+  });
+
+  it("FR non obligatoire et UE interdit sans traitement : intracommunautaire uniquement", () => {
+    expect(mentionTraitement(OVALE_BARREE)).toBe(
       "obligatoire uniquement pour les échanges intracommunautaires",
     );
   });
 
-  it("non obligatoire sinon", () => {
-    expect(mentionTraitement(AUTORISE_PARTOUT)).toBe("non obligatoire");
+  it("FR non obligatoire et UE autorisé : aucune mention", () => {
+    expect(mentionTraitement(AUTORISE_PARTOUT)).toBeNull();
+  });
+
+  it("FR non obligatoire et UE interdit : aucune mention", () => {
+    expect(mentionTraitement(DIAGONALES)).toBeNull();
   });
 });
