@@ -17,11 +17,11 @@ Tous les événements portent la **catégorie** `Simulateur PPA`. Le **simulateu
 
 ### Événements de clic vers les pages annexes
 
-Catégorie identique (`Simulateur PPA`), hors funnel. Émis depuis la navigation, les indices de carte et les panneaux résultat.
+Catégorie identique (`Simulateur PPA`), hors funnel. Émis depuis la navigation et les indices de carte.
 
 | Action | Déclencheur |
 |---|---|
-| `clic_documentation_reglementaire` | Clic sur « Documentation réglementaire » (menu **ou** lien du panneau résultat) |
+| `clic_documentation_reglementaire` | Clic sur « Documentation réglementaire » (menu) |
 | `clic_carte_zones` | Clic sur le lien « carte » sous un champ de zone (carte des zones réglementées) |
 
 Rappel : le tracking n'est actif **qu'en build production** et seulement si `VITE_MATOMO_URL` + `VITE_MATOMO_SITE_ID` sont renseignés (cf. [`.env.example`](../.env.example)).

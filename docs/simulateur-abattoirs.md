@@ -87,6 +87,8 @@ Le simulateur retourne **7 champs en sortie**.
 
 > **Note libellés** — La valeur `Dérogation à la certification zoosanitaire possible` est utilisée à la place de la valeur historique `… obligatoire` du test xlsx (décision validée, à confirmer définitivement avec l'équipe métier — cf. [TODO 4](./simulateur-abattoirs-points-a-valider.md)).
 
+> **Libellés affichés** — Le panneau de résultats (commun aux deux simulateurs, cf. [ADR-0015](./adr/0015-panneau-resultats-commun-et-masquage.md)) traduit ces valeurs : `LPS permanent` → « Laissez-passer sanitaire permanent », `LPS systématique` → « Laissez-passer sanitaire systématique », `LPS non requis` → « Laissez-passer sanitaire non requis », `Certification zoosanitaire obligatoire` → « Certificat zoosanitaire », `Dérogation … possible` → « Dérogation au certificat zoosanitaire possible », `Certification zoosanitaire non requise` → « Certificat zoosanitaire non requis ». Une marque `ovale barrée` affiche l'UE en « Mouvement interdit sans traitement d'atténuation ». Si le mouvement France est interdit, seule la possibilité de mouvement est affichée ; si le mouvement UE est interdit, les lignes UE du traitement et du document sont masquées.
+
 ## 5. Tableaux de décision
 
 > Convention : « — » signifie que le critère n'a pas d'impact sur cette ligne.
