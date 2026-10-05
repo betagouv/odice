@@ -36,6 +36,20 @@ export function HomePage() {
               En favorisant une interprétation homogène de la réglementation, Odice contribue à
               renforcer la prévention, la gestion et la maîtrise des risques en santé animale.
             </p>
+
+            <h3 className="fr-h6 fr-mt-4w">Odice, pour quels mouvements et quel périmètre ?</h3>
+            <p>
+              Odice vous accompagne pour déterminer les règles sanitaires applicables aux mouvements
+              de produits carnés contenant des viandes de porcs au départ de la France. Dans cet
+              outil, les « porcs » comprennent les porcs domestiques et les sangliers d'élevage.
+            </p>
+            <p className="fr-mb-1w">
+              <strong>Le périmètre d'Odice n'inclut pas :</strong>
+            </p>
+            <ul>
+              <li>les mouvements d'un autre pays vers la France ;</li>
+              <li>les exportations vers les pays tiers (en dehors de l'Union européenne).</li>
+            </ul>
             <Link to={ROUTES.SIMULATEURS} className="fr-btn fr-mt-2w">
               Démarrer une simulation
             </Link>

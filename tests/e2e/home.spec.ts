@@ -7,6 +7,10 @@ test("la page d'accueil affiche le titre de bienvenue et le CTA Démarrer une si
 
   await expect(page).toHaveTitle("Accueil — Odice");
   await expect(page.getByRole("heading", { name: /Bienvenue sur Odice/i })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /pour quels mouvements et quel périmètre/i }),
+  ).toBeVisible();
+  await expect(page.getByText(/Le périmètre d'Odice n'inclut pas/)).toBeVisible();
   await expect(page.getByRole("link", { name: /Démarrer une simulation/i })).toBeVisible();
 });
 
