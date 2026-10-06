@@ -26,8 +26,16 @@ import {
   isTraitementUeApplicable,
   type OuiNon,
 } from "./traitementFields";
+import { MESSAGES_SITUATION_IMPOSSIBLE, situationImpossible } from "./traitementRegles";
 
 const zoneOrNull = (zone: ZoneChoix | ""): Zone | null => (zone === "" ? null : zoneMoteur(zone));
+
+// Situation impossible (spec) : bloque les questions de traitement, la destination et la validation.
+const impossible = (f: { zoneSuides: ZoneChoix | ""; marqueViandes: Marque | "" }) =>
+  situationImpossible(
+    f.zoneSuides === "" ? null : f.zoneSuides,
+    f.marqueViandes === "" ? null : f.marqueViandes,
+  );
 
 type FormState = {
   zoneExpediteur: ZoneChoix | "";
@@ -64,15 +72,17 @@ const FIELDS: ProgressiveFieldConfig<FormState>[] = [
   {
     key: "traitementObligatoireFr",
     section: "provenance",
-    isApplicable: (f) => isTraitementObligatoireApplicable(zoneOrNull(f.zoneSuides)),
+    isApplicable: (f) =>
+      impossible(f) === null && isTraitementObligatoireApplicable(zoneOrNull(f.zoneSuides)),
   },
   {
     key: "traitementObligatoireUe",
     section: "provenance",
     isApplicable: (f) =>
+      impossible(f) === null &&
       isTraitementUeApplicable(zoneOrNull(f.zoneSuides), f.traitementObligatoireFr),
   },
-  { key: "traitementRealise", section: "provenance" },
+  { key: "traitementRealise", section: "provenance", isApplicable: (f) => impossible(f) === null },
   { key: "zoneDestinataire", section: "destination" },
   { key: "mcaDestinataire", section: "destination" },
 ];
@@ -98,10 +108,13 @@ export function EtablissementsForm({
   const { isVisible, advance, revealAll } = useProgressiveFields(FIELDS, EMPTY_FORM);
 
   // Ne pas exiger les champs masqués (restés "") : seuls les champs applicables comptent.
-  const canSubmit = FIELDS.every((field) => {
-    const applicable = field.isApplicable ? field.isApplicable(form) : true;
-    return !applicable || form[field.key] !== "";
-  });
+  const situation = impossible(form);
+  const canSubmit =
+    situation === null &&
+    FIELDS.every((field) => {
+      const applicable = field.isApplicable ? field.isApplicable(form) : true;
+      return !applicable || form[field.key] !== "";
+    });
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     if (key === "zoneExpediteur" && value !== "") onStart?.();
@@ -378,7 +391,13 @@ export function EtablissementsForm({
         </>
       )}
 
-      {isVisible("zoneDestinataire", form) && (
+      {situation !== null && (
+        <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-3w" role="alert">
+          <p>{MESSAGES_SITUATION_IMPOSSIBLE[situation]}</p>
+        </div>
+      )}
+
+      {situation === null && isVisible("zoneDestinataire", form) && (
         <>
           <h2 className="fr-h5 fr-mt-6w fr-mb-2w">2. Destination des viandes</h2>
           <hr />

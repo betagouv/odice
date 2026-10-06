@@ -195,27 +195,47 @@ test.describe("Simulateur Autres Établissements — ZI FS réflexe", () => {
     }
   });
 
-  test("porcs en ZI FS réflexe : même résultat qu'en ZI FS", async ({ page }) => {
+  test("porcs en ZI FS réflexe : situation impossible, validation bloquée", async ({ page }) => {
     await ouvrirAtelier(page);
-    await remplirJusquaSuides(page, "zi-fs");
+    await remplirJusquaSuides(page, "zi-fs-reflexe");
+
+    await expect(page.getByRole("alert")).toContainText(
+      "Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits.",
+    );
     await choisirMarque(page, "ovale");
-    await page.getByLabel(L.traitementFr).selectOption("non");
-    await page.getByLabel(L.traitementUe).selectOption("non");
-    await page.getByLabel(L.traitementRealise).selectOption("non");
-    await page.getByLabel(L.zoneDest).selectOption("zone-indemne");
-    await page.getByLabel(L.mcaDest).selectOption("oui");
-    await page.getByRole("button", { name: "Valider" }).click();
-    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toBeVisible();
-    const attendu = await page.locator(".fr-badge").allInnerTexts();
-    expect(attendu.length).toBeGreaterThan(0);
+    await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();
+  });
+});
 
-    await page.getByLabel(L.zoneSuides).selectOption("zi-fs-reflexe");
-    // Les questions de traitement restent applicables, comme en ZI FS.
-    await expect(page.getByLabel(L.traitementFr)).toHaveValue("non");
-    await page.getByRole("button", { name: "Valider" }).click();
+test.describe("Simulateur Autres Établissements — situations impossibles", () => {
+  for (const [zone, marque] of [
+    ["zone-indemne", "ovale-barree"],
+    ["zri", "ovale-diagonales-paralleles"],
+  ]) {
+    test(`${zone} + ${marque} : mélange de lot, validation bloquée`, async ({ page }) => {
+      await ouvrirAtelier(page);
+      await remplirJusquaSuides(page, zone);
+      await choisirMarque(page, marque);
 
-    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toBeVisible();
-    expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
+      await expect(page.getByRole("alert")).toContainText(
+        "Situation impossible : vérifier qu'il n'y ait pas de mélange de lot.",
+      );
+      await expect(page.getByLabel(L.traitementRealise)).toHaveCount(0);
+      await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
+      await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();
+    });
+  }
+
+  test("corriger la marque lève l'alerte et révèle la destination", async ({ page }) => {
+    await ouvrirAtelier(page);
+    await remplirJusquaSuides(page, "zone-indemne");
+    await choisirMarque(page, "ovale-barree");
+    await expect(page.getByRole("alert")).toBeVisible();
+
+    await choisirMarque(page, "ovale");
+    await expect(page.getByRole("alert")).toHaveCount(0);
+    await expect(page.getByLabel(L.traitementRealise)).toBeVisible();
   });
 });
 
