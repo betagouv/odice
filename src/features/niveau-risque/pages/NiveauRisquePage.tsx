@@ -104,6 +104,9 @@ export function NiveauRisquePage() {
   );
 }
 
+// Colonne « niveau » centrée (maquette) ; le ! passe devant l'alignement DSFR.
+const CENTRE = "text-center!";
+
 // Tableau DSFR ; la première colonne (niveau) est numérotée à partir de 1.
 function Tableau({
   legende,
@@ -123,8 +126,8 @@ function Tableau({
               <caption>{legende}</caption>
               <thead>
                 <tr>
-                  {colonnes.map((colonne) => (
-                    <th key={colonne} scope="col">
+                  {colonnes.map((colonne, j) => (
+                    <th key={colonne} scope="col" className={j === 0 ? CENTRE : undefined}>
                       {colonne}
                     </th>
                   ))}
@@ -133,7 +136,7 @@ function Tableau({
               <tbody>
                 {lignes.map((cellules, i) => (
                   <tr key={i}>
-                    <td>{i + 1}</td>
+                    <td className={CENTRE}>{i + 1}</td>
                     {cellules.map((cellule, j) => (
                       <td key={j}>{cellule}</td>
                     ))}
