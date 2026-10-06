@@ -61,6 +61,10 @@ export function zoneLibelleAvecSigle(zone: Zone): string {
     : `${libelle.slice(separateur + 3)} (${libelle.slice(0, separateur)})`;
 }
 
+// Second paragraphe de l'avertissement (DDecPP), repris en texte simple dans l'export PDF.
+export const AVERTISSEMENT_DEROGATION_DDECPP =
+  "Les possibilités de dérogation aux interdictions de mouvements présentées dans les résultats d'Odicé sont soumises à l'appréciation de la direction départementale en charge de la protection des populations (DDecPP) compétente. La DDecPP peut, au regard de la situation sanitaire et de l'analyse de risques réalisée, interdire le mouvement, même lorsque celui-ci entre dans le cadre d'une dérogation réglementaire.";
+
 // Ordre d'affichage des zones dans les dropdowns (du moins au plus restrictif).
 export const ZONE_ORDER: Zone[] = [
   Zone.ZoneIndemne,
