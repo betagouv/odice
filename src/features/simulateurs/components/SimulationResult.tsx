@@ -7,33 +7,18 @@
 
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import {
-  Certification,
-  LPS,
+import type {
+  AbattoirsOutputs,
+  EtablissementsOutputs,
   Marque,
-  Mouvement,
-  Traitement,
-  type AbattoirsOutputs,
-  type EtablissementsOutputs,
-  type SimulateurVersion,
-  type Zone,
+  SimulateurVersion,
+  Zone,
 } from "@engine";
-import {
-  CERTIFICATION_LABELS,
-  LPS_LABELS,
-  MARQUE_LABELS,
-  MOUVEMENT_INTERDIT_SANS_TRAITEMENT_LABEL,
-  MOUVEMENT_LABELS,
-  TRAITEMENT_LABELS,
-  zoneLibelleLong,
-} from "@shared/labels/common.labels";
+import { zoneLibelleLong } from "@shared/labels/common.labels";
 import { ROUTES } from "@shared/config/routes.config";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
-import {
-  mentionTraitement,
-  resultatAffichage,
-  ueInterditSansTraitement,
-} from "./resultatAffichage";
+import { mentionTraitement } from "./resultatAffichage";
+import { resultatBadges, type BadgeSpec } from "./resultatBadges";
 
 export type SimulationOutputs = AbattoirsOutputs | EtablissementsOutputs;
 
@@ -54,7 +39,8 @@ type Props = {
 const BLUE = { color: "var(--text-title-blue-france)" } as const;
 
 export function SimulationResult({ result, mentions, sousTitre, versionCourante }: Props) {
-  const affichage = resultatAffichage(result);
+  const badges = resultatBadges(result);
+  const details = badges.details;
   const traitement = mentionTraitement(result);
   return (
     <div>
@@ -63,38 +49,34 @@ export function SimulationResult({ result, mentions, sousTitre, versionCourante 
       <div className="fr-grid-row fr-grid-row--gutters">
         <div className="fr-col-12 fr-col-md-6">
           <ResultBlock title="Possibilité de mouvement">
-            <BadgeRow label="France" badge={mouvementBadge(result.frMouvement)} />
-            <BadgeRow label="UE" badge={mouvementUeBadge(result)} />
+            <BadgeRow label="France" badge={badges.mouvement.france} />
+            <BadgeRow label="UE" badge={badges.mouvement.ue} />
           </ResultBlock>
         </div>
-        {affichage.detailsFrance && (
+        {details !== null && (
           <>
             <div className="fr-col-12 fr-col-md-6">
               <ResultBlock title="Marque à apposer sur les viandes">
-                <MarqueRow marque={result.marque} />
+                <MarqueRow marque={details.marque} badge={details.marqueBadge} />
               </ResultBlock>
             </div>
             <div className="fr-col-12 fr-col-md-6">
               <ResultBlock title="Traitement d'atténuation selon la destination des viandes">
-                <BadgeRow label="France" badge={traitementBadge(result.frTraitement)} />
-                {affichage.lignesUe && (
-                  <BadgeRow label="UE" badge={traitementBadge(result.ueTraitement)} />
-                )}
+                <BadgeRow label="France" badge={details.traitement.france} />
+                <BadgeRow label="UE" badge={details.traitement.ue} />
               </ResultBlock>
             </div>
             <div className="fr-col-12 fr-col-md-6">
               <ResultBlock title="Document d'accompagnement">
-                <BadgeRow label="France" badge={lpsBadge(result.frDocument)} />
-                {affichage.lignesUe && (
-                  <BadgeRow label="UE" badge={certificationBadge(result.ueDocument)} />
-                )}
+                <BadgeRow label="France" badge={details.document.france} />
+                <BadgeRow label="UE" badge={details.document.ue} />
               </ResultBlock>
             </div>
           </>
         )}
       </div>
 
-      {affichage.detailsFrance && (
+      {details !== null && (
         <div className="fr-alert fr-alert--info fr-mt-4w">
           <h3 className="fr-alert__title">Mentions à reporter sur les documents commerciaux :</h3>
           <p className="fr-mb-0">
@@ -163,10 +145,6 @@ function ResultBlock({ title, children }: { title: string; children: ReactNode }
   );
 }
 
-type BadgeSpec = { label: string; variant: BadgeVariant };
-// Statuts DSFR sans icône (nomenclature maquette : vert, rouge, bleu).
-type BadgeVariant = "success" | "error" | "info";
-
 function Badge({ badge }: { badge: BadgeSpec }) {
   return (
     <span className={`fr-badge fr-badge--${badge.variant} fr-badge--no-icon`}>{badge.label}</span>
@@ -188,42 +166,12 @@ function BadgeRow({ label, badge }: { label: string; badge: BadgeSpec | null }) 
   );
 }
 
-function MarqueRow({ marque }: { marque: Marque | null }) {
-  if (marque === null) return null;
+function MarqueRow({ marque, badge }: { marque: Marque | null; badge: BadgeSpec | null }) {
+  if (marque === null || badge === null) return null;
   return (
     <div className="flex items-center gap-4">
       <img src={`/images/marques/${marque}.png`} alt="" className="h-14 w-auto" />
-      <Badge badge={{ label: MARQUE_LABELS[marque].toUpperCase(), variant: "info" }} />
+      <Badge badge={badge} />
     </div>
   );
-}
-
-function mouvementBadge(value: Mouvement): BadgeSpec {
-  return value === Mouvement.Autorise
-    ? { label: MOUVEMENT_LABELS[value].toUpperCase(), variant: "success" }
-    : { label: MOUVEMENT_LABELS[value].toUpperCase(), variant: "error" };
-}
-
-function mouvementUeBadge(result: SimulationOutputs): BadgeSpec {
-  return ueInterditSansTraitement(result)
-    ? { label: MOUVEMENT_INTERDIT_SANS_TRAITEMENT_LABEL.toUpperCase(), variant: "error" }
-    : mouvementBadge(result.ueMouvement);
-}
-
-function traitementBadge(value: Traitement | null): BadgeSpec | null {
-  if (value === null) return null;
-  return {
-    label: TRAITEMENT_LABELS[value].toUpperCase(),
-    variant: value === Traitement.Obligatoire ? "error" : "success",
-  };
-}
-
-function lpsBadge(value: LPS | null): BadgeSpec | null {
-  return value === null ? null : { label: LPS_LABELS[value].toUpperCase(), variant: "info" };
-}
-
-function certificationBadge(value: Certification | null): BadgeSpec | null {
-  return value === null
-    ? null
-    : { label: CERTIFICATION_LABELS[value].toUpperCase(), variant: "info" };
 }
