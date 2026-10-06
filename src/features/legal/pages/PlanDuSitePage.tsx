@@ -29,6 +29,9 @@ export function PlanDuSitePage() {
               <Link to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}>Documentation réglementaire</Link>
             </li>
             <li>
+              <Link to={ROUTES.NIVEAU_RISQUE}>Niveau de risque des porcs et des viandes</Link>
+            </li>
+            <li>
               <Link to={ROUTES.HISTORIQUE_VERSIONS}>Historique des versions</Link>
             </li>
           </ul>

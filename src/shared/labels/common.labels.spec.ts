@@ -3,6 +3,7 @@ import { Zone } from "@engine";
 import {
   ZONE_OPTIONS_AVEC_REFLEXE,
   ZONE_ZIFS_REFLEXE,
+  zoneLibelleAvecSigle,
   zoneLibelleLong,
   zoneMoteur,
 } from "./common.labels";
@@ -36,5 +37,16 @@ describe("zoneLibelleLong", () => {
 
   it("laisse la zone indemne telle quelle", () => {
     expect(zoneLibelleLong(Zone.ZoneIndemne)).toBe("Zone indemne");
+  });
+});
+
+describe("zoneLibelleAvecSigle", () => {
+  it("met le sigle entre parenthèses après le libellé long", () => {
+    expect(zoneLibelleAvecSigle(Zone.ZRI)).toBe("Zone réglementée I (ZRI)");
+    expect(zoneLibelleAvecSigle(Zone.ZIFS)).toBe("Zone infectée faune sauvage (ZI FS)");
+  });
+
+  it("laisse la zone indemne sans sigle", () => {
+    expect(zoneLibelleAvecSigle(Zone.ZoneIndemne)).toBe("Zone indemne");
   });
 });

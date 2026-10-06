@@ -52,6 +52,15 @@ export function zoneLibelleLong(zone: Zone): string {
   return separateur === -1 ? libelle : libelle.slice(separateur + 3);
 }
 
+// Libellé long suivi du sigle (« Zone réglementée I (ZRI) »), pour les tableaux de niveau de risque.
+export function zoneLibelleAvecSigle(zone: Zone): string {
+  const libelle = ZONE_LABELS[zone];
+  const separateur = libelle.indexOf(" — ");
+  return separateur === -1
+    ? libelle
+    : `${libelle.slice(separateur + 3)} (${libelle.slice(0, separateur)})`;
+}
+
 // Ordre d'affichage des zones dans les dropdowns (du moins au plus restrictif).
 export const ZONE_ORDER: Zone[] = [
   Zone.ZoneIndemne,

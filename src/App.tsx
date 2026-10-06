@@ -9,6 +9,7 @@ import { DocumentationReglementairePage } from "@features/documentation/pages/Do
 import { HistoriqueVersionsPage } from "@features/historique/pages/HistoriqueVersionsPage";
 import { ErrorFallbackPage } from "@features/error/pages/ErrorFallbackPage";
 import { NotFoundPage } from "@features/error/pages/NotFoundPage";
+import { NiveauRisquePage } from "@features/niveau-risque/pages/NiveauRisquePage";
 import { PlanDuSitePage } from "@features/legal/pages/PlanDuSitePage";
 import { AccessibilitePage } from "@features/legal/pages/AccessibilitePage";
 import { MentionsLegalesPage } from "@features/legal/pages/MentionsLegalesPage";
@@ -28,6 +29,7 @@ function App() {
             element={<DocumentationReglementairePage />}
           />
           <Route path={ROUTES.HISTORIQUE_VERSIONS} element={<HistoriqueVersionsPage />} />
+          <Route path={ROUTES.NIVEAU_RISQUE} element={<NiveauRisquePage />} />
           <Route path={ROUTES.PLAN_DU_SITE} element={<PlanDuSitePage />} />
           <Route path={ROUTES.ACCESSIBILITE} element={<AccessibilitePage />} />
           <Route path={ROUTES.MENTIONS_LEGALES} element={<MentionsLegalesPage />} />
