@@ -38,11 +38,10 @@ async function remplirJusquaSuides(page: Page, zoneSuides: string) {
 }
 
 // Cas "tout sain" (zone indemne partout, ovale, MCA oui) → marque ovale, mouvements autorisés.
-// En zone d'origine saine, les champs "traitement obligatoire FR/UE" sont masqués.
+// Zone saine + ovale : aucune question de traitement (valeurs connues, spec M1).
 async function remplirCasSain(page: Page) {
   await remplirJusquaSuides(page, "zone-indemne");
   await choisirMarque(page, "ovale");
-  await page.getByLabel(L.traitementRealise).selectOption("non");
   await page.getByLabel(L.zoneDest).selectOption("zone-indemne");
   await page.getByLabel(L.mcaDest).selectOption("oui");
 }
@@ -126,15 +125,14 @@ test.describe("Simulateur Autres Établissements — affichage progressif", () =
   test("chaque section complète révèle la suivante en entier", async ({ page }) => {
     await ouvrirAtelier(page);
 
-    // Zone réglementée : toute la provenance s'affiche, traitements compris.
-    await remplirJusquaSuides(page, "zp");
+    await remplirJusquaSuides(page, "zriii");
     await expect(page.getByRole("group", { name: L.marque })).toBeVisible();
-    await expect(page.getByLabel(L.traitementFr)).toBeVisible();
-    await expect(page.getByLabel(L.traitementRealise)).toBeVisible();
     await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
 
-    await choisirMarque(page, "ovale");
+    // ZRIII à diagonales : traitement national demandé, puis réalisé s'il est obligatoire.
+    await choisirMarque(page, "ovale-diagonales-paralleles");
     await page.getByLabel(L.traitementFr).selectOption("oui");
+    await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
     await page.getByLabel(L.traitementRealise).selectOption("non");
 
     // Destination : zone et MCA du destinataire apparaissent ensemble.
@@ -157,31 +155,63 @@ test.describe("Simulateur Autres Établissements — affichage progressif", () =
 });
 
 test.describe("Simulateur Autres Établissements — champs traitement conditionnels", () => {
-  test("zone d'origine saine : les champs traitement obligatoire ne s'affichent pas", async ({
-    page,
-  }) => {
+  test("la question « obligatoire pour les échanges UE » n'existe plus", async ({ page }) => {
     await ouvrirAtelier(page);
-    await remplirJusquaSuides(page, "zone-indemne");
-    await choisirMarque(page, "ovale");
+    await remplirJusquaSuides(page, "zriii");
+    await choisirMarque(page, "ovale-barree");
+    await expect(page.getByLabel(L.traitementFr)).toBeVisible();
+    await expect(page.getByLabel(L.traitementUe)).toHaveCount(0);
+  });
+
+  for (const zone of ["zone-indemne", "zp", "zrii"]) {
+    test(`${zone} + ovale : aucune question de traitement, destination directe`, async ({
+      page,
+    }) => {
+      await ouvrirAtelier(page);
+      await remplirJusquaSuides(page, zone);
+      await choisirMarque(page, "ovale");
+
+      await expect(page.getByLabel(L.traitementFr)).toHaveCount(0);
+      await expect(page.getByLabel(L.traitementRealise)).toHaveCount(0);
+      await expect(page.getByLabel(L.zoneDest)).toBeVisible();
+    });
+  }
+
+  test("ovale barrée hors ZRIII : seule la question « réalisé »", async ({ page }) => {
+    await ouvrirAtelier(page);
+    await remplirJusquaSuides(page, "zrii");
+    await choisirMarque(page, "ovale-barree");
 
     await expect(page.getByLabel(L.traitementFr)).toHaveCount(0);
-    await expect(page.getByLabel(L.traitementUe)).toHaveCount(0);
-    // Le parcours passe directement au traitement réalisé.
     await expect(page.getByLabel(L.traitementRealise)).toBeVisible();
   });
 
-  test("zone réglementée : 'obligatoire UE' masqué si 'obligatoire FR' = oui", async ({ page }) => {
+  test("ZRIII à diagonales : « réalisé » seulement si le national est obligatoire", async ({
+    page,
+  }) => {
     await ouvrirAtelier(page);
-    await remplirJusquaSuides(page, "zp");
-    await choisirMarque(page, "ovale");
-
-    await expect(page.getByLabel(L.traitementFr)).toBeVisible();
-
-    await page.getByLabel(L.traitementFr).selectOption("oui");
-    await expect(page.getByLabel(L.traitementUe)).toHaveCount(0);
+    await remplirJusquaSuides(page, "zriii");
+    await choisirMarque(page, "ovale-diagonales-paralleles");
 
     await page.getByLabel(L.traitementFr).selectOption("non");
-    await expect(page.getByLabel(L.traitementUe)).toBeVisible();
+    await expect(page.getByLabel(L.traitementRealise)).toHaveCount(0);
+    await expect(page.getByLabel(L.zoneDest)).toBeVisible();
+
+    await page.getByLabel(L.traitementFr).selectOption("oui");
+    await expect(page.getByLabel(L.traitementRealise)).toBeVisible();
+  });
+
+  test("ZRII + ovale barrée traitée → la viande ressort en ovale", async ({ page }) => {
+    await ouvrirAtelier(page);
+    await remplirJusquaSuides(page, "zrii");
+    await choisirMarque(page, "ovale-barree");
+    await page.getByLabel(L.traitementRealise).selectOption("oui");
+    await page.getByLabel(L.zoneDest).selectOption("zone-indemne");
+    await page.getByLabel(L.mcaDest).selectOption("oui");
+    await page.getByRole("button", { name: "Valider" }).click();
+
+    await expect(page.getByText("OVALE", { exact: true })).toBeVisible();
+    await expect(page.getByText("MOUVEMENT AUTORISÉ")).toHaveCount(2);
   });
 });
 
@@ -235,7 +265,7 @@ test.describe("Simulateur Autres Établissements — situations impossibles", ()
 
     await choisirMarque(page, "ovale");
     await expect(page.getByRole("alert")).toHaveCount(0);
-    await expect(page.getByLabel(L.traitementRealise)).toBeVisible();
+    await expect(page.getByLabel(L.zoneDest)).toBeVisible();
   });
 });
 

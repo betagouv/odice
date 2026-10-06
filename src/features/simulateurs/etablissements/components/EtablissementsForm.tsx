@@ -4,7 +4,7 @@
 
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
-import { Marque, Zone, type EtablissementsInputs } from "@engine";
+import { Marque, type EtablissementsInputs } from "@engine";
 import {
   MARQUE_LABELS,
   MARQUE_ORDER,
@@ -21,14 +21,14 @@ import { ROUTES } from "@shared/config/routes.config";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 import { McaInfoTooltip } from "@shared/components/McaInfoTooltip";
 import {
-  deriveTraitementObligatoire,
-  isTraitementObligatoireApplicable,
-  isTraitementUeApplicable,
+  MESSAGES_SITUATION_IMPOSSIBLE,
+  deduireTraitements,
+  questionTraitementNationalVisible,
+  questionTraitementRealiseVisible,
+  situationImpossible,
+  zoneOuNull,
   type OuiNon,
-} from "./traitementFields";
-import { MESSAGES_SITUATION_IMPOSSIBLE, situationImpossible } from "./traitementRegles";
-
-const zoneOrNull = (zone: ZoneChoix | ""): Zone | null => (zone === "" ? null : zoneMoteur(zone));
+} from "./traitementRegles";
 
 // Situation impossible (spec) : bloque les questions de traitement, la destination et la validation.
 const impossible = (f: { zoneSuides: ZoneChoix | ""; marqueViandes: Marque | "" }) =>
@@ -43,7 +43,6 @@ type FormState = {
   zoneSuides: ZoneChoix | "";
   marqueViandes: Marque | "";
   traitementObligatoireFr: OuiNon;
-  traitementObligatoireUe: OuiNon;
   traitementRealise: OuiNon;
   zoneDestinataire: ZoneChoix | "";
   mcaDestinataire: OuiNon;
@@ -55,15 +54,16 @@ const EMPTY_FORM: FormState = {
   zoneSuides: "",
   marqueViandes: "",
   traitementObligatoireFr: "",
-  traitementObligatoireUe: "",
   traitementRealise: "",
   zoneDestinataire: "",
   mcaDestinataire: "",
 };
 
+const marqueOuNull = (marque: Marque | ""): Marque | null => (marque === "" ? null : marque);
+
 // Révélation par section (spec) : votre établissement, provenance, destination.
-// Les deux champs "traitement obligatoire" sont masqués selon la zone d'origine (R2)
-// et la réponse FR (R1). Voir traitementFields.ts.
+// Questions de traitement affichées seulement quand la réponse n'est pas connue
+// d'avance ; sinon valeur déduite (cf. traitementRegles.ts).
 const FIELDS: ProgressiveFieldConfig<FormState>[] = [
   { key: "zoneExpediteur", section: "etablissement" },
   { key: "mcaExpediteur", section: "etablissement" },
@@ -73,16 +73,20 @@ const FIELDS: ProgressiveFieldConfig<FormState>[] = [
     key: "traitementObligatoireFr",
     section: "provenance",
     isApplicable: (f) =>
-      impossible(f) === null && isTraitementObligatoireApplicable(zoneOrNull(f.zoneSuides)),
+      impossible(f) === null &&
+      questionTraitementNationalVisible(zoneOuNull(f.zoneSuides), marqueOuNull(f.marqueViandes)),
   },
   {
-    key: "traitementObligatoireUe",
+    key: "traitementRealise",
     section: "provenance",
     isApplicable: (f) =>
       impossible(f) === null &&
-      isTraitementUeApplicable(zoneOrNull(f.zoneSuides), f.traitementObligatoireFr),
+      questionTraitementRealiseVisible(
+        zoneOuNull(f.zoneSuides),
+        marqueOuNull(f.marqueViandes),
+        f.traitementObligatoireFr,
+      ),
   },
-  { key: "traitementRealise", section: "provenance", isApplicable: (f) => impossible(f) === null },
   { key: "zoneDestinataire", section: "destination" },
   { key: "mcaDestinataire", section: "destination" },
 ];
@@ -127,19 +131,21 @@ export function EtablissementsForm({
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!canSubmit) return;
-    const traitementObligatoire = deriveTraitementObligatoire(
-      zoneOrNull(form.zoneSuides),
+    const zoneSuides = zoneMoteur(form.zoneSuides as ZoneChoix);
+    const traitements = deduireTraitements(
+      zoneSuides,
+      form.marqueViandes as Marque,
       form.traitementObligatoireFr,
-      form.traitementObligatoireUe,
+      form.traitementRealise,
     );
     onSubmit({
-      zoneSuides: zoneMoteur(form.zoneSuides as ZoneChoix),
+      zoneSuides,
       marqueViandes: form.marqueViandes as Marque,
-      traitementObligatoireFr: traitementObligatoire.fr,
-      traitementObligatoireUe: traitementObligatoire.ue,
+      traitementObligatoireFr: traitements.fr,
+      traitementObligatoireUe: traitements.ue,
       zoneExpediteur: zoneMoteur(form.zoneExpediteur as ZoneChoix),
       mcaExpediteur: form.mcaExpediteur === "oui",
-      traitementRealise: form.traitementRealise === "oui",
+      traitementRealise: traitements.realise,
       zoneDestinataire: zoneMoteur(form.zoneDestinataire as ZoneChoix),
       mcaDestinataire: form.mcaDestinataire === "oui",
     });
@@ -336,33 +342,7 @@ export function EtablissementsForm({
                   </div>
                 )}
 
-                {isVisible("traitementObligatoireUe", form) && (
-                  <div className="fr-col-12 fr-col-md-6">
-                    <div className="fr-select-group">
-                      <label className="fr-label" htmlFor="etb-trait-oblig-ue">
-                        Un traitement d'atténuation est-il obligatoire pour les échanges UE ?
-                      </label>
-                      <select
-                        className="fr-select"
-                        id="etb-trait-oblig-ue"
-                        required
-                        value={form.traitementObligatoireUe}
-                        onChange={(e) =>
-                          update("traitementObligatoireUe", e.target.value as OuiNon)
-                        }
-                      >
-                        <option value="" disabled>
-                          Sélectionner une option
-                        </option>
-                        <option value="oui">Oui</option>
-                        <option value="non">Non</option>
-                      </select>
-                    </div>
-                  </div>
-                )}
-
-                {/* Absent de la maquette mais requis par le moteur : placé avec les autres
-                    questions de traitement. */}
+                {/* Spec E5 : seulement pour une ovale barrée ou un traitement national obligatoire. */}
                 {isVisible("traitementRealise", form) && (
                   <div className="fr-col-12 fr-col-md-6">
                     <div className="fr-select-group">
