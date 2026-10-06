@@ -14,6 +14,7 @@ Tous les événements portent la **catégorie** `Simulateur PPA`. Le **simulateu
 | Résultat | `abattoir_resultat_affiche` | `autre_resultat_affiche` | Résultat calculé et affiché — **porte les dimensions type + zone** (cf. plus bas) |
 | Durée de saisie | `abattoir_duree_saisie` | `autre_duree_saisie` | Validation — **Event Value = secondes** depuis la 1ère saisie (1er champ du formulaire : zone de l'établissement de l'utilisateur) |
 | Réinitialisation | `abattoir_reinitialisation` | `autre_reinitialisation` | Clic sur « Réinitialiser » (pas une simple saisie) |
+| Export | `abattoir_simulation_exportee` | `autre_simulation_exportee` | Clic sur « Exporter la simulation » (PDF, cf. [ADR-0017](./adr/0017-export-pdf-react-pdf.md)) |
 
 ### Événements de clic vers les pages annexes
 

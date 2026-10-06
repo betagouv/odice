@@ -77,7 +77,7 @@ La nomenclature des badges ne couvre pas toutes les valeurs du moteur. Libellés
 
 | # | Sujet | État |
 |---|---|---|
-| Q25 | Bouton « Exporter la simulation » (maquette des résultats) | Non implémenté : format attendu (PDF, impression) et contenu à définir |
+| Q25 | Bouton « Exporter la simulation » | **Implémenté** (PDF, cf. [ADR-0017](./adr/0017-export-pdf-react-pdf.md)). À valider : le PDF ne reprend ni le bandeau « Mentions à reporter » (absent de la maquette), ni les réponses de traitement d'Autres établissements (souvent déduites). Faut-il les ajouter ? |
 | Q26 | Page « Aide à l'utilisation » | Retirée de cette version ; à réintroduire une fois les maquettes stabilisées ? |
 | Q27 | Page « Documentation réglementaire » | Toujours « contenu en cours de rédaction » : contenu à fournir |
 
@@ -94,5 +94,5 @@ La nomenclature des badges ne couvre pas toutes les valeurs du moteur. Libellés
 
 ## Liens
 
-- ADR : [0013](./adr/0013-refonte-ui-simulateurs-et-retrait-aide.md), [0014](./adr/0014-affichage-progressif-par-section.md), [0015](./adr/0015-panneau-resultats-commun-et-masquage.md), [0016](./adr/0016-autres-etablissements-valeurs-deduites.md)
+- ADR : [0013](./adr/0013-refonte-ui-simulateurs-et-retrait-aide.md), [0014](./adr/0014-affichage-progressif-par-section.md), [0015](./adr/0015-panneau-resultats-commun-et-masquage.md), [0016](./adr/0016-autres-etablissements-valeurs-deduites.md), [0017](./adr/0017-export-pdf-react-pdf.md)
 - Points à valider antérieurs (moteur Abattoirs) : [`simulateur-abattoirs-points-a-valider.md`](./simulateur-abattoirs-points-a-valider.md)
