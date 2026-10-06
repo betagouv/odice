@@ -5,6 +5,7 @@
 ## Sommaire
 
 - [Architecture Decision Records (ADR)](./adr/) — décisions techniques structurantes
+- [Questions métier — refonte UI](./questions-metier-refonte-ui.md) — points à confirmer, infirmer ou compléter par l'équipe métier
 - [README projet](../README.md) — installation, scripts, structure
 - [CLAUDE.md](../CLAUDE.md) — règles de code et conventions
 
