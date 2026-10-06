@@ -21,6 +21,8 @@ export const MATOMO_STEPS = {
   COMBINAISON: "combinaison_soumise",
   // Durée (secondes) entre la 1ère saisie (1er champ du formulaire) et la validation, portée par l'Event Value.
   DUREE: "duree_saisie",
+  // Clic sur « Exporter la simulation » (PDF).
+  EXPORT: "simulation_exportee",
 } as const;
 export type MatomoStep = (typeof MATOMO_STEPS)[keyof typeof MATOMO_STEPS];
 

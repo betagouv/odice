@@ -197,6 +197,7 @@ export function SimulateursIndexPage() {
               <EtablissementsResult
                 inputs={etablissementsResult.inputs}
                 result={etablissementsResult.result}
+                nomEtablissement={nomEtablissementFor(type)}
               />
             </div>
           )}

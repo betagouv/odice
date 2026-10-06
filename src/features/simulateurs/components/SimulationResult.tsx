@@ -19,6 +19,8 @@ import { ROUTES } from "@shared/config/routes.config";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
 import { mentionTraitement } from "./resultatAffichage";
 import { resultatBadges, type BadgeSpec } from "./resultatBadges";
+import { ExportSimulationButton } from "../export/ExportSimulationButton";
+import type { SimulationExport } from "../export/simulationExport";
 
 export type SimulationOutputs = AbattoirsOutputs | EtablissementsOutputs;
 
@@ -34,11 +36,20 @@ type Props = {
   // Parcours affiché sous le titre (« Abattoir > autre établissement… »).
   sousTitre: string;
   versionCourante: SimulateurVersion;
+  construireExport: (date: Date) => SimulationExport;
+  onExport?: () => void;
 };
 
 const BLUE = { color: "var(--text-title-blue-france)" } as const;
 
-export function SimulationResult({ result, mentions, sousTitre, versionCourante }: Props) {
+export function SimulationResult({
+  result,
+  mentions,
+  sousTitre,
+  versionCourante,
+  construireExport,
+  onExport,
+}: Props) {
   const badges = resultatBadges(result);
   const details = badges.details;
   const traitement = mentionTraitement(result);
@@ -96,6 +107,8 @@ export function SimulationResult({ result, mentions, sousTitre, versionCourante 
           )}
         </div>
       )}
+
+      <ExportSimulationButton construireExport={construireExport} onExport={onExport} />
     </div>
   );
 }
