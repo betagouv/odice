@@ -218,3 +218,22 @@ test.describe("Simulateur Autres Établissements — ZI FS réflexe", () => {
     expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
   });
 });
+
+test.describe("Simulateur Autres Établissements — tableau des mélanges", () => {
+  test("« référez-vous à ce tableau » ouvre le niveau de risque dans un nouvel onglet", async ({
+    page,
+    context,
+  }) => {
+    await ouvrirAtelier(page);
+    await remplirJusquaSuides(page, "zone-indemne");
+
+    const lien = page.getByRole("link", { name: "référez-vous à ce tableau" });
+    await expect(lien).toHaveAttribute("href", "/niveau-de-risque");
+    await expect(lien).toHaveAttribute("target", "_blank");
+
+    const [onglet] = await Promise.all([context.waitForEvent("page"), lien.click()]);
+    await expect(
+      onglet.getByRole("heading", { level: 1, name: "Niveau de risque des porcs et des viandes" }),
+    ).toBeVisible();
+  });
+});

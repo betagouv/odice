@@ -207,9 +207,11 @@ export function EtablissementsForm({
             {PERIMETRE_VIANDES}{" "}
             <strong>
               Si vous avez un produit composé d'un mélange de viandes de porc issues de zones
-              différentes,{" "}
-              {/* TODO : remplacer par l'URL du tableau des mélanges (non fournie à date). */}
-              <Link to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}>référez-vous à ce tableau</Link>.
+              différentes, {/* Nouvel onglet : ne pas perdre la saisie en cours. */}
+              <Link to={ROUTES.NIVEAU_RISQUE} target="_blank" rel="noopener noreferrer">
+                référez-vous à ce tableau
+              </Link>
+              .
             </strong>
           </p>
 
