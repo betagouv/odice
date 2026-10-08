@@ -8,8 +8,8 @@ export function HomePage() {
   return (
     <>
       <PageTitle>Accueil</PageTitle>
-      <PageContainer avertissement>
-        <h1 className="fr-mt-4w">Bienvenue sur Odicé</h1>
+      <PageContainer avertissement espaceHaut="reduit">
+        <h1>Bienvenue sur Odicé</h1>
         <hr className="fr-mt-2w fr-mb-4w" />
 
         {/* Section 1 — Aide à la décision : texte à gauche, image à droite, CTA simulation */}
@@ -37,6 +37,10 @@ export function HomePage() {
               renforcer la prévention, la gestion et la maîtrise des risques en santé animale.
             </p>
 
+            <Link to={ROUTES.SIMULATEURS} className="fr-btn fr-mt-2w">
+              Démarrer une simulation
+            </Link>
+
             <h3 className="fr-h6 fr-mt-4w">Odicé, pour quels mouvements et quel périmètre ?</h3>
             <p>
               Odicé vous accompagne pour déterminer les règles sanitaires applicables aux mouvements
@@ -46,13 +50,10 @@ export function HomePage() {
             <p className="fr-mb-1w">
               <strong>Le périmètre d'Odicé n'inclut pas :</strong>
             </p>
-            <ul>
+            <ul className="fr-mb-0">
               <li>les mouvements d'un autre pays vers la France ;</li>
               <li>les exportations vers les pays tiers (en dehors de l'Union européenne).</li>
             </ul>
-            <Link to={ROUTES.SIMULATEURS} className="fr-btn fr-mt-2w">
-              Démarrer une simulation
-            </Link>
           </div>
           <div className="fr-col-12 fr-col-md-4">
             <div className="relative h-full min-h-60">
