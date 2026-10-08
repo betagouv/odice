@@ -18,6 +18,46 @@ test.describe("Niveau de risque des porcs et des viandes", () => {
     await expect(tableaux.nth(1)).toContainText("ovale barrée");
   });
 
+  test("la colonne « marque sanitaire » est complète dans le tableau des viandes", async ({
+    page,
+  }) => {
+    await page.goto("/niveau-de-risque");
+    const lignes = page.locator(".fr-table table").nth(1).locator("tbody tr");
+    await expect(lignes).toHaveCount(17);
+
+    const marques = await lignes.locator("td:nth-child(3)").allInnerTexts();
+    expect(marques.every((marque) => marque.trim() !== "")).toBe(true);
+    expect(marques[0]).toBe("ovale");
+    expect(marques[15]).toBe("ovale barrée");
+  });
+
+  test("l'échelle de couleur s'intensifie du premier au dernier niveau", async ({ page }) => {
+    await page.goto("/niveau-de-risque");
+
+    for (const tableau of [0, 1]) {
+      const cellules = page
+        .locator(".fr-table table")
+        .nth(tableau)
+        .locator("tbody tr td:first-child");
+      // Canal vert du fond réellement affiché (lu via un canvas : Chrome renvoie
+      // « color(srgb …) » pour un color-mix, pas « rgb(…) »).
+      const vert = await cellules.evaluateAll((tds) =>
+        tds.map((td) => {
+          const canvas = document.createElement("canvas");
+          canvas.width = canvas.height = 1;
+          const contexte = canvas.getContext("2d") as CanvasRenderingContext2D;
+          contexte.fillStyle = getComputedStyle(td).backgroundColor;
+          contexte.fillRect(0, 0, 1, 1);
+          return contexte.getImageData(0, 0, 1, 1).data[1];
+        }),
+      );
+      // Plus la ligne est à risque, plus le vert baisse (blanc vers rouge).
+      expect(vert[0]).toBe(255);
+      expect(vert[vert.length - 1]).toBeLessThan(180);
+      for (let i = 1; i < vert.length; i += 1) expect(vert[i]).toBeLessThanOrEqual(vert[i - 1]);
+    }
+  });
+
   test("le plan du site mène à la page", async ({ page }) => {
     await page.goto("/plan-du-site");
     await page.getByRole("link", { name: "Niveau de risque des porcs et des viandes" }).click();

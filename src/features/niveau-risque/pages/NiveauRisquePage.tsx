@@ -9,7 +9,7 @@ import { PageContainer } from "@shared/components/PageContainer";
 import { PageTitle } from "@shared/components/PageTitle";
 import { MARQUE_LABELS, zoneLibelleAvecSigle } from "@shared/labels/common.labels";
 import { STATUT_SIGLES } from "@shared/labels/abattoirs.labels";
-import { NIVEAUX_ABATTOIRS, NIVEAUX_VIANDES } from "../niveauRisque";
+import { NIVEAUX_ABATTOIRS, NIVEAUX_VIANDES, intensiteNiveau } from "../niveauRisque";
 
 const TITRE = "Niveau de risque des porcs et des viandes";
 const VIDE = "-";
@@ -90,7 +90,7 @@ export function NiveauRisquePage() {
             ]}
             lignes={NIVEAUX_VIANDES.map((niveau) => [
               zoneLibelleAvecSigle(niveau.zone),
-              niveau.marque === null ? "" : MARQUE_LABELS[niveau.marque].toLowerCase(),
+              MARQUE_LABELS[niveau.marque].toLowerCase(),
               niveau.traitementObligatoireNational
                 ? "traitement d'atténuation obligatoire pour les mouvements nationaux"
                 : VIDE,
@@ -106,6 +106,8 @@ export function NiveauRisquePage() {
 
 // Colonne « niveau » centrée (maquette) ; le ! passe devant l'alignement DSFR.
 const CENTRE = "text-center!";
+// Les cellules DSFR ont leur propre fond blanc : elles héritent de la couleur de leur ligne.
+const FOND_LIGNE = "bg-inherit!";
 
 // Tableau DSFR ; la première colonne (niveau) est numérotée à partir de 1.
 function Tableau({
@@ -135,10 +137,19 @@ function Tableau({
               </thead>
               <tbody>
                 {lignes.map((cellules, i) => (
-                  <tr key={i}>
-                    <td className={CENTRE}>{i + 1}</td>
+                  // Style inline : l'intensité varie par ligne, ce qu'aucune classe DSFR ou Tailwind
+                  // statique ne couvre. Jetons DSFR, donc l'échelle suit le thème clair / sombre.
+                  <tr
+                    key={i}
+                    style={{
+                      backgroundColor: `color-mix(in srgb, var(--background-action-high-error) ${intensiteNiveau(i, lignes.length)}%, var(--background-default-grey))`,
+                    }}
+                  >
+                    <td className={`${FOND_LIGNE} ${CENTRE}`}>{i + 1}</td>
                     {cellules.map((cellule, j) => (
-                      <td key={j}>{cellule}</td>
+                      <td key={j} className={FOND_LIGNE}>
+                        {cellule}
+                      </td>
                     ))}
                   </tr>
                 ))}
