@@ -18,6 +18,40 @@ test.describe("Niveau de risque des porcs et des viandes", () => {
     await expect(tableaux.nth(1)).toContainText("ovale barrée");
   });
 
+  test("les titres et phrases suivent la maquette à jour", async ({ page }) => {
+    await page.goto("/niveau-de-risque");
+
+    await expect(
+      page.getByRole("heading", {
+        level: 2,
+        name: "Niveau de risque des porcs dans les abattoirs",
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("heading", {
+        level: 2,
+        name: "Niveau de risque des viandes dans les établissements du secteur alimentaire",
+      }),
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        "les animaux présentant le niveau de risque le plus élevé sont abattus en dernier",
+      ),
+    ).toBeVisible();
+    await expect(
+      page.getByText(
+        /ce dernier récupère le statut de la matière première ayant le niveau de risque le plus élevé/,
+      ),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("columnheader", { name: "Niveau de risque des porcs" }),
+    ).toBeVisible();
+    // Plus aucune trace de l'ancien wording.
+    await expect(page.getByText(/plus défavorable|Autres industries|Ordonnancement/)).toHaveCount(
+      0,
+    );
+  });
+
   test("la colonne « marque sanitaire » est complète dans le tableau des viandes", async ({
     page,
   }) => {

@@ -25,9 +25,7 @@ export function NiveauRisquePage() {
         <hr />
 
         <section className="fr-mb-6w">
-          <h2 className="fr-h5">
-            Abattoir — Ordonnancement des abattages en fonction du niveau de risque
-          </h2>
+          <h2 className="fr-h5">Niveau de risque des porcs dans les abattoirs</h2>
           <p>
             Afin de <strong>limiter le risque de contamination croisée</strong> entre les différents
             statuts sanitaires des suidés et de{" "}
@@ -42,14 +40,14 @@ export function NiveauRisquePage() {
             Lorsque plusieurs catégories de suidés présentant des statuts sanitaires différents
             vis-à-vis de la PPA sont abattues au cours d'une même journée,{" "}
             <strong>
-              les animaux présentant le statut sanitaire le plus défavorable sont abattus en dernier
+              les animaux présentant le niveau de risque le plus élevé sont abattus en dernier
             </strong>
             .
           </p>
           <Tableau
-            legende="Ordonnancement des abattages par niveau de risque"
+            legende="Niveau de risque des porcs dans les abattoirs"
             colonnes={[
-              "Niveau de risque",
+              "Niveau de risque des porcs",
               "Zone de provenance des porcs",
               "Statut du mouvement des porcs",
             ]}
@@ -64,14 +62,14 @@ export function NiveauRisquePage() {
 
         <section>
           <h2 className="fr-h5">
-            Autres industries agroalimentaires — Ordonnancement du niveau de risque des viandes
+            Niveau de risque des viandes dans les établissements du secteur alimentaire
           </h2>
           <p>
             Lorsque des viandes présentant des statuts sanitaires différents vis-à-vis de la PPA
             sont mélangées dans un même produit fini,{" "}
             <strong>
               ce dernier récupère le statut de la matière première ayant le niveau de risque le plus
-              défavorable
+              élevé
             </strong>
             .
           </p>
@@ -81,7 +79,7 @@ export function NiveauRisquePage() {
             un établissement non agréé MCA après avoir subi un traitement d'atténuation.
           </p>
           <Tableau
-            legende="Ordonnancement des viandes par niveau de risque"
+            legende="Niveau de risque des viandes dans les établissements du secteur alimentaire"
             colonnes={[
               "Niveau de risque de la matière première",
               "Zone de provenance des porcs",
