@@ -91,7 +91,7 @@ La page Aide à l'utilisation, construite sur des captures de l'ancien formulair
 
 ### Négatives / Risques
 
-- ZI FS réflexe n'est pas distinguable dans les résultats ni dans Matomo (dimension `zone_suides` et signature reçoivent `zi-fs`).
+- ZI FS réflexe n'est pas distinguable dans Matomo (dimension `zone_suides` et signature reçoivent `zi-fs`) ni dans le panneau de résultats, hormis la mention « Zone infectée faune sauvage réflexe » du bandeau des documents commerciaux (Abattoir).
 - La question « Un traitement d'atténuation a-t-il été réalisé ? » (Autres établissements), absente des maquettes mais requise par le moteur, est placée dans « Informations sur les viandes » : à confirmer par le métier.
 - Le lien « référez-vous à ce tableau » (tableau des mélanges) pointe vers la page « Niveau de risque des porcs et des viandes » (`/niveau-de-risque`), dont le tableau des viandes attend encore les marques sanitaires de la matière première (cf. [`niveauRisque.ts`](../../src/features/niveau-risque/niveauRisque.ts)).
 - L'event `clic_aide_utilisation` décrit dans l'[ADR-0011](./0011-indicateurs-matomo-dimensions-duree-clics.md) n'est plus émis.

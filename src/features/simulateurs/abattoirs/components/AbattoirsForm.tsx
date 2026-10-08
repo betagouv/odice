@@ -55,7 +55,8 @@ const FIELDS: ProgressiveFieldConfig<FormState>[] = [
 ];
 
 type Props = {
-  onSubmit: (inputs: AbattoirsInputs) => void;
+  // Le choix de zone d'origine est transmis tel que saisi (« ZI FS réflexe » compris).
+  onSubmit: (inputs: AbattoirsInputs, zoneSuidesChoix: ZoneChoix) => void;
   onReset: () => void;
   onChange?: () => void;
   // Premier renseignement de la zone de l'abattoir (démarrage du chrono de saisie).
@@ -91,14 +92,18 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!canSubmit) return;
-    onSubmit({
-      zoneSuides: zoneMoteur(form.zoneSuides as ZoneChoix),
-      statut: statutRequired && form.statut !== "" ? (form.statut as Statut) : null,
-      zoneAbattoir: zoneMoteur(form.zoneAbattoir as ZoneChoix),
-      mcaAbattoir: form.mcaAbattoir === "oui",
-      zoneEtbDestinataire: zoneMoteur(form.zoneEtbDestinataire as ZoneChoix),
-      mcaEtbDestinataire: form.mcaEtbDestinataire === "oui",
-    });
+    const zoneSuidesChoix = form.zoneSuides as ZoneChoix;
+    onSubmit(
+      {
+        zoneSuides: zoneMoteur(zoneSuidesChoix),
+        statut: statutRequired && form.statut !== "" ? (form.statut as Statut) : null,
+        zoneAbattoir: zoneMoteur(form.zoneAbattoir as ZoneChoix),
+        mcaAbattoir: form.mcaAbattoir === "oui",
+        zoneEtbDestinataire: zoneMoteur(form.zoneEtbDestinataire as ZoneChoix),
+        mcaEtbDestinataire: form.mcaEtbDestinataire === "oui",
+      },
+      zoneSuidesChoix,
+    );
   }
 
   // Réinitialiser : on vide les valeurs mais on garde tous les champs visibles.

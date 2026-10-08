@@ -7,14 +7,8 @@
 
 import type { ReactNode } from "react";
 import { Link } from "react-router-dom";
-import type {
-  AbattoirsOutputs,
-  EtablissementsOutputs,
-  Marque,
-  SimulateurVersion,
-  Zone,
-} from "@engine";
-import { zoneLibelleLong } from "@shared/labels/common.labels";
+import type { AbattoirsOutputs, EtablissementsOutputs, Marque, SimulateurVersion } from "@engine";
+import { zoneLibelleLong, type ZoneChoix } from "@shared/labels/common.labels";
 import { ROUTES } from "@shared/config/routes.config";
 import { formatDateIsoToLongFr } from "@shared/utils/format-date";
 import { mentionTraitement } from "./resultatAffichage";
@@ -26,7 +20,7 @@ export type SimulationOutputs = AbattoirsOutputs | EtablissementsOutputs;
 
 // Saisies reprises dans le bandeau des mentions ; statut null si non demandé.
 export type SimulationMentions = {
-  zoneSuides: Zone;
+  zoneSuides: ZoneChoix;
   statut: string | null;
 };
 

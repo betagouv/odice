@@ -44,7 +44,6 @@ La nomenclature des badges ne couvre pas toutes les valeurs du moteur. Libellés
 | Q9 | P1 | Ligne traitement quand le traitement France est **non obligatoire** et l'UE **autorisée** ou **interdite** (hors ovale barrée) — cas les plus fréquents | **Aucune ligne traitement** (la spec ne couvre que « France vide ») ; le bandeau ne contient alors que la zone (et le statut pour Abattoirs) | Est-ce l'intention ? Ou faut-il une mention (ex. « Traitement d'atténuation non obligatoire ») ? | ☐ Confirmé ☐ Ajouter : … |
 | Q10 | P2 | Titre : la spec écrit « sur **les** documents commerciaux » (message de base) et « sur **vos** documents commerciaux » (exemple) | « …sur **les** documents commerciaux : » | Quelle formulation ? | ☐ les ☐ vos |
 | Q11 | P3 | Style : la spec montre un ⚠ et une barre latérale | Alerte DSFR **bleue « info »** (le « bandeau bleu ») | Garder le bleu, ou passer à l'alerte orange « avertissement » ? | ☐ Bleu ☐ Orange |
-| Q12 | P2 | Zone d'origine en **ZI FS réflexe** (Abattoirs) | La mention affiche « Zone infectée faune sauvage » (réflexe convertie en ZI FS) | Faut-il afficher « Zone infectée faune sauvage réflexe » sur les documents commerciaux ? | ☐ ZI FS suffit ☐ Afficher « réflexe » |
 | Q13 | P3 | Encart « Ne pas oublier » et son lien vers la documentation réglementaire | **Supprimés** (remplacés par le bandeau, comme sur la maquette) | Un lien vers la documentation réglementaire doit-il subsister dans les résultats ? | ☐ Non ☐ Oui, où : … |
 
 ## 5. Page « Niveau de risque des porcs et des viandes »
@@ -89,6 +88,7 @@ La nomenclature des badges ne couvre pas toutes les valeurs du moteur. Libellés
 - Affichage progressif **partie par partie** ; statut uniquement en ZRII / ZRIII.
 - Masquage des sorties : FR interdit → seule la possibilité de mouvement ; UE interdit → pas de lignes UE.
 - UE « interdit sans traitement d'atténuation » si la marque est une ovale barrée.
+- Bandeau des mentions : une zone d'origine « ZI FS réflexe » (Abattoir) s'affiche « Zone infectée faune sauvage réflexe » (validé 2026-10-08).
 - Wording : « Informations » au pluriel, format « ZI FS réflexe — Zone infectée faune sauvage réflexe », libellés propres à Autres établissements (« Provenance de la matière première »).
 - Nom du produit : « Odicé » ; page d'aide retirée de cette version.
 

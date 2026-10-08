@@ -50,7 +50,7 @@ Les deux simulateurs avaient chacun leur panneau de résultats (`AbattoirsResult
 ### Négatives / Risques
 
 - L'encart « Ne pas oublier » et son lien vers la documentation réglementaire disparaissent du panneau : l'event Matomo `clic_documentation_reglementaire` n'est plus émis que depuis le menu.
-- Les mentions affichent la zone transmise au moteur : une zone saisie en « ZI FS réflexe » y apparaît comme « Zone infectée faune sauvage » (cf. [ADR-0013](./0013-refonte-ui-simulateurs-et-retrait-aide.md)).
+- Les mentions reprennent le choix de zone d'origine tel que saisi : le formulaire Abattoir transmet aussi `zoneSuidesChoix`, de sorte que « ZI FS réflexe » apparaît comme « Zone infectée faune sauvage réflexe » (demande métier), bien que le moteur reçoive ZI FS (cf. [ADR-0013](./0013-refonte-ui-simulateurs-et-retrait-aide.md)).
 - Les libellés « Laissez-passer sanitaire non requis », « Dérogation au certificat zoosanitaire possible » et « Certificat zoosanitaire non requis », absents de la nomenclature, sont des propositions à valider par le métier.
 
 ### Migration

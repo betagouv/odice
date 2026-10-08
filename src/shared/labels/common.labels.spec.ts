@@ -31,6 +31,11 @@ describe("zones des simulateurs — option ZI FS réflexe", () => {
 });
 
 describe("zoneLibelleLong", () => {
+  it("garde le libellé « réflexe » pour le choix ZI FS réflexe", () => {
+    expect(zoneLibelleLong(ZONE_ZIFS_REFLEXE)).toBe("Zone infectée faune sauvage réflexe");
+    expect(zoneLibelleLong(Zone.ZIFS)).toBe("Zone infectée faune sauvage");
+  });
+
   it("retire le sigle d'une zone réglementée", () => {
     expect(zoneLibelleLong(Zone.ZRII)).toBe("Zone réglementée II");
   });

@@ -46,7 +46,10 @@ export const CERTIFICATION_LABELS: Record<Certification, string> = {
 };
 
 // Libellé sans sigle (« Zone réglementée II »), pour les mentions des documents commerciaux.
-export function zoneLibelleLong(zone: Zone): string {
+// Le choix « ZI FS réflexe » garde son libellé propre : le moteur le voit comme ZI FS,
+// mais l'utilisateur doit retrouver sa saisie sur ses documents.
+export function zoneLibelleLong(zone: ZoneChoix): string {
+  if (zone === ZONE_ZIFS_REFLEXE) return LIBELLE_LONG_ZIFS_REFLEXE;
   const libelle = ZONE_LABELS[zone];
   const separateur = libelle.indexOf(" — ");
   return separateur === -1 ? libelle : libelle.slice(separateur + 3);
@@ -92,6 +95,7 @@ export const MCA_TOOLTIP = {
 // Choix « ZI FS réflexe » (toutes les zones des deux simulateurs) : même conditionnalité
 // que ZI FS, donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
 export const ZONE_ZIFS_REFLEXE = "zi-fs-reflexe";
+const LIBELLE_LONG_ZIFS_REFLEXE = "Zone infectée faune sauvage réflexe";
 export type ZoneChoix = Zone | typeof ZONE_ZIFS_REFLEXE;
 
 export const ZONE_OPTIONS_AVEC_REFLEXE: { value: ZoneChoix; label: string }[] = ZONE_ORDER.flatMap(
@@ -102,7 +106,7 @@ export const ZONE_OPTIONS_AVEC_REFLEXE: { value: ZoneChoix; label: string }[] = 
       ? [
           {
             value: ZONE_ZIFS_REFLEXE,
-            label: "ZI FS réflexe — Zone infectée faune sauvage réflexe",
+            label: `ZI FS réflexe — ${LIBELLE_LONG_ZIFS_REFLEXE}`,
           },
           option,
         ]

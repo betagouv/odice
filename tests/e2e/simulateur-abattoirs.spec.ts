@@ -266,6 +266,26 @@ test.describe("Simulateur Abattoirs — porcs en ZI FS réflexe", () => {
     await expect(page.getByText("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
     expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
   });
+
+  test("le bandeau des mentions reprend « Zone infectée faune sauvage réflexe »", async ({
+    page,
+  }) => {
+    await ouvrirAbattoir(page);
+    await remplir(page, { ...CAS_SAIN, zoneSuides: "zi-fs-reflexe", mcaDest: "non" });
+    await page.getByRole("button", { name: "Valider" }).click();
+
+    await expect(page.getByText("MOUVEMENT AUTORISÉ").first()).toBeVisible();
+    const mentions = page.locator(".fr-alert--info");
+    await expect(mentions).toContainText(
+      "Zone de provenance des animaux dont sont issues les viandes : Zone infectée faune sauvage réflexe",
+    );
+
+    // Même saisie en ZI FS : « réflexe » disparaît du bandeau.
+    await page.getByLabel(L.zoneSuides).selectOption("zi-fs");
+    await page.getByRole("button", { name: "Valider" }).click();
+    await expect(mentions).toContainText("Zone infectée faune sauvage");
+    await expect(mentions).not.toContainText("réflexe");
+  });
 });
 
 test.describe("Simulateur Abattoirs — interactions post-validation", () => {
