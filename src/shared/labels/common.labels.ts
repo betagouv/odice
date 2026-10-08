@@ -95,6 +95,10 @@ export const MCA_TOOLTIP = {
 // Choix « ZI FS réflexe » (toutes les zones des deux simulateurs) : même conditionnalité
 // que ZI FS, donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
 export const ZONE_ZIFS_REFLEXE = "zi-fs-reflexe";
+
+// Zone d'origine des porcs « ZI FS réflexe » : situation bloquante dans les deux simulateurs.
+export const MESSAGE_ZI_FS_REFLEXE_INTERDIT =
+  "Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits.";
 const LIBELLE_LONG_ZIFS_REFLEXE = "Zone infectée faune sauvage réflexe";
 export type ZoneChoix = Zone | typeof ZONE_ZIFS_REFLEXE;
 

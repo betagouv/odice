@@ -27,7 +27,7 @@ Code : [`traitementRegles.ts`](../src/features/simulateurs/etablissements/compon
 | # | Prio | Sujet | Choix appliqué | Question | Décision |
 |---|---|---|---|---|---|
 | Q4 | P2 | Message « Situation impossible : vérifier qu'il n'y ait pas de mélange de lot. Se référer à l'**espace documentaire** pour identifier la zone à renseigner. » | Texte seul, sans lien | Quel est « l'espace documentaire » visé ? Faut-il un lien (page « Niveau de risque des porcs et des viandes », documentation réglementaire, autre) ? | ☐ Lien vers : … ☐ Pas de lien |
-| Q5 | P3 | ZI FS réflexe comme **zone de l'établissement** ou **du destinataire** (Autres établissements) | Autorisée, traitée comme ZI FS ; seule la **zone d'origine des porcs** est bloquée | Le blocage ne concerne-t-il bien que la zone d'origine des porcs ? | ☐ Confirmé ☐ Bloquer aussi : … |
+| Q5 | P3 | ZI FS réflexe comme **zone de l'établissement** ou **du destinataire** (les deux simulateurs) | Autorisée, traitée comme ZI FS ; seule la **zone d'origine des porcs** est bloquée (Autres établissements et, depuis 2026-10-08, Abattoirs) | Le blocage ne concerne-t-il bien que la zone d'origine des porcs ? | ☐ Confirmé ☐ Bloquer aussi : … |
 
 ## 3. Panneau de résultats — libellés absents de la nomenclature
 
@@ -86,7 +86,7 @@ La nomenclature des badges ne couvre pas toutes les valeurs du moteur. Libellés
 
 ## Décisions déjà validées pendant la refonte (pour mémoire)
 
-- ZI FS réflexe : même conditionnalité que ZI FS dans les deux simulateurs ; bloquée comme zone d'origine des porcs dans Autres établissements.
+- ZI FS réflexe : même conditionnalité que ZI FS dans les deux simulateurs, sauf comme zone d'origine des porcs, où elle est bloquée (alerte rouge, validation impossible) dans Autres établissements et dans Abattoirs (validé 2026-10-08).
 - Affichage progressif **partie par partie** ; statut uniquement en ZRII / ZRIII.
 - Masquage des sorties : FR interdit → seule la possibilité de mouvement ; UE interdit → pas de lignes UE.
 - UE « interdit sans traitement d'atténuation » si la marque est une ovale barrée.

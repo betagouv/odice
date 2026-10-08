@@ -15,6 +15,8 @@ import {
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 import { DocumentAnimauxHint } from "@shared/components/DocumentAnimauxHint";
 import { McaInfoTooltip } from "@shared/components/McaInfoTooltip";
+import { SituationImpossibleAlert } from "@shared/components/SituationImpossibleAlert";
+import { MESSAGE_ZI_FS_REFLEXE_INTERDIT, ZONE_ZIFS_REFLEXE } from "@shared/labels/common.labels";
 import { StatutInfoTooltip } from "./StatutInfoTooltip";
 import {
   useProgressiveFields,
@@ -73,7 +75,11 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
     [form.zoneSuides],
   );
 
+  // Mouvements de porcs issus de ZI FS réflexe interdits : alerte, destination masquée, Valider bloqué.
+  const zoneSuidesBloquee = form.zoneSuides === ZONE_ZIFS_REFLEXE;
+
   const canSubmit =
+    !zoneSuidesBloquee &&
     form.zoneSuides !== "" &&
     form.zoneAbattoir !== "" &&
     form.mcaAbattoir !== "" &&
@@ -247,7 +253,9 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
         </>
       )}
 
-      {isVisible("zoneEtbDestinataire", form) && (
+      {zoneSuidesBloquee && <SituationImpossibleAlert message={MESSAGE_ZI_FS_REFLEXE_INTERDIT} />}
+
+      {!zoneSuidesBloquee && isVisible("zoneEtbDestinataire", form) && (
         <>
           <h2 className="fr-h5 fr-mt-6w fr-mb-2w">2. Destination des viandes</h2>
           <hr />

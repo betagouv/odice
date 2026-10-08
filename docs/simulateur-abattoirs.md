@@ -71,6 +71,8 @@ Le simulateur prend **6 champs en entrée**.
 Aucune validation de cohérence inter-champs n'est effectuée. Toute combinaison des 2 744 possibilités est acceptée et évaluée conformément au test xlsx.
 *(point à reconfirmer avec l'équipe métier — cf. [points-a-valider TODO 5](./simulateur-abattoirs-points-a-valider.md))*
 
+**Situation bloquée dans le formulaire** : une zone d'origine des porcs « ZI FS réflexe » affiche l'alerte « Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits. », masque la destination et bloque la validation. Les zones de l'abattoir et du destinataire peuvent, elles, être « ZI FS réflexe » (traitées comme ZI FS par le moteur). Cf. [ADR-0016](./adr/0016-autres-etablissements-valeurs-deduites.md).
+
 ## 4. Outputs
 
 Le simulateur retourne **7 champs en sortie**.

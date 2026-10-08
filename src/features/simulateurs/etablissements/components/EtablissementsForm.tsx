@@ -20,6 +20,7 @@ import {
 import { ROUTES } from "@shared/config/routes.config";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 import { McaInfoTooltip } from "@shared/components/McaInfoTooltip";
+import { SituationImpossibleAlert } from "@shared/components/SituationImpossibleAlert";
 import {
   MESSAGES_SITUATION_IMPOSSIBLE,
   deduireTraitements,
@@ -372,9 +373,7 @@ export function EtablissementsForm({
       )}
 
       {situation !== null && (
-        <div className="fr-alert fr-alert--error fr-alert--sm fr-mb-3w" role="alert">
-          <p>{MESSAGES_SITUATION_IMPOSSIBLE[situation]}</p>
-        </div>
+        <SituationImpossibleAlert message={MESSAGES_SITUATION_IMPOSSIBLE[situation]} />
       )}
 
       {situation === null && isVisible("zoneDestinataire", form) && (

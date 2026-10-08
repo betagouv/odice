@@ -22,7 +22,7 @@ L'analyse de l'oracle (32 928 cas) montre que la spec masque, dans quatre situat
   - ZP ou ZS avec une ovale ou des diagonales : traitement national = OUI (par analogie avec M4) ;
   - ZI FS, ZRII ou ZRIII avec une ovale : national = NON et réalisé = NON ;
   - ZRIII à diagonales avec national = NON : réalisé = NON.
-- ZI FS réflexe reste proposée dans les listes (cohérence avec Abattoirs) mais déclenche le blocage pour la zone d'origine des porcs.
+- ZI FS réflexe reste proposée dans les listes mais déclenche le blocage pour la zone d'origine des porcs, dans Autres établissements comme dans Abattoirs (message et encadré partagés : `MESSAGE_ZI_FS_REFLEXE_INTERDIT`, `SituationImpossibleAlert`).
 - Le formulaire masque la destination et bloque Valider tant qu'une situation est impossible ; les questions de traitement ne sont pas posées dans ce cas.
 
 ## Options envisagées

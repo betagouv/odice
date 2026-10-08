@@ -250,41 +250,44 @@ test.describe("Simulateur Abattoirs — destinataire en ZI FS réflexe", () => {
 });
 
 test.describe("Simulateur Abattoirs — porcs en ZI FS réflexe", () => {
-  test("donne le même résultat que des porcs en ZI FS, sans demander le statut", async ({
+  test("situation impossible : alerte, destination masquée, validation bloquée", async ({
     page,
   }) => {
     await ouvrirAbattoir(page);
-    await remplir(page, { ...CAS_SAIN, zoneSuides: "zi-fs", mcaDest: "non" });
-    await page.getByRole("button", { name: "Valider" }).click();
-    await expect(page.getByText("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
-    const attendu = await page.locator(".fr-badge").allInnerTexts();
+    await remplirJusquaSuides(page, "zi-fs-reflexe");
 
-    await page.getByLabel(L.zoneSuides).selectOption("zi-fs-reflexe");
+    await expect(page.getByRole("alert")).toContainText(
+      "Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits.",
+    );
     await expect(page.getByLabel(L.statut)).toHaveCount(0);
-    await page.getByRole("button", { name: "Valider" }).click();
-
-    await expect(page.getByText("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
-    expect(await page.locator(".fr-badge").allInnerTexts()).toEqual(attendu);
+    await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();
   });
 
-  test("le bandeau des mentions reprend « Zone infectée faune sauvage réflexe »", async ({
+  test("corriger la zone d'origine lève l'alerte et révèle la destination", async ({ page }) => {
+    await ouvrirAbattoir(page);
+    await remplirJusquaSuides(page, "zi-fs-reflexe");
+    await expect(page.getByRole("alert")).toBeVisible();
+
+    await page.getByLabel(L.zoneSuides).selectOption("zi-fs");
+    await expect(page.getByRole("alert")).toHaveCount(0);
+    await expect(page.getByLabel(L.zoneDest)).toBeVisible();
+    await expect(page.getByLabel(L.mcaDest)).toBeVisible();
+  });
+
+  test("passer en ZI FS réflexe après un résultat masque le panneau et bloque Valider", async ({
     page,
   }) => {
     await ouvrirAbattoir(page);
-    await remplir(page, { ...CAS_SAIN, zoneSuides: "zi-fs-reflexe", mcaDest: "non" });
+    await remplir(page, CAS_SAIN);
     await page.getByRole("button", { name: "Valider" }).click();
+    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toBeVisible();
 
-    await expect(page.getByText("MOUVEMENT AUTORISÉ").first()).toBeVisible();
-    const mentions = page.locator(".fr-alert--info");
-    await expect(mentions).toContainText(
-      "Zone de provenance des animaux dont sont issues les viandes : Zone infectée faune sauvage réflexe",
-    );
+    await page.getByLabel(L.zoneSuides).selectOption("zi-fs-reflexe");
 
-    // Même saisie en ZI FS : « réflexe » disparaît du bandeau.
-    await page.getByLabel(L.zoneSuides).selectOption("zi-fs");
-    await page.getByRole("button", { name: "Valider" }).click();
-    await expect(mentions).toContainText("Zone infectée faune sauvage");
-    await expect(mentions).not.toContainText("réflexe");
+    await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).toHaveCount(0);
+    await expect(page.getByRole("alert")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();
   });
 });
 

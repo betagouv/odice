@@ -9,6 +9,7 @@ import {
   zoneMoteur,
   type ZoneChoix,
 } from "@shared/labels/etablissements.labels";
+import { MESSAGE_ZI_FS_REFLEXE_INTERDIT } from "@shared/labels/common.labels";
 
 export type OuiNon = "oui" | "non" | "";
 
@@ -17,8 +18,7 @@ export type SituationImpossible = "melange-lot" | "zi-fs-reflexe";
 export const MESSAGES_SITUATION_IMPOSSIBLE: Record<SituationImpossible, string> = {
   "melange-lot":
     "Situation impossible : vérifier qu'il n'y ait pas de mélange de lot. Se référer à l'espace documentaire pour identifier la zone à renseigner.",
-  "zi-fs-reflexe":
-    "Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits.",
+  "zi-fs-reflexe": MESSAGE_ZI_FS_REFLEXE_INTERDIT,
 };
 
 const ZONES_SAINES: Zone[] = [Zone.ZoneIndemne, Zone.ZRI];
