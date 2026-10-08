@@ -82,6 +82,16 @@ La nomenclature des badges ne couvre pas toutes les valeurs du moteur. Libellés
 | Q26 | Page « Aide à l'utilisation » | Retirée de cette version ; à réintroduire une fois les maquettes stabilisées ? |
 | Q27 | Page « Documentation réglementaire » | Toujours « contenu en cours de rédaction » : contenu à fournir |
 
+## 9. Moteur Autres établissements — correctif du 2026-10-08
+
+Détail de la règle ajoutée : [`simulateur-etablissements.md`](./simulateur-etablissements.md).
+
+| # | Prio | Sujet | Choix appliqué | Question | Décision |
+|---|---|---|---|---|---|
+| Q28 | P1 | Matière première **ZP / ZS** en ovale, expéditeur réglementé agréé MCA, destinataire réglementé non agréé | La règle n'est appliquée que si le **traitement a été réalisé** (condition des clauses voisines du xlsx) ; sans effet dans le formulaire (« réalisé = oui » imposé pour ZP / ZS + ovale) | La règle s'applique-t-elle aussi sans traitement réalisé ? (560 cas moteur de plus, inaccessibles depuis le formulaire) | ☐ Conserver la condition ☐ La supprimer |
+| Q29 | **P1** | D'autres combinaisons **sans marque** dans le xlsx (marque vide = « mouvement interdit ») sont-elles des trous comme celui-ci ? | Non traité : 5 787 cas de l'oracle restent « interdit » | Faire relire par le métier la liste des familles de combinaisons interdites (l'équipe technique peut la produire) | ☐ À relire |
+| Q30 | P2 | Version affichée (« Dernière mise à jour : 23 juin 2026 ») | **Aucune** entrée ajoutée dans `ETABLISSEMENTS_VERSIONS` : ce correctif n'a pas de date d'effet ni de document source | Faut-il publier une nouvelle version (date d'effet, source, texte du changement) ? | ☐ Non ☐ Oui : … |
+
 ---
 
 ## Décisions déjà validées pendant la refonte (pour mémoire)

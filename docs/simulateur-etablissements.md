@@ -58,6 +58,14 @@ Le formulaire ne pose que les questions de traitement dont la réponse n'est pas
 | ZRIII | ovale barrée | saisi | OUI | saisi | M6 |
 | ZRIII | diagonales | saisi | = national | saisi si national = OUI, sinon NON | M3 ; réalisé = hypothèse |
 
+## Correctif métier du 2026-10-08 (marque de sortie)
+
+Retour métier (« Erreur sortie : matière première marque ovale ») : matière première ZI FS en ovale, expéditeur ZI FS agréé MCA, destinataire ZI FS non agréé MCA donnait « mouvement interdit » partout.
+
+**Règle ajoutée** (`src/engine/etablissements/rules/marque.ts`) : matière première en ZI FS / ZRII / ZRIII (ou ZP / ZS avec traitement réalisé), marque ovale en entrée, expéditeur en zone réglementée **agréé MCA**, destinataire en zone réglementée **non agréé MCA** → marque **ovale diagonales parallèles** : France autorisé, UE interdit, traitement France non obligatoire, laissez-passer sanitaire non requis (résultats vérifiés pour toutes les entrées que le formulaire peut produire).
+
+**Écart avec la formule Excel** : le xlsx ne donne aucune marque pour ces combinaisons (trou de la formule). 800 cas de l'oracle sont concernés ; la fixture reste celle du xlsx et `evaluate.spec.ts` les traite à part (il vérifie que ce sont uniquement des trous). Pour ZP / ZS, la condition « traitement réalisé » des clauses voisines est conservée : l'énoncé métier ne la mentionne pas, mais elle est sans effet dans le formulaire, qui impose déjà « réalisé = oui » (560 cas moteur de plus si elle était supprimée).
+
 ## Implémentation
 
 - Moteur TypeScript pur : `src/engine/etablissements/`
