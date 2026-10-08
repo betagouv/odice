@@ -96,7 +96,7 @@ Détail de la règle ajoutée : [`simulateur-etablissements.md`](./simulateur-et
 
 ## Décisions déjà validées pendant la refonte (pour mémoire)
 
-- ZI FS réflexe : même conditionnalité que ZI FS dans les deux simulateurs, sauf comme zone d'origine des porcs, où elle est bloquée (alerte rouge, validation impossible) dans Autres établissements et dans Abattoirs (validé 2026-10-08).
+- ZI FS réflexe : même conditionnalité que ZI FS dans les deux simulateurs, sauf comme zone d'origine des porcs, où elle est bloquée (alerte rouge, validation impossible) dans Autres établissements et dans Abattoirs (validé 2026-10-08). Le blocage est la seule règle : la mention « Zone infectée faune sauvage réflexe » dans le bandeau des documents commerciaux est abandonnée, puisqu'un mouvement issu de ZI FS réflexe n'est jamais autorisé (confirmé 2026-10-08).
 - Affichage progressif **partie par partie** ; statut uniquement en ZRII / ZRIII.
 - Masquage des sorties : FR interdit → seule la possibilité de mouvement ; UE interdit → pas de lignes UE.
 - UE « interdit sans traitement d'atténuation » si la marque est une ovale barrée.
