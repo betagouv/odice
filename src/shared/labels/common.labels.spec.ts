@@ -10,9 +10,9 @@ import {
 import { isStatutApplicable } from "./abattoirs.labels";
 
 describe("zones des simulateurs — option ZI FS réflexe", () => {
-  it("est proposée juste après ZI FS", () => {
+  it("est proposée juste avant ZI FS", () => {
     const valeurs = ZONE_OPTIONS_AVEC_REFLEXE.map((option) => option.value);
-    expect(valeurs.indexOf(ZONE_ZIFS_REFLEXE)).toBe(valeurs.indexOf(Zone.ZIFS) + 1);
+    expect(valeurs.indexOf(ZONE_ZIFS_REFLEXE)).toBe(valeurs.indexOf(Zone.ZIFS) - 1);
   });
 
   it("est traitée comme ZI FS par le moteur", () => {

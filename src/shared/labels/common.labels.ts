@@ -97,13 +97,14 @@ export type ZoneChoix = Zone | typeof ZONE_ZIFS_REFLEXE;
 export const ZONE_OPTIONS_AVEC_REFLEXE: { value: ZoneChoix; label: string }[] = ZONE_ORDER.flatMap(
   (zone) => {
     const option = { value: zone, label: ZONE_LABELS[zone] };
+    // ZI FS réflexe placée juste avant ZI FS (demande métier).
     return zone === Zone.ZIFS
       ? [
-          option,
           {
             value: ZONE_ZIFS_REFLEXE,
             label: "ZI FS réflexe — Zone infectée faune sauvage réflexe",
           },
+          option,
         ]
       : [option];
   },
