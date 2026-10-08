@@ -16,6 +16,7 @@ La spec métier demande désormais un affichage **partie par partie** : une part
 - Attribut `section` optionnel dans `ProgressiveFieldConfig` ; un champ sans section forme sa propre section (comportement champ par champ de l'ADR-0007 conservé).
 - Les autres principes de l'ADR-0007 sont inchangés : révélation monotone, `isApplicable` pour les champs conditionnels, `revealAll` au reset.
 - Les deux formulaires déclarent leurs trois sections (`abattoir` ou `etablissement`, `provenance`, `destination`).
+- Exception (2026-10-08) : dans Autres établissements, la provenance est elle-même révélée en trois temps, comme sur les maquettes : `provenance-zone` (zone d'origine des porcs), puis `provenance-viandes` (marque) une fois la zone choisie, puis `provenance-traitement` (questions de traitement applicables) une fois la marque choisie. S'il n'y a aucune question de traitement, la destination suit directement la marque.
 
 ## Options envisagées
 

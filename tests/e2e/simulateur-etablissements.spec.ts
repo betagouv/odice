@@ -122,6 +122,41 @@ test.describe("Simulateur Autres Établissements — affichage progressif", () =
     await expect(page.getByLabel(L.zoneSuides)).toHaveCount(0);
   });
 
+  test("la provenance se dévoile en trois temps : zone, puis marque, puis traitements", async ({
+    page,
+  }) => {
+    await ouvrirAtelier(page);
+    await page.getByLabel(L.zoneEtb).selectOption("zone-indemne");
+    await page.getByLabel(L.mcaEtb).selectOption("oui");
+
+    // Étape 1 : la zone d'origine seule.
+    await expect(page.getByLabel(L.zoneSuides)).toBeVisible();
+    await expect(page.getByRole("group", { name: L.marque })).toHaveCount(0);
+    await expect(page.getByLabel(L.traitementFr)).toHaveCount(0);
+
+    // Étape 2 : la marque apparaît une fois la zone choisie.
+    await page.getByLabel(L.zoneSuides).selectOption("zriii");
+    await expect(page.getByRole("group", { name: L.marque })).toBeVisible();
+    await expect(page.getByLabel(L.traitementFr)).toHaveCount(0);
+    await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
+
+    // Étape 3 : les questions de traitement apparaissent une fois la marque choisie.
+    await choisirMarque(page, "ovale-diagonales-paralleles");
+    await expect(page.getByLabel(L.traitementFr)).toBeVisible();
+    await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
+  });
+
+  test("sans question de traitement, la destination suit directement la marque", async ({
+    page,
+  }) => {
+    await ouvrirAtelier(page);
+    await remplirJusquaSuides(page, "zone-indemne");
+    await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
+
+    await choisirMarque(page, "ovale");
+    await expect(page.getByLabel(L.zoneDest)).toBeVisible();
+  });
+
   test("chaque section complète révèle la suivante en entier", async ({ page }) => {
     await ouvrirAtelier(page);
 

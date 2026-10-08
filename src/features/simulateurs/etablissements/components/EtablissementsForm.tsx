@@ -62,24 +62,25 @@ const EMPTY_FORM: FormState = {
 
 const marqueOuNull = (marque: Marque | ""): Marque | null => (marque === "" ? null : marque);
 
-// Révélation par section (spec) : votre établissement, provenance, destination.
+// Révélation par section (spec) : votre établissement, provenance (en trois temps), destination.
 // Questions de traitement affichées seulement quand la réponse n'est pas connue
 // d'avance ; sinon valeur déduite (cf. traitementRegles.ts).
 const FIELDS: ProgressiveFieldConfig<FormState>[] = [
   { key: "zoneExpediteur", section: "etablissement" },
   { key: "mcaExpediteur", section: "etablissement" },
-  { key: "zoneSuides", section: "provenance" },
-  { key: "marqueViandes", section: "provenance" },
+  // Provenance en trois temps : zone d'origine, puis marque, puis questions de traitement.
+  { key: "zoneSuides", section: "provenance-zone" },
+  { key: "marqueViandes", section: "provenance-viandes" },
   {
     key: "traitementObligatoireFr",
-    section: "provenance",
+    section: "provenance-traitement",
     isApplicable: (f) =>
       impossible(f) === null &&
       questionTraitementNationalVisible(zoneOuNull(f.zoneSuides), marqueOuNull(f.marqueViandes)),
   },
   {
     key: "traitementRealise",
-    section: "provenance",
+    section: "provenance-traitement",
     isApplicable: (f) =>
       impossible(f) === null &&
       questionTraitementRealiseVisible(

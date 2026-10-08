@@ -32,6 +32,8 @@ Invariants vérifiés sur l'oracle : `FR autorisé ⟺ marque de sortie ≠ ∅`
 
 Le formulaire ne pose que les questions de traitement dont la réponse n'est pas connue d'avance ; les autres entrées du moteur sont déduites (règles dans `src/features/simulateurs/etablissements/components/traitementRegles.ts`, cf. [ADR-0016](./adr/0016-autres-etablissements-valeurs-deduites.md)).
 
+**Ordre d'apparition de la provenance** : zone d'origine des porcs seule, puis marque sanitaire une fois la zone choisie, puis les questions de traitement applicables une fois la marque choisie ; la destination apparaît ensuite.
+
 **Situations impossibles** (alerte, destination masquée, validation bloquée) :
 
 - porcs en zone indemne ou ZRI avec une marque ovale barrée ou à diagonales parallèles : mélange de lot probable ;
