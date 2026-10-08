@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 type PageContainerProps = {
   children: ReactNode;
+  // Page suivie du bandeau d'avertissement : garantit 100 px au moins entre le contenu et le bandeau.
+  avertissement?: boolean;
 };
 
 /**
@@ -12,6 +14,7 @@ type PageContainerProps = {
  * (Notice, hero plein écran, etc.) d'être posés en pleine largeur viewport. Les
  * pages contraignent leur contenu en l'enveloppant avec `<PageContainer>`.
  */
-export function PageContainer({ children }: PageContainerProps) {
-  return <div className="fr-container fr-py-6w">{children}</div>;
+export function PageContainer({ children, avertissement = false }: PageContainerProps) {
+  const bas = avertissement ? "pb-[100px]" : "fr-pb-6w";
+  return <div className={`fr-container fr-pt-6w ${bas}`}>{children}</div>;
 }

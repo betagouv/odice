@@ -17,7 +17,7 @@ const VIDE = "-";
 export function NiveauRisquePage() {
   return (
     <>
-      <PageContainer>
+      <PageContainer avertissement>
         <PageTitle>{TITRE}</PageTitle>
         <Breadcrumb segments={[{ label: "Accueil", to: ROUTES.HOME }, { label: TITRE }]} />
 

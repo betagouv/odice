@@ -8,7 +8,7 @@ export function HomePage() {
   return (
     <>
       <PageTitle>Accueil</PageTitle>
-      <PageContainer>
+      <PageContainer avertissement>
         <h1 className="fr-mt-4w">Bienvenue sur Odicé</h1>
         <hr className="fr-mt-2w fr-mb-4w" />
 

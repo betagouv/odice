@@ -128,8 +128,8 @@ export function SimulateursIndexPage() {
   return (
     <>
       <PageTitle>Simulateur</PageTitle>
-      <div className="fr-background-alt--blue-france fr-py-6w">
-        <div className="fr-container fr-mb-4w">
+      <div className="fr-background-alt--blue-france fr-pt-6w pb-[100px]">
+        <div className="fr-container">
           <div className="fr-background-default--grey fr-p-6w">
             <div className="fr-grid-row">
               <div className="fr-col-12 fr-col-md-6">
