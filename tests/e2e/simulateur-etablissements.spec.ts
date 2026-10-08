@@ -322,3 +322,26 @@ test.describe("Simulateur Autres Établissements — tableau des mélanges", () 
     ).toBeVisible();
   });
 });
+
+test.describe("Simulateur Autres Établissements — correctif métier du 2026-10-08", () => {
+  test("ZI FS partout, ovale, destinataire non agréé MCA → diagonales parallèles, FR autorisé, UE interdit", async ({
+    page,
+  }) => {
+    await ouvrirAtelier(page);
+    await page.getByLabel(L.zoneEtb).selectOption("zi-fs");
+    await page.getByLabel(L.mcaEtb).selectOption("oui");
+    await page.getByLabel(L.zoneSuides).selectOption("zi-fs");
+    await choisirMarque(page, "ovale");
+    await page.getByLabel(L.zoneDest).selectOption("zi-fs");
+    await page.getByLabel(L.mcaDest).selectOption("non");
+    await page.getByRole("button", { name: "Valider" }).click();
+
+    // Texte exact : l'étiquette de la marque dans le formulaire porte le même libellé en casse mixte.
+    const badge = (texte: string) => page.getByText(texte, { exact: true });
+    await expect(badge("MOUVEMENT AUTORISÉ")).toBeVisible();
+    await expect(badge("MOUVEMENT INTERDIT")).toBeVisible();
+    await expect(badge("OVALE DIAGONALES PARALLÈLES")).toBeVisible();
+    await expect(badge("NON-OBLIGATOIRE")).toBeVisible();
+    await expect(badge("LAISSEZ-PASSER SANITAIRE NON REQUIS")).toBeVisible();
+  });
+});
