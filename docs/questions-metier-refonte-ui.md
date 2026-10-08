@@ -18,6 +18,8 @@ La spec « Retirer les situations impossibles » supprime ou restreint les quest
 | Q2 | P1 | Porcs en **ZI FS, ZRII ou ZRIII**, marque **ovale** | Traitement national = **NON**, traitement réalisé = **NON** | Ces valeurs sont-elles correctes, ou faut-il poser les questions à l'utilisateur dans ce cas ? | ☐ Confirmé ☐ Poser les questions ☐ Autre : … |
 | Q3 | P1 | Porcs en **ZRIII**, marque **diagonales**, traitement national déclaré **NON** | Question « réalisé » non posée, valeur **NON** | Confirmer que le traitement n'est pas réalisé dans ce cas (ou faut-il poser la question) ? | ☐ Confirmé ☐ Poser la question ☐ Autre : … |
 
+> **Éclairage (page « Niveau de risque », 2026-10-08)** : le tableau des viandes ne montre aucun traitement national pour ZS / ZP avec une ovale (niveaux 6 et 7). Pour **Q1**, sur l'oracle, l'hypothèse « national = OUI » ne change le résultat dans aucun des 392 cas concernés (ovale, traitement réalisé), et la marque ovale diagonales ne peut pas exister en ZS / ZP ; l'hypothèse reste donc sans effet sur les résultats, mais le formulaire propose encore cette marque dans ces zones.
+
 Code : [`traitementRegles.ts`](../src/features/simulateurs/etablissements/components/traitementRegles.ts) (`deduireTraitements`).
 
 ## 2. Autres établissements — situations impossibles
@@ -50,7 +52,7 @@ La nomenclature des badges ne couvre pas toutes les valeurs du moteur. Libellés
 
 | # | Prio | Sujet | Choix appliqué | Question | Décision |
 |---|---|---|---|---|---|
-| Q14 | **P1** | Tableau « Autres industries » : colonne **marque sanitaire** vide sauf au niveau 16 (ovale barrée) | Maquette reprise telle quelle : plusieurs lignes semblent identiques (ZRIII aux niveaux 4, 8, 9, 14, 15 ; ZRII aux niveaux 3, 10, 11 ; ZI FS aux niveaux 5, 12, 13) | Fournir la marque (et tout autre critère distinctif) de **chaque** niveau | À compléter : … |
+| Q14 | **P1** | Tableau « Autres industries » : la maquette ne renseigne la **marque sanitaire** qu'au niveau 16 (ovale barrée) | Marques **déduites** de la structure du tableau : les 17 niveaux sont exactement les 15 combinaisons zone × marque possibles (ni diagonales en ZS / ZP, ni marque spéciale en zone saine) + 2 variantes avec traitement national en ZRIII. Niveaux 1 à 7 : ovale ; 8, 10, 12, 14 : ovale diagonales parallèles ; 9, 11, 13, 15, 16, 17 : ovale barrée | Valider ces marques, en particulier l'**ordre dans chaque paire** (diagonales avant barrée : niveaux 8-9, 10-11, 12-13, 14-15) et la présence d'une seule ligne ovale pour ZS et ZP | ☐ Confirmé ☐ Corrections : … |
 | Q15 | P2 | Tableau Abattoir, niveau 4 : la maquette indique « Zone réglementée **II** (ZRIII) » | Affiché « Zone réglementée **III** (ZRIII) » | Confirmer qu'il s'agit bien de la ZRIII | ☐ Confirmé |
 | Q16 | P2 | Ordonnancement des deux tableaux (niveaux 1 à 9 et 1 à 17) | Repris de la maquette | Valider l'ordre et le contenu réglementaire | ☐ Validé ☐ Corrections : … |
 | Q17 | P3 | Accès à la page | Lien « référez-vous à ce tableau » (nouvel onglet) et plan du site ; **pas** dans le menu principal | Faut-il l'ajouter au menu principal ou à la documentation réglementaire ? | ☐ Non ☐ Menu ☐ Documentation |
