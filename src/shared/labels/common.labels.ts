@@ -46,10 +46,7 @@ export const CERTIFICATION_LABELS: Record<Certification, string> = {
 };
 
 // Libellé sans sigle (« Zone réglementée II »), pour les mentions des documents commerciaux.
-// Le choix « ZI FS réflexe » garde son libellé propre : le moteur le voit comme ZI FS,
-// mais l'utilisateur doit retrouver sa saisie sur ses documents.
-export function zoneLibelleLong(zone: ZoneChoix): string {
-  if (zone === ZONE_ZIFS_REFLEXE) return LIBELLE_LONG_ZIFS_REFLEXE;
+export function zoneLibelleLong(zone: Zone): string {
   const libelle = ZONE_LABELS[zone];
   const separateur = libelle.indexOf(" — ");
   return separateur === -1 ? libelle : libelle.slice(separateur + 3);

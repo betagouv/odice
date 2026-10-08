@@ -90,7 +90,6 @@ La nomenclature des badges ne couvre pas toutes les valeurs du moteur. Libellés
 - Affichage progressif **partie par partie** ; statut uniquement en ZRII / ZRIII.
 - Masquage des sorties : FR interdit → seule la possibilité de mouvement ; UE interdit → pas de lignes UE.
 - UE « interdit sans traitement d'atténuation » si la marque est une ovale barrée.
-- Bandeau des mentions : une zone d'origine « ZI FS réflexe » (Abattoir) s'affiche « Zone infectée faune sauvage réflexe » (validé 2026-10-08).
 - Wording : « Informations » au pluriel, format « ZI FS réflexe — Zone infectée faune sauvage réflexe », libellés propres à Autres établissements (« Provenance de la matière première »).
 - Nom du produit : « Odicé » ; page d'aide retirée de cette version.
 

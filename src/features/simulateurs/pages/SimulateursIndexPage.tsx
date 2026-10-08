@@ -13,7 +13,6 @@ import {
   type EtablissementsOutputs,
 } from "@engine";
 import { AvertissementNotice } from "@shared/components/AvertissementNotice";
-import type { ZoneChoix } from "@shared/labels/common.labels";
 import { PageTitle } from "@shared/components/PageTitle";
 import {
   useMatomo,
@@ -38,7 +37,6 @@ export function SimulateursIndexPage() {
   // Saisies conservées avec le résultat : le bandeau des mentions les reprend.
   const [abattoirsResult, setAbattoirsResult] = useState<{
     inputs: AbattoirsInputs;
-    zoneSuidesChoix: ZoneChoix;
     result: AbattoirsOutputs;
   } | null>(null);
   const [etablissementsResult, setEtablissementsResult] = useState<{
@@ -77,12 +75,12 @@ export function SimulateursIndexPage() {
     debutSaisieRef.current = null;
   }
 
-  function handleAbattoirsSubmit(inputs: AbattoirsInputs, zoneSuidesChoix: ZoneChoix) {
+  function handleAbattoirsSubmit(inputs: AbattoirsInputs) {
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.LANCEE));
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.COMBINAISON), {
       name: serialiseCombinaisonAbattoirs(inputs),
     });
-    setAbattoirsResult({ inputs, zoneSuidesChoix, result: evaluateAbattoir(inputs) });
+    setAbattoirsResult({ inputs, result: evaluateAbattoir(inputs) });
     trackEvent(
       matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.RESULTAT),
       undefined,
@@ -187,11 +185,7 @@ export function SimulateursIndexPage() {
               ref={resultRef}
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"
             >
-              <AbattoirsResult
-                inputs={abattoirsResult.inputs}
-                zoneSuidesChoix={abattoirsResult.zoneSuidesChoix}
-                result={abattoirsResult.result}
-              />
+              <AbattoirsResult inputs={abattoirsResult.inputs} result={abattoirsResult.result} />
             </div>
           )}
 

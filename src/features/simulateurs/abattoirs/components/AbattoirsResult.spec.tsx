@@ -5,7 +5,6 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { evaluateAbattoir, Statut, Zone, type AbattoirsInputs } from "@engine";
-import { ZONE_ZIFS_REFLEXE, type ZoneChoix } from "@shared/labels/common.labels";
 import { AbattoirsResult } from "./AbattoirsResult";
 
 const BASE: AbattoirsInputs = {
@@ -17,15 +16,10 @@ const BASE: AbattoirsInputs = {
   mcaEtbDestinataire: true,
 };
 
-// Par défaut, le choix de zone d'origine est celui transmis au moteur.
-function rendre(inputs: AbattoirsInputs, zoneSuidesChoix: ZoneChoix = inputs.zoneSuides) {
+function rendre(inputs: AbattoirsInputs) {
   render(
     <MemoryRouter>
-      <AbattoirsResult
-        inputs={inputs}
-        zoneSuidesChoix={zoneSuidesChoix}
-        result={evaluateAbattoir(inputs)}
-      />
+      <AbattoirsResult inputs={inputs} result={evaluateAbattoir(inputs)} />
     </MemoryRouter>,
   );
 }
@@ -62,22 +56,6 @@ describe("AbattoirsResult — ligne zone de provenance", () => {
     expect(bandeauAffiche()).toHaveTextContent(
       "Zone de provenance des animaux dont sont issues les viandes : Zone réglementée II",
     );
-  });
-
-  it("ZI FS réflexe : affiche « Zone infectée faune sauvage réflexe » (mouvement autorisé)", () => {
-    // Le moteur reçoit ZI FS ; le bandeau reprend le choix d'origine de l'utilisateur.
-    rendre({ ...BASE, zoneSuides: Zone.ZIFS, mcaEtbDestinataire: false }, ZONE_ZIFS_REFLEXE);
-    expect(screen.getAllByText("MOUVEMENT AUTORISÉ").length).toBeGreaterThan(0);
-    expect(bandeauAffiche()).toHaveTextContent(
-      "Zone de provenance des animaux dont sont issues les viandes : Zone infectée faune sauvage réflexe",
-    );
-  });
-
-  it("ZI FS (non réflexe) : « Zone infectée faune sauvage » sans « réflexe »", () => {
-    rendre({ ...BASE, zoneSuides: Zone.ZIFS, mcaEtbDestinataire: false });
-    const element = bandeauAffiche();
-    expect(element).toHaveTextContent("Zone infectée faune sauvage");
-    expect(element).not.toHaveTextContent("réflexe");
   });
 });
 
