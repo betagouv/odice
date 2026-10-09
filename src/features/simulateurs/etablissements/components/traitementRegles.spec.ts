@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { Marque, Zone } from "@engine";
+import { Marque, Zone, evaluateEtablissements, type EtablissementsInputs } from "@engine";
 import { ZONE_ZIFS_REFLEXE } from "@shared/labels/etablissements.labels";
 import oracleRaw from "../../../../../tests/fixtures/etablissements/oracle-32928.json";
 import {
@@ -161,5 +161,52 @@ describe("oracle — champs masqués sans effet", () => {
     for (const zone of [Zone.ZP, Zone.ZS, Zone.ZRII, Zone.ZIFS, Zone.ZRIII]) {
       expect(sansEffet(zone, marque, "traitementObligatoireUe")).toBe(true);
     }
+  });
+});
+
+// Ticket métier du 2026-10-08 (« Erreur sortie : matière première marque ovale »), de bout en bout :
+// valeurs déduites par le formulaire puis moteur. Cf. docs/simulateur-etablissements.md.
+describe("ticket métier 2026-10-08 : ovale réglementée vers un destinataire réglementé non agréé", () => {
+  const ZONES_REGLEMENTEES: Zone[] = [Zone.ZP, Zone.ZS, Zone.ZIFS, Zone.ZRII, Zone.ZRIII];
+  const TOUTES_LES_ZONES: Zone[] = [Zone.ZoneIndemne, Zone.ZRI, ...ZONES_REGLEMENTEES];
+
+  it("donne diagonales parallèles, France autorisé, UE interdit, non-obligatoire, LPS non requis", () => {
+    const ecarts: string[] = [];
+    let combinaisons = 0;
+    for (const origine of ZONES_REGLEMENTEES) {
+      const t = deduireTraitements(origine, Marque.Ovale, "", "");
+      for (const zoneExpediteur of TOUTES_LES_ZONES) {
+        for (const mcaExpediteur of [true, false]) {
+          for (const zoneDestinataire of ZONES_REGLEMENTEES) {
+            const entrees: EtablissementsInputs = {
+              zoneSuides: origine,
+              marqueViandes: Marque.Ovale,
+              traitementObligatoireFr: t.fr,
+              traitementObligatoireUe: t.ue,
+              zoneExpediteur,
+              mcaExpediteur,
+              traitementRealise: t.realise,
+              zoneDestinataire,
+              mcaDestinataire: false,
+            };
+            const sortie = evaluateEtablissements(entrees);
+            combinaisons += 1;
+            const attendu =
+              sortie.marque === Marque.OvaleDiagonalesParalleles &&
+              sortie.frMouvement === "autorise" &&
+              sortie.ueMouvement === "interdit" &&
+              sortie.frTraitement === "non-obligatoire" &&
+              sortie.frDocument === "lps-non-requis";
+            if (!attendu) {
+              ecarts.push(
+                `${origine} | exp ${zoneExpediteur} MCA=${String(mcaExpediteur)} | dest ${zoneDestinataire}`,
+              );
+            }
+          }
+        }
+      }
+    }
+    expect(combinaisons).toBe(5 * 7 * 2 * 5);
+    expect(ecarts).toEqual([]);
   });
 });
