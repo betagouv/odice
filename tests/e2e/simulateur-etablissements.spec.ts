@@ -267,6 +267,7 @@ test.describe("Simulateur Autres Établissements — ZI FS réflexe", () => {
     await expect(page.getByRole("alert")).toContainText(
       "Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits.",
     );
+    await expect(page.getByRole("alert").locator("strong")).toHaveText("Situation impossible");
     await choisirMarque(page, "ovale");
     await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();
@@ -286,6 +287,7 @@ test.describe("Simulateur Autres Établissements — situations impossibles", ()
       await expect(page.getByRole("alert")).toContainText(
         "Situation impossible : vérifier qu'il n'y ait pas de mélange de lot.",
       );
+      await expect(page.getByRole("alert").locator("strong")).toHaveText("Situation impossible");
       await expect(page.getByLabel(L.traitementRealise)).toHaveCount(0);
       await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
       await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();

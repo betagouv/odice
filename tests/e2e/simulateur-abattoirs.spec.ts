@@ -259,6 +259,7 @@ test.describe("Simulateur Abattoirs — porcs en ZI FS réflexe", () => {
     await expect(page.getByRole("alert")).toContainText(
       "Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits.",
     );
+    await expect(page.getByRole("alert").locator("strong")).toHaveText("Situation impossible");
     await expect(page.getByLabel(L.statut)).toHaveCount(0);
     await expect(page.getByLabel(L.zoneDest)).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Valider" })).toBeDisabled();
