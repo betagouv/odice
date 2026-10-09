@@ -1,7 +1,8 @@
-// Affichage progressif des champs d'un formulaire : un seul champ visible au départ,
-// chaque saisie révèle le champ applicable suivant. La révélation est monotone
-// (une saisie ne masque jamais un autre champ déjà révélé), et survit à la
-// réinitialisation des valeurs (revealAll). Logique pure testable hors React.
+// Affichage progressif des champs d'un formulaire, section par section : une section
+// s'affiche en entier quand tous les champs applicables des précédentes sont remplis.
+// Un champ sans section forme sa propre section (révélation champ par champ).
+// La révélation est monotone (une saisie ne masque jamais un champ déjà révélé),
+// et survit à la réinitialisation des valeurs (revealAll). Logique pure testable hors React.
 
 import { useCallback, useMemo, useState } from "react";
 
@@ -9,13 +10,15 @@ export type ProgressiveFieldConfig<TForm> = {
   key: keyof TForm & string;
   // Champ pris en compte dans la séquence uniquement si applicable (défaut : toujours).
   isApplicable?: (form: TForm) => boolean;
+  // Champs consécutifs de même section révélés ensemble (défaut : section propre au champ).
+  section?: string;
 };
 
 function fieldApplicable<TForm>(field: ProgressiveFieldConfig<TForm>, form: TForm): boolean {
   return field.isApplicable ? field.isApplicable(form) : true;
 }
 
-// Révèle les champs applicables jusqu'au premier non rempli inclus, en conservant
+// Révèle les sections jusqu'à la première incomplète incluse, en conservant
 // les champs déjà révélés. Sentinelle de champ vide : la chaîne "".
 export function computeRevealed<TForm>(
   fields: ProgressiveFieldConfig<TForm>[],
@@ -23,10 +26,17 @@ export function computeRevealed<TForm>(
   previous: ReadonlySet<string>,
 ): Set<string> {
   const revealed = new Set(previous);
-  for (const field of fields) {
-    if (!fieldApplicable(field, form)) continue;
-    revealed.add(field.key);
-    if (form[field.key] === "") break;
+  let i = 0;
+  while (i < fields.length) {
+    const section = fields[i].section ?? fields[i].key;
+    let complete = true;
+    for (; i < fields.length && (fields[i].section ?? fields[i].key) === section; i++) {
+      const field = fields[i];
+      if (!fieldApplicable(field, form)) continue;
+      revealed.add(field.key);
+      if (form[field.key] === "") complete = false;
+    }
+    if (!complete) break;
   }
   return revealed;
 }

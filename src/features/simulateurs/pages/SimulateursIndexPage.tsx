@@ -29,17 +29,22 @@ import { AbattoirsForm } from "../abattoirs/components/AbattoirsForm";
 import { AbattoirsResult } from "../abattoirs/components/AbattoirsResult";
 import { EtablissementsForm } from "../etablissements/components/EtablissementsForm";
 import { EtablissementsResult } from "../etablissements/components/EtablissementsResult";
-import { TYPE_ETABLISSEMENT_OPTIONS, familleFor } from "./typeEtablissement";
+import { TYPE_ETABLISSEMENT_OPTIONS, familleFor, nomEtablissementFor } from "./typeEtablissement";
 
 export function SimulateursIndexPage() {
   const [type, setType] = useState<string>("");
   const famille = familleFor(type);
-  const [abattoirsResult, setAbattoirsResult] = useState<AbattoirsOutputs | null>(null);
-  const [etablissementsResult, setEtablissementsResult] = useState<EtablissementsOutputs | null>(
-    null,
-  );
+  // Saisies conservées avec le résultat : le bandeau des mentions les reprend.
+  const [abattoirsResult, setAbattoirsResult] = useState<{
+    inputs: AbattoirsInputs;
+    result: AbattoirsOutputs;
+  } | null>(null);
+  const [etablissementsResult, setEtablissementsResult] = useState<{
+    inputs: EtablissementsInputs;
+    result: EtablissementsOutputs;
+  } | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
-  // Horodatage de la 1ère saisie (zone d'origine), pour mesurer la durée jusqu'à la validation.
+  // Horodatage de la 1ère saisie (1er champ du formulaire), pour mesurer la durée jusqu'à la validation.
   const debutSaisieRef = useRef<number | null>(null);
   const { trackEvent } = useMatomo();
 
@@ -75,7 +80,7 @@ export function SimulateursIndexPage() {
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.COMBINAISON), {
       name: serialiseCombinaisonAbattoirs(inputs),
     });
-    setAbattoirsResult(evaluateAbattoir(inputs));
+    setAbattoirsResult({ inputs, result: evaluateAbattoir(inputs) });
     trackEvent(
       matomoAction(MATOMO_SIMULATEURS.ABATTOIRS, MATOMO_STEPS.RESULTAT),
       undefined,
@@ -89,7 +94,7 @@ export function SimulateursIndexPage() {
     trackEvent(matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.COMBINAISON), {
       name: serialiseCombinaisonEtablissements(inputs),
     });
-    setEtablissementsResult(evaluateEtablissements(inputs));
+    setEtablissementsResult({ inputs, result: evaluateEtablissements(inputs) });
     trackEvent(
       matomoAction(MATOMO_SIMULATEURS.ETABLISSEMENTS, MATOMO_STEPS.RESULTAT),
       undefined,
@@ -121,8 +126,8 @@ export function SimulateursIndexPage() {
   return (
     <>
       <PageTitle>Simulateur</PageTitle>
-      <div className="fr-background-alt--blue-france fr-py-6w">
-        <div className="fr-container fr-mb-4w">
+      <div className="fr-background-alt--blue-france fr-pt-6w pb-[100px]">
+        <div className="fr-container">
           <div className="fr-background-default--grey fr-p-6w">
             <div className="fr-grid-row">
               <div className="fr-col-12 fr-col-md-6">
@@ -130,12 +135,7 @@ export function SimulateursIndexPage() {
 
                 <div className="fr-select-group fr-mb-0">
                   <label className="fr-label" htmlFor="type-etablissement">
-                    Type d'établissement d'origine du mouvement des viandes
-                    <span className="fr-hint-text">
-                      Les viandes fraîches y compris sang et viscères, les viandes hachées, les
-                      préparations de viandes, les produits à base de viande, les viandes séparées
-                      mécaniquement et les produits contenant des viandes.
-                    </span>
+                    La nature de votre établissement.
                   </label>
                   <select
                     className="fr-select"
@@ -170,6 +170,7 @@ export function SimulateursIndexPage() {
             {famille === "autre" && (
               <div className="fr-mt-8w">
                 <EtablissementsForm
+                  nomEtablissement={nomEtablissementFor(type)}
                   onSubmit={handleEtablissementsSubmit}
                   onReset={handleReset}
                   onChange={resetResults}
@@ -184,7 +185,7 @@ export function SimulateursIndexPage() {
               ref={resultRef}
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"
             >
-              <AbattoirsResult result={abattoirsResult} />
+              <AbattoirsResult inputs={abattoirsResult.inputs} result={abattoirsResult.result} />
             </div>
           )}
 
@@ -193,7 +194,11 @@ export function SimulateursIndexPage() {
               ref={resultRef}
               className="fr-background-default--grey fr-p-6w fr-mt-4w border-8 border-[color:var(--border-plain-blue-france)]"
             >
-              <EtablissementsResult result={etablissementsResult} />
+              <EtablissementsResult
+                inputs={etablissementsResult.inputs}
+                result={etablissementsResult.result}
+                nomEtablissement={nomEtablissementFor(type)}
+              />
             </div>
           )}
         </div>

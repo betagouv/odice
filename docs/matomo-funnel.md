@@ -1,6 +1,6 @@
 # Mesure d'audience Matomo — funnel du parcours simulateur
 
-ODICE envoie à Matomo une page vue à chaque navigation et des événements le long du parcours simulateur. Ce document décrit le funnel à créer côté Matomo. L'intégration technique est décrite dans [ADR-0008](./adr/0008-analytics-matomo-wrapper-maison.md).
+Odicé envoie à Matomo une page vue à chaque navigation et des événements le long du parcours simulateur. Ce document décrit le funnel à créer côté Matomo. L'intégration technique est décrite dans [ADR-0008](./adr/0008-analytics-matomo-wrapper-maison.md).
 
 ## Événements émis
 
@@ -12,17 +12,17 @@ Tous les événements portent la **catégorie** `Simulateur PPA`. Le **simulateu
 | Lancée | `abattoir_simulation_lancee` | `autre_simulation_lancee` | Soumission valide du formulaire |
 | Combinaison | `abattoir_combinaison_soumise` | `autre_combinaison_soumise` | Soumission valide — **Event Name = signature des réponses** |
 | Résultat | `abattoir_resultat_affiche` | `autre_resultat_affiche` | Résultat calculé et affiché — **porte les dimensions type + zone** (cf. plus bas) |
-| Durée de saisie | `abattoir_duree_saisie` | `autre_duree_saisie` | Validation — **Event Value = secondes** depuis la 1ère saisie (zone d'origine) |
+| Durée de saisie | `abattoir_duree_saisie` | `autre_duree_saisie` | Validation — **Event Value = secondes** depuis la 1ère saisie (1er champ du formulaire : zone de l'établissement de l'utilisateur) |
 | Réinitialisation | `abattoir_reinitialisation` | `autre_reinitialisation` | Clic sur « Réinitialiser » (pas une simple saisie) |
+| Export | `abattoir_simulation_exportee` | `autre_simulation_exportee` | Clic sur « Exporter la simulation » (PDF, cf. [ADR-0017](./adr/0017-export-pdf-react-pdf.md)) |
 
 ### Événements de clic vers les pages annexes
 
-Catégorie identique (`Simulateur PPA`), hors funnel. Émis depuis la navigation, les indices de carte et les panneaux résultat.
+Catégorie identique (`Simulateur PPA`), hors funnel. Émis depuis la navigation et les indices de carte.
 
 | Action | Déclencheur |
 |---|---|
-| `clic_aide_utilisation` | Clic sur « Aide à l'utilisation » (menu) |
-| `clic_documentation_reglementaire` | Clic sur « Documentation réglementaire » (menu **ou** lien du panneau résultat) |
+| `clic_documentation_reglementaire` | Clic sur « Documentation réglementaire » (menu) |
 | `clic_carte_zones` | Clic sur le lien « carte » sous un champ de zone (carte des zones réglementées) |
 
 Rappel : le tracking n'est actif **qu'en build production** et seulement si `VITE_MATOMO_URL` + `VITE_MATOMO_SITE_ID` sont renseignés (cf. [`.env.example`](../.env.example)).
@@ -120,7 +120,6 @@ Où lire chaque indicateur demandé. « Personnes / mois » = **nombre de visite
 | Temps moyen 1ère saisie → validation | Événements → `*_duree_saisie` → colonne **Valeur moyenne** (secondes) |
 | Validations par type d'établissement (+ région) / mois | Dimension `type_etablissement` (ci-dessus), croisée avec **Visiteurs → Lieux → Région** (géolocalisation IP) |
 | Validations par zone d'origine des suidés | Dimension `zone_suides` (ci-dessus) |
-| Clics vers notice (aide) / mois | Événements → `clic_aide_utilisation` |
 | Clics vers documentation réglementaire / mois | Événements → `clic_documentation_reglementaire` |
 | Clics vers « carte des zones réglementées » / mois | Événements → `clic_carte_zones` |
 

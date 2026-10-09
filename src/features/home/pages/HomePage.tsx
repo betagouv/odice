@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
-import { Notice } from "@shared/components/Notice";
+import { AvertissementNotice } from "@shared/components/AvertissementNotice";
 import { PageContainer } from "@shared/components/PageContainer";
 import { PageTitle } from "@shared/components/PageTitle";
 
@@ -8,8 +8,8 @@ export function HomePage() {
   return (
     <>
       <PageTitle>Accueil</PageTitle>
-      <PageContainer>
-        <h1 className="fr-mt-4w">Bienvenue sur Odicé</h1>
+      <PageContainer avertissement espaceHaut="reduit">
+        <h1>Bienvenue sur Odicé</h1>
         <hr className="fr-mt-2w fr-mb-4w" />
 
         {/* Section 1 — Aide à la décision : texte à gauche, image à droite, CTA simulation */}
@@ -36,9 +36,24 @@ export function HomePage() {
               En favorisant une interprétation homogène de la réglementation, Odicé contribue à
               renforcer la prévention, la gestion et la maîtrise des risques en santé animale.
             </p>
+
             <Link to={ROUTES.SIMULATEURS} className="fr-btn fr-mt-2w">
               Démarrer une simulation
             </Link>
+
+            <h3 className="fr-h6 fr-mt-4w">Odicé, pour quels mouvements et quel périmètre ?</h3>
+            <p>
+              Odicé vous accompagne pour déterminer les règles sanitaires applicables aux mouvements
+              de produits carnés contenant des viandes de porcs au départ de la France. Dans cet
+              outil, les « porcs » comprennent les porcs domestiques et les sangliers d'élevage.
+            </p>
+            <p className="fr-mb-1w">
+              <strong>Le périmètre d'Odicé n'inclut pas :</strong>
+            </p>
+            <ul className="fr-mb-0">
+              <li>les mouvements d'un autre pays vers la France ;</li>
+              <li>les exportations vers les pays tiers (en dehors de l'Union européenne).</li>
+            </ul>
           </div>
           <div className="fr-col-12 fr-col-md-4">
             <div className="relative h-full min-h-60">
@@ -132,18 +147,7 @@ export function HomePage() {
       </PageContainer>
 
       {/* Notice full-width : hors PageContainer pour s'étendre bord à bord du viewport */}
-      <Notice title="Avertissement" variant="warning">
-        Cet outil est une aide à la décision fournie <strong>à titre indicatif</strong> et ne peut
-        en aucun cas se substituer à la consultation des textes réglementaires en vigueur. Malgré
-        nos efforts pour assurer l'exactitude des informations, leur exhaustivité et leur mise à
-        jour ne peuvent être garanties.{" "}
-        <strong>
-          Il appartient à l'utilisateur de vérifier la conformité des résultats obtenus avant toute
-          prise de décision.
-        </strong>{" "}
-        En conséquence, nous déclinons toute responsabilité en cas d'erreur, d'omission ou
-        d'interprétation incorrecte des informations fournies par cet outil.
-      </Notice>
+      <AvertissementNotice />
     </>
   );
 }

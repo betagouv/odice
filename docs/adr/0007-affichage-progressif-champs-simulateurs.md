@@ -1,7 +1,7 @@
 # ADR-0007 : Affichage progressif des champs des simulateurs
 
 **Date** : 2026-06-29
-**Statut** : Accepté
+**Statut** : Accepté — granularité de révélation remplacée par l'[ADR-0014](./0014-affichage-progressif-par-section.md) (par section)
 
 ## Contexte
 

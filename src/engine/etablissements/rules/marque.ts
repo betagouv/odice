@@ -60,6 +60,10 @@ export function evaluateMarque(inputs: EtablissementsInputs): Marque | null {
     (aZPouZS && ovale && isSaine(e) && g && isReglementee(h) && !i) ||
     (aZIFSouZR23 && ovale && isReglementee(e) && !f && isReglementee(h) && !i) ||
     (aZPouZS && ovale && isReglementee(e) && !f && g && isReglementee(h) && !i) ||
+    // Correctif métier 2026-10-08 : cas non couvert par la formule xlsx (expéditeur réglementé
+    // agréé MCA, destinataire réglementé non agréé). Docs : docs/simulateur-etablissements.md.
+    (aZIFSouZR23 && ovale && isReglementee(e) && f && isReglementee(h) && !i) ||
+    (aZPouZS && ovale && isReglementee(e) && f && g && isReglementee(h) && !i) ||
     (aZIFSouZR23 && barree && !f) ||
     (aZIFSouZR23 && barree && !g && !i) ||
     (barree && f && g && isReglementee(h) && !i) ||

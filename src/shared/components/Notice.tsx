@@ -12,9 +12,10 @@ type NoticeProps = {
  * Bandeau d'information / d'avertissement DSFR (`.fr-notice`).
  *
  * Astuce : le pattern DSFR met title et description dans des `<span>` côte à côte.
- * On force le titre en `display: block` (utilitaire Tailwind `block`) pour que la
+ * On force le titre en `display: block` (utilitaire Tailwind `block!`) pour que la
  * description s'affiche sur une ligne dédiée en dessous — sans casser la sémantique
- * ni les styles DSFR.
+ * ni les styles DSFR. Le `!` est requis : le CSS DSFR, hors @layer, l'emporte sinon
+ * sur les utilitaires Tailwind 4.
  */
 export function Notice({ title, children, variant = "warning" }: NoticeProps) {
   return (
@@ -22,7 +23,7 @@ export function Notice({ title, children, variant = "warning" }: NoticeProps) {
       <div className="fr-container">
         <div className="fr-notice__body">
           <p className="fr-m-0">
-            <span className="fr-notice__title block">{title}</span>
+            <span className="fr-notice__title block! fr-mb-1w">{title}</span>
             <span className="fr-notice__desc">{children}</span>
           </p>
         </div>
