@@ -68,8 +68,10 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   marque: { width: 52, marginRight: 8 },
-  derogation: { fontSize: 8, marginTop: 12, lineHeight: 1.4 },
-  invitation: { fontSize: 11, fontWeight: 700, marginTop: 12 },
+  remplissage: { flexGrow: 1 },
+  pied: { marginTop: 12, paddingTop: 10, borderTopWidth: 1, borderTopColor: COULEURS.separateur },
+  derogation: { fontSize: 8, lineHeight: 1.4 },
+  invitation: { fontSize: 11, fontWeight: 700, marginTop: 10 },
 });
 
 type Props = {
@@ -135,10 +137,14 @@ export function SimulationPdf({ modele, origine }: Props) {
           </>
         )}
 
-        <Text style={styles.derogation}>{modele.derogation}</Text>
-        <Text style={styles.invitation}>
-          Réalisez une nouvelle simulation sur {origine.replace(/^https?:\/\//, "")}
-        </Text>
+        {/* Pousse le pied de page en bas de la page */}
+        <View style={styles.remplissage} />
+        <View style={styles.pied} wrap={false}>
+          <Text style={styles.derogation}>{modele.derogation}</Text>
+          <Text style={styles.invitation}>
+            Réalisez une nouvelle simulation sur {origine.replace(/^https?:\/\//, "")}
+          </Text>
+        </View>
       </Page>
     </Document>
   );
