@@ -92,6 +92,25 @@ test.describe("Niveau de risque des porcs et des viandes", () => {
     }
   });
 
+  test("texte noir, zone sur une ligne et titre de colonne coupé avant la parenthèse", async ({
+    page,
+  }) => {
+    await page.goto("/niveau-de-risque");
+    const tableau = page.locator(".fr-table table").nth(1);
+
+    const couleurs = await tableau
+      .locator("tbody td")
+      .evaluateAll((tds) => [...new Set(tds.map((td) => getComputedStyle(td).color))]);
+    expect(couleurs).toEqual(["rgb(0, 0, 0)"]);
+
+    const zone = tableau.locator("tbody tr td:nth-child(2)").first();
+    expect(await zone.evaluate((td) => getComputedStyle(td).whiteSpace)).toBe("nowrap");
+
+    const entete = tableau.locator("thead th").nth(3);
+    await expect(entete.locator("br")).toHaveCount(1);
+    await expect(entete).toContainText("(voir document commercial)");
+  });
+
   test("le plan du site mène à la page", async ({ page }) => {
     await page.goto("/plan-du-site");
     await page.getByRole("link", { name: "Niveau de risque des porcs et des viandes" }).click();

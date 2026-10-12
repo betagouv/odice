@@ -49,11 +49,16 @@ export const NIVEAUX_VIANDES: NiveauViande[] = [
   { zone: Zone.ZP, marque: Barree, traitementObligatoireNational: true },
 ];
 
-// Part de rouge DSFR (en %) du dernier niveau ; le premier niveau reste sans couleur.
-export const INTENSITE_MAX = 45;
+// Rouge de la maquette (hex FF5655) mélangé au blanc.
+export const COULEUR_ECHELLE = "#FF5655";
 
-// Intensité de l'échelle de couleur pour la ligne `index` (0-based) d'un tableau de `total` lignes.
+// Parts de rouge (en %) des 17 niveaux de la maquette ; le premier niveau reste blanc.
+export const INTENSITES = [0, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70];
+export const INTENSITE_MAX = 70;
+
+// Intensité de la ligne `index` (0-based) d'un tableau de `total` lignes : les 17 niveaux
+// reprennent la maquette, un tableau plus court (abattoirs) en échantillonne l'échelle.
 export function intensiteNiveau(index: number, total: number): number {
   if (total <= 1) return 0;
-  return Math.round((INTENSITE_MAX * index) / (total - 1));
+  return INTENSITES[Math.round((index * (INTENSITES.length - 1)) / (total - 1))];
 }

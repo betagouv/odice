@@ -9,7 +9,12 @@ import { PageContainer } from "@shared/components/PageContainer";
 import { PageTitle } from "@shared/components/PageTitle";
 import { MARQUE_LABELS, zoneLibelleAvecSigle } from "@shared/labels/common.labels";
 import { STATUT_SIGLES } from "@shared/labels/abattoirs.labels";
-import { NIVEAUX_ABATTOIRS, NIVEAUX_VIANDES, intensiteNiveau } from "../niveauRisque";
+import {
+  COULEUR_ECHELLE,
+  NIVEAUX_ABATTOIRS,
+  NIVEAUX_VIANDES,
+  intensiteNiveau,
+} from "../niveauRisque";
 
 const TITRE = "Niveau de risque des porcs et des viandes";
 const VIDE = "-";
@@ -84,7 +89,11 @@ export function NiveauRisquePage() {
               "Niveau de risque de la matière première",
               "Zone de provenance des porcs",
               "Marque sanitaire de la matière première",
-              "Traitement d'atténuation obligatoire (voir document commercial)",
+              <>
+                Traitement d'atténuation obligatoire
+                <br />
+                (voir document commercial)
+              </>,
             ]}
             lignes={NIVEAUX_VIANDES.map((niveau) => [
               zoneLibelleAvecSigle(niveau.zone),
@@ -105,7 +114,9 @@ export function NiveauRisquePage() {
 // Colonne « niveau » centrée (maquette) ; le ! passe devant l'alignement DSFR.
 const CENTRE = "text-center!";
 // Les cellules DSFR ont leur propre fond blanc : elles héritent de la couleur de leur ligne.
-const FOND_LIGNE = "bg-inherit!";
+// Texte noir imposé (le DSFR le met en gris) ; la zone reste sur une seule ligne.
+const FOND_LIGNE = "bg-inherit! text-black!";
+const SANS_RETOUR = "whitespace-nowrap!";
 
 // Tableau DSFR ; la première colonne (niveau) est numérotée à partir de 1.
 function Tableau({
@@ -114,7 +125,7 @@ function Tableau({
   lignes,
 }: {
   legende: string;
-  colonnes: string[];
+  colonnes: ReactNode[];
   lignes: ReactNode[][];
 }) {
   return (
@@ -127,7 +138,7 @@ function Tableau({
               <thead>
                 <tr>
                   {colonnes.map((colonne, j) => (
-                    <th key={colonne} scope="col" className={j === 0 ? CENTRE : undefined}>
+                    <th key={j} scope="col" className={j === 0 ? CENTRE : undefined}>
                       {colonne}
                     </th>
                   ))}
@@ -136,16 +147,16 @@ function Tableau({
               <tbody>
                 {lignes.map((cellules, i) => (
                   // Style inline : l'intensité varie par ligne, ce qu'aucune classe DSFR ou Tailwind
-                  // statique ne couvre. Jetons DSFR, donc l'échelle suit le thème clair / sombre.
+                  // statique ne couvre. Hex fixe de la maquette, sur blanc : texte noir lisible.
                   <tr
                     key={i}
                     style={{
-                      backgroundColor: `color-mix(in srgb, var(--background-action-high-error) ${intensiteNiveau(i, lignes.length)}%, var(--background-default-grey))`,
+                      backgroundColor: `color-mix(in srgb, ${COULEUR_ECHELLE} ${intensiteNiveau(i, lignes.length)}%, #fff)`,
                     }}
                   >
                     <td className={`${FOND_LIGNE} ${CENTRE}`}>{i + 1}</td>
                     {cellules.map((cellule, j) => (
-                      <td key={j} className={FOND_LIGNE}>
+                      <td key={j} className={j === 0 ? `${FOND_LIGNE} ${SANS_RETOUR}` : FOND_LIGNE}>
                         {cellule}
                       </td>
                     ))}

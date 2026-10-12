@@ -93,6 +93,11 @@ describe("intensiteNiveau (échelle de couleur)", () => {
     expect(intensiteNiveau(16, 17)).toBe(INTENSITE_MAX);
   });
 
+  it("reprend exactement l'échelle de la maquette sur 17 niveaux", () => {
+    const echelle = Array.from({ length: 17 }, (_, i) => intensiteNiveau(i, 17));
+    expect(echelle).toEqual([0, 5, 7.5, 10, 12.5, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70]);
+  });
+
   it("croît strictement avec le niveau", () => {
     for (const total of [9, 17]) {
       for (let i = 1; i < total; i += 1) {
