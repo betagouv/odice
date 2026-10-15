@@ -24,22 +24,46 @@ export const MOUVEMENT_LABELS: Record<Mouvement, string> = {
   [Mouvement.Interdit]: "Mouvement interdit",
 };
 
+// Mouvement UE interdit d'une viande à marque ovale barrée (spec « champs sorties »).
+export const MOUVEMENT_INTERDIT_SANS_TRAITEMENT_LABEL =
+  "Mouvement interdit sans traitement d'atténuation";
+
 export const TRAITEMENT_LABELS: Record<Traitement, string> = {
   [Traitement.Obligatoire]: "Obligatoire",
-  [Traitement.NonObligatoire]: "Non obligatoire",
+  [Traitement.NonObligatoire]: "Non-obligatoire",
 };
 
 export const LPS_LABELS: Record<LPS, string> = {
-  [LPS.Permanent]: "LPS permanent",
-  [LPS.Systematique]: "LPS systématique",
-  [LPS.NonRequis]: "LPS non requis",
+  [LPS.Permanent]: "Laissez-passer sanitaire permanent",
+  [LPS.Systematique]: "Laissez-passer sanitaire systématique",
+  [LPS.NonRequis]: "Laissez-passer sanitaire non requis",
 };
 
 export const CERTIFICATION_LABELS: Record<Certification, string> = {
-  [Certification.Obligatoire]: "Certification zoosanitaire obligatoire",
-  [Certification.DerogationPossible]: "Dérogation à la certification zoosanitaire possible",
-  [Certification.NonRequise]: "Certification zoosanitaire non requise",
+  [Certification.Obligatoire]: "Certificat zoosanitaire",
+  [Certification.DerogationPossible]: "Dérogation au certificat zoosanitaire possible",
+  [Certification.NonRequise]: "Certificat zoosanitaire non requis",
 };
+
+// Libellé sans sigle (« Zone réglementée II »), pour les mentions des documents commerciaux.
+export function zoneLibelleLong(zone: Zone): string {
+  const libelle = ZONE_LABELS[zone];
+  const separateur = libelle.indexOf(" — ");
+  return separateur === -1 ? libelle : libelle.slice(separateur + 3);
+}
+
+// Libellé long suivi du sigle (« Zone réglementée I (ZRI) »), pour les tableaux de niveau de risque.
+export function zoneLibelleAvecSigle(zone: Zone): string {
+  const libelle = ZONE_LABELS[zone];
+  const separateur = libelle.indexOf(" — ");
+  return separateur === -1
+    ? libelle
+    : `${libelle.slice(separateur + 3)} (${libelle.slice(0, separateur)})`;
+}
+
+// Second paragraphe de l'avertissement (DDecPP), repris en texte simple dans l'export PDF.
+export const AVERTISSEMENT_DEROGATION_DDECPP =
+  "Les possibilités de dérogation aux interdictions de mouvements présentées dans les résultats d'Odicé sont soumises à l'appréciation de la direction départementale en charge de la protection des populations (DDecPP) compétente. La DDecPP peut, au regard de la situation sanitaire et de l'analyse de risques réalisée, interdire le mouvement, même lorsque celui-ci entre dans le cadre d'une dérogation réglementaire.";
 
 // Ordre d'affichage des zones dans les dropdowns (du moins au plus restrictif).
 export const ZONE_ORDER: Zone[] = [
@@ -57,3 +81,40 @@ export const MARQUE_ORDER: Marque[] = [
   Marque.OvaleBarree,
   Marque.OvaleDiagonalesParalleles,
 ];
+
+// Infobulle des questions « agrément zoosanitaire MCA » : titre en gras puis définition (maquette).
+export const MCA_TOOLTIP = {
+  titre: "Agrément zoosanitaire spécifique « Maladie de Catégorie A » (MCA),",
+  texte:
+    "délivré par l’autorité compétente (DDecPP) aux établissements du secteur alimentaire autorisés à recevoir des animaux ou produits soumis à des restrictions de police sanitaire liées à la PPA.",
+};
+
+// Choix « ZI FS réflexe » (toutes les zones des deux simulateurs) : même conditionnalité
+// que ZI FS, donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
+export const ZONE_ZIFS_REFLEXE = "zi-fs-reflexe";
+
+// Zone d'origine des porcs « ZI FS réflexe » : situation bloquante dans les deux simulateurs.
+export const MESSAGE_ZI_FS_REFLEXE_INTERDIT =
+  "Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits.";
+const LIBELLE_LONG_ZIFS_REFLEXE = "Zone infectée faune sauvage réflexe";
+export type ZoneChoix = Zone | typeof ZONE_ZIFS_REFLEXE;
+
+export const ZONE_OPTIONS_AVEC_REFLEXE: { value: ZoneChoix; label: string }[] = ZONE_ORDER.flatMap(
+  (zone) => {
+    const option = { value: zone, label: ZONE_LABELS[zone] };
+    // ZI FS réflexe placée juste avant ZI FS (demande métier).
+    return zone === Zone.ZIFS
+      ? [
+          {
+            value: ZONE_ZIFS_REFLEXE,
+            label: `ZI FS réflexe — ${LIBELLE_LONG_ZIFS_REFLEXE}`,
+          },
+          option,
+        ]
+      : [option];
+  },
+);
+
+export function zoneMoteur(choix: ZoneChoix): Zone {
+  return choix === ZONE_ZIFS_REFLEXE ? Zone.ZIFS : choix;
+}

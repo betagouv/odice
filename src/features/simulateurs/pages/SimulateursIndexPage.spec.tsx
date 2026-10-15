@@ -84,7 +84,7 @@ function renderPage() {
 }
 
 function selectAbattoir() {
-  fireEvent.change(screen.getByLabelText(/Type d'établissement/i), {
+  fireEvent.change(screen.getByLabelText(/nature de votre établissement/i), {
     target: { value: "abattoir" },
   });
 }

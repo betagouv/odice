@@ -97,15 +97,6 @@ export function Layout({ children }: LayoutProps) {
                     Documentation réglementaire
                   </NavLink>
                 </li>
-                <li className="fr-nav__item">
-                  <NavLink
-                    to={ROUTES.AIDE_UTILISATION}
-                    className="fr-nav__link"
-                    onClick={() => trackEvent(MATOMO_ANNEXES.AIDE_UTILISATION)}
-                  >
-                    Aide à l'utilisation
-                  </NavLink>
-                </li>
               </ul>
             </nav>
           </div>

@@ -62,3 +62,44 @@ describe("computeRevealed", () => {
     expect(revealed.has("c")).toBe(true);
   });
 });
+
+describe("computeRevealed — sections", () => {
+  type Sections = { a: string; b: string; c: string; d: string };
+  const VIDE: Sections = { a: "", b: "", c: "", d: "" };
+  const SECTIONS: ProgressiveFieldConfig<Sections>[] = [
+    { key: "a", section: "s1" },
+    { key: "b", section: "s1" },
+    { key: "c", section: "s2" },
+    { key: "d", section: "s2", isApplicable: (f) => f.c === "cond" },
+  ];
+
+  it("révèle d'un coup tous les champs de la première section", () => {
+    expect([...computeRevealed(SECTIONS, VIDE, new Set())]).toEqual(["a", "b"]);
+  });
+
+  it("attend que toute la section soit remplie avant la suivante", () => {
+    const revealed = computeRevealed(SECTIONS, { ...VIDE, a: "x" }, new Set());
+    expect(revealed.has("c")).toBe(false);
+  });
+
+  it("révèle la section suivante une fois la précédente complète", () => {
+    const revealed = computeRevealed(SECTIONS, { ...VIDE, a: "x", b: "y" }, new Set());
+    expect([...revealed]).toEqual(["a", "b", "c"]);
+  });
+
+  it("ajoute un champ conditionnel à sa section dès qu'il devient applicable", () => {
+    const revealed = computeRevealed(SECTIONS, { a: "x", b: "y", c: "cond", d: "" }, new Set());
+    expect(revealed.has("d")).toBe(true);
+  });
+
+  it("un champ conditionnel vide bloque les sections suivantes", () => {
+    type AvecSuite = Sections & { e: string };
+    const fields: ProgressiveFieldConfig<AvecSuite>[] = [
+      ...(SECTIONS as ProgressiveFieldConfig<AvecSuite>[]),
+      { key: "e", section: "s3" },
+    ];
+    const form: AvecSuite = { a: "x", b: "y", c: "cond", d: "", e: "" };
+    expect(computeRevealed(fields, form, new Set()).has("e")).toBe(false);
+    expect(computeRevealed(fields, { ...form, d: "z" }, new Set()).has("e")).toBe(true);
+  });
+});

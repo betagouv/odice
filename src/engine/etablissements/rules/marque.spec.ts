@@ -88,4 +88,57 @@ describe("evaluateMarque (etablissements)", () => {
       ),
     ).toBeNull();
   });
+
+  describe("correctif métier 2026-10-08 : expéditeur réglementé agréé MCA, destinataire réglementé non agréé", () => {
+    const cas = (overrides: Partial<EtablissementsInputs>) =>
+      evaluateMarque(
+        inputs({
+          marqueViandes: Marque.Ovale,
+          mcaExpediteur: true,
+          mcaDestinataire: false,
+          ...overrides,
+        }),
+      );
+
+    it("ZI FS partout, ovale en entrée → diagonales parallèles (cas signalé)", () => {
+      expect(
+        cas({
+          zoneSuides: Zone.ZIFS,
+          zoneExpediteur: Zone.ZIFS,
+          zoneDestinataire: Zone.ZIFS,
+        }),
+      ).toBe(Marque.OvaleDiagonalesParalleles);
+    });
+
+    it("ZI FS / ZRII / ZRIII d'origine, quels que soient les traitements", () => {
+      for (const zoneSuides of [Zone.ZIFS, Zone.ZRII, Zone.ZRIII]) {
+        for (const traitementRealise of [false, true]) {
+          expect(
+            cas({
+              zoneSuides,
+              zoneExpediteur: Zone.ZRIII,
+              zoneDestinataire: Zone.ZP,
+              traitementRealise,
+            }),
+          ).toBe(Marque.OvaleDiagonalesParalleles);
+        }
+      }
+    });
+
+    it("ZP / ZS d'origine : diagonales si le traitement est réalisé (condition conservée)", () => {
+      for (const zoneSuides of [Zone.ZP, Zone.ZS]) {
+        const base = { zoneSuides, zoneExpediteur: Zone.ZS, zoneDestinataire: Zone.ZRII };
+        expect(cas({ ...base, traitementRealise: true })).toBe(Marque.OvaleDiagonalesParalleles);
+        expect(cas({ ...base, traitementRealise: false })).toBeNull();
+      }
+    });
+
+    it("destinataire agréé MCA ou en zone saine : le correctif ne s'applique pas", () => {
+      const base = { zoneSuides: Zone.ZIFS, zoneExpediteur: Zone.ZIFS };
+      expect(cas({ ...base, zoneDestinataire: Zone.ZIFS, mcaDestinataire: true })).toBe(
+        Marque.Ovale,
+      );
+      expect(cas({ ...base, zoneDestinataire: Zone.ZRI })).toBe(Marque.Ovale);
+    });
+  });
 });

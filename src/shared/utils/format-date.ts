@@ -28,3 +28,14 @@ function parseIso(iso: string): Date {
   }
   return date;
 }
+
+// Date du jour (fuseau local) → « 6 octobre 2026 ».
+export function formatDateLongFr(date: Date): string {
+  return DATE_LONG_FR.format(date);
+}
+
+// Date du jour (fuseau local) → « 2026-10-06 », pour un nom de fichier.
+export function formatDateIsoLocale(date: Date): string {
+  const deux = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${deux(date.getMonth() + 1)}-${deux(date.getDate())}`;
+}

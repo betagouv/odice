@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { TYPE_ETABLISSEMENT_OPTIONS, familleFor } from "./typeEtablissement";
+import { TYPE_ETABLISSEMENT_OPTIONS, familleFor, nomEtablissementFor } from "./typeEtablissement";
 
 describe("familleFor", () => {
   it("mappe l'abattoir sur sa propre famille", () => {
@@ -45,5 +45,16 @@ describe("TYPE_ETABLISSEMENT_OPTIONS", () => {
       expect(option).toBeDefined();
       expect(option?.famille).toBe("autre");
     }
+  });
+});
+
+describe("nomEtablissementFor", () => {
+  it("donne le nom en minuscules du type sélectionné", () => {
+    expect(nomEtablissementFor("atelier-decoupe")).toBe("atelier de découpe");
+    expect(nomEtablissementFor("entrepot")).toBe("entrepôt");
+  });
+
+  it("retourne une chaîne vide pour le placeholder", () => {
+    expect(nomEtablissementFor("")).toBe("");
   });
 });

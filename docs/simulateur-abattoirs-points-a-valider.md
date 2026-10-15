@@ -1,4 +1,4 @@
-# Simulateur Abattoirs — Points à valider avec l'équipe Odice
+# Simulateur Abattoirs — Points à valider avec l'équipe Odicé
 
 > Document de travail pour synchroniser l'équipe technique et l'équipe métier
 > sur les zones d'ambiguïté identifiées dans les sources de référence.

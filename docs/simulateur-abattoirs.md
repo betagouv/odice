@@ -1,6 +1,6 @@
 # Simulateur Abattoirs — Documentation métier
 
-> Documentation de référence pour les règles métier du simulateur Abattoirs d'ODICE.
+> Documentation de référence pour les règles métier du simulateur Abattoirs d'Odicé.
 > Toutes les règles décrites ci-dessous ont été vérifiées sur les 2 744 combinaisons
 > du fichier `20260512_Test_formules.xlsx` (couverture 100 %).
 
@@ -71,6 +71,8 @@ Le simulateur prend **6 champs en entrée**.
 Aucune validation de cohérence inter-champs n'est effectuée. Toute combinaison des 2 744 possibilités est acceptée et évaluée conformément au test xlsx.
 *(point à reconfirmer avec l'équipe métier — cf. [points-a-valider TODO 5](./simulateur-abattoirs-points-a-valider.md))*
 
+**Situation bloquée dans le formulaire** : une zone d'origine des porcs « ZI FS réflexe » affiche l'alerte « Situation impossible : les mouvements de porcs provenant de ZI FS réflexe sont interdits. », masque la destination et bloque la validation. Les zones de l'abattoir et du destinataire peuvent, elles, être « ZI FS réflexe » (traitées comme ZI FS par le moteur). Cf. [ADR-0016](./adr/0016-autres-etablissements-valeurs-deduites.md).
+
 ## 4. Outputs
 
 Le simulateur retourne **7 champs en sortie**.
@@ -86,6 +88,8 @@ Le simulateur retourne **7 champs en sortie**.
 | `ueDocument` | Document d'accompagnement — UE | `Certification zoosanitaire obligatoire`, `Dérogation à la certification zoosanitaire possible`, `Certification zoosanitaire non requise`, `null` |
 
 > **Note libellés** — La valeur `Dérogation à la certification zoosanitaire possible` est utilisée à la place de la valeur historique `… obligatoire` du test xlsx (décision validée, à confirmer définitivement avec l'équipe métier — cf. [TODO 4](./simulateur-abattoirs-points-a-valider.md)).
+
+> **Libellés affichés** — Le panneau de résultats (commun aux deux simulateurs, cf. [ADR-0015](./adr/0015-panneau-resultats-commun-et-masquage.md)) traduit ces valeurs : `LPS permanent` → « Laissez-passer sanitaire permanent », `LPS systématique` → « Laissez-passer sanitaire systématique », `LPS non requis` → « Laissez-passer sanitaire non requis », `Certification zoosanitaire obligatoire` → « Certificat zoosanitaire », `Dérogation … possible` → « Dérogation au certificat zoosanitaire possible », `Certification zoosanitaire non requise` → « Certificat zoosanitaire non requis ». Une marque `ovale barrée` affiche l'UE en « Mouvement interdit sans traitement d'atténuation ». Si le mouvement France est interdit, seule la possibilité de mouvement est affichée ; si le mouvement UE est interdit, les lignes UE du traitement et du document sont masquées. Le bandeau « Mentions à reporter sur les documents commerciaux » reprend la zone d'origine, le statut (s'il est renseigné) et, selon le traitement FR et le mouvement UE, la mention de traitement décrite dans l'ADR-0015.
 
 ## 5. Tableaux de décision
 
@@ -203,4 +207,4 @@ Si l'abattoir n'est pas agréé MCA, dès lors que les suidés viennent d'une zo
 | `20260520_Entrées_sorties.xlsx` | Référentiel des enums (entrées et sorties) |
 | `20250812_Logigramme.pdf` | Référence conceptuelle historique |
 | `20250910_Formules_Grist.pdf` | Formules Python du formulaire Grist remplacé |
-| [`docs/simulateur-abattoirs-points-a-valider.md`](./simulateur-abattoirs-points-a-valider.md) | Points ouverts à valider avec l'équipe Odice |
+| [`docs/simulateur-abattoirs-points-a-valider.md`](./simulateur-abattoirs-points-a-valider.md) | Points ouverts à valider avec l'équipe Odicé |

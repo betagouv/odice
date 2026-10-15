@@ -1,10 +1,10 @@
-# ODICE — Outil de Décision en contexte PPA
+# Odicé — Outil de Décision en contexte PPA
 
 > Outil d'aide à la décision pour les mouvements de viandes (abattoirs et établissements alimentaires) en contexte de Peste Porcine Africaine. Écosystème Beta.gouv.
 
 ## Description
 
-ODICE remplace un formulaire Grist par une application web qui calcule, à partir de 5-6 inputs réglementaires (zone d'origine des suidés, statut sanitaire, agrément MCA, etc.), les autorisations applicables aux mouvements de viandes en contexte de Peste Porcine Africaine (PPA).
+Odicé remplace un formulaire Grist par une application web qui calcule, à partir de 5-6 inputs réglementaires (zone d'origine des suidés, statut sanitaire, agrément MCA, etc.), les autorisations applicables aux mouvements de viandes en contexte de Peste Porcine Africaine (PPA).
 
 ## Fonctionnalités
 

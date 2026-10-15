@@ -1,7 +1,7 @@
 import { Notice } from "./Notice";
 
-// Avertissement légal commun (simulateurs + aide à l'utilisation) : Odicé est une
-// aide à la décision indicative, sans valeur réglementaire.
+// Avertissement légal commun (accueil + simulateurs) : aide à la décision indicative,
+// dérogations soumises à l'appréciation de la DDecPP.
 export function AvertissementNotice() {
   return (
     <Notice title="Avertissement" variant="warning">
@@ -15,6 +15,18 @@ export function AvertissementNotice() {
       </strong>{" "}
       En conséquence, nous déclinons toute responsabilité en cas d'erreur, d'omission ou
       d'interprétation incorrecte des informations fournies par cet outil.
+      {/* Saut de paragraphe : la description DSFR est un <span>, un <p> y serait invalide. */}
+      <br />
+      <br />
+      Les possibilités de dérogation aux interdictions de mouvements présentées dans les résultats
+      d'Odicé{" "}
+      <strong>
+        sont soumises à l'appréciation de la direction départementale en charge de la protection des
+        populations (DDecPP) compétente
+      </strong>
+      . La DDecPP peut, au regard de la situation sanitaire et de l'analyse de risques réalisée,{" "}
+      <strong>interdire le mouvement</strong>, même lorsque celui-ci entre dans le cadre d'une
+      dérogation réglementaire.
     </Notice>
   );
 }
