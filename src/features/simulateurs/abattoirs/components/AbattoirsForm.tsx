@@ -14,10 +14,15 @@ import {
 } from "@shared/labels/abattoirs.labels";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
 import { DocumentAnimauxHint } from "@shared/components/DocumentAnimauxHint";
-import { McaInfoTooltip } from "@shared/components/McaInfoTooltip";
 import { SituationImpossibleAlert } from "@shared/components/SituationImpossibleAlert";
 import { MESSAGE_ZI_FS_REFLEXE_INTERDIT, ZONE_ZIFS_REFLEXE } from "@shared/labels/common.labels";
-import { StatutInfoTooltip } from "./StatutInfoTooltip";
+import { LienFicheDoc } from "@features/simulateurs/components/LienFicheDoc";
+import {
+  FICHE_AGREMENT_MCA,
+  FICHE_GLOSSAIRE,
+  FICHE_ZONES,
+  ancreTerme,
+} from "@features/documentation/fiches";
 import {
   useProgressiveFields,
   type ProgressiveFieldConfig,
@@ -127,6 +132,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
             <div className="fr-select-group">
               <label className="fr-label" htmlFor="zone-abattoir">
                 Zone de votre abattoir.
+                <LienFicheDoc fiche={FICHE_ZONES} />
                 <CarteZonesHint />
               </label>
               <select
@@ -153,7 +159,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="mca-abattoir">
                   Êtes-vous en possession d'un agrément zoosanitaire MCA ?
-                  <McaInfoTooltip />
+                  <LienFicheDoc fiche={FICHE_AGREMENT_MCA} />
                 </label>
                 <select
                   className="fr-select"
@@ -195,6 +201,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="zone-suides">
                     Zone d'origine des porcs.
+                    <LienFicheDoc fiche={FICHE_ZONES} />
                     <DocumentAnimauxHint />
                   </label>
                   <select
@@ -221,7 +228,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="statut">
                       Statut réglementaire du mouvement des animaux.
-                      <StatutInfoTooltip />
+                      <LienFicheDoc fiche={FICHE_GLOSSAIRE} ancre={ancreTerme("MNR-PPA")} />
                       <DocumentAnimauxHint />
                     </label>
                     <select
@@ -266,6 +273,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="zone-dest">
                     Zone de l'établissement destinataire des viandes.
+                    <LienFicheDoc fiche={FICHE_ZONES} />
                     <CarteZonesHint />
                   </label>
                   <select
@@ -294,7 +302,7 @@ export function AbattoirsForm({ onSubmit, onReset, onChange, onStart }: Props) {
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="mca-dest">
                       L'établissement destinataire est-il en possession d'un agrément zoosanitaire
-                      MCA ?<McaInfoTooltip />
+                      MCA ?<LienFicheDoc fiche={FICHE_AGREMENT_MCA} />
                     </label>
                     <select
                       className="fr-select"

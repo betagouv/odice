@@ -47,7 +47,7 @@ test.describe("Espace avant le bandeau d'avertissement", () => {
   for (const [nom, chemin] of [
     ["accueil", "/"],
     ["simulateurs", "/simulateurs"],
-    ["niveau de risque", "/niveau-de-risque"],
+    ["fiche biosécurité", "/documentation-reglementaire/biosecurite-niveaux-de-risque"],
   ]) {
     test(`${nom} : au moins 100 px entre le contenu et le bandeau`, async ({ page }) => {
       await page.goto(chemin);
