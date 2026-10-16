@@ -229,7 +229,7 @@ export function EtablissementsForm({
             <strong>
               Si vous avez un produit composé d'un mélange de viandes de porc issues de zones
               différentes, {/* Nouvel onglet : ne pas perdre la saisie en cours. */}
-              <Link to={ROUTES.NIVEAU_RISQUE} target="_blank" rel="noopener noreferrer">
+              <Link to={ROUTES.DOC_BIOSECURITE} target="_blank" rel="noopener noreferrer">
                 référez-vous à ce tableau
               </Link>
               .

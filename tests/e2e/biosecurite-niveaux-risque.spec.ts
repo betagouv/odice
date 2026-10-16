@@ -1,12 +1,14 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Niveau de risque des porcs et des viandes", () => {
-  test("la page affiche les deux tableaux de niveau de risque", async ({ page }) => {
-    await page.goto("/niveau-de-risque");
+const URL_FICHE = "/documentation-reglementaire/biosecurite-niveaux-de-risque";
 
-    await expect(page).toHaveTitle("Niveau de risque des porcs et des viandes — Odicé");
+test.describe("Fiche Biosécurité et niveaux de risque", () => {
+  test("la page affiche les deux tableaux de niveau de risque", async ({ page }) => {
+    await page.goto(URL_FICHE);
+
+    await expect(page).toHaveTitle("Biosécurité et niveaux de risque — Odicé");
     await expect(
-      page.getByRole("heading", { level: 1, name: "Niveau de risque des porcs et des viandes" }),
+      page.getByRole("heading", { level: 1, name: "Biosécurité et niveaux de risque" }),
     ).toBeVisible();
 
     const tableaux = page.locator(".fr-table table");
@@ -19,7 +21,7 @@ test.describe("Niveau de risque des porcs et des viandes", () => {
   });
 
   test("les titres et phrases suivent la maquette à jour", async ({ page }) => {
-    await page.goto("/niveau-de-risque");
+    await page.goto(URL_FICHE);
 
     await expect(
       page.getByRole("heading", {
@@ -55,7 +57,7 @@ test.describe("Niveau de risque des porcs et des viandes", () => {
   test("la colonne « marque sanitaire » est complète dans le tableau des viandes", async ({
     page,
   }) => {
-    await page.goto("/niveau-de-risque");
+    await page.goto(URL_FICHE);
     const lignes = page.locator(".fr-table table").nth(1).locator("tbody tr");
     await expect(lignes).toHaveCount(17);
 
@@ -66,7 +68,7 @@ test.describe("Niveau de risque des porcs et des viandes", () => {
   });
 
   test("l'échelle de couleur s'intensifie du premier au dernier niveau", async ({ page }) => {
-    await page.goto("/niveau-de-risque");
+    await page.goto(URL_FICHE);
 
     for (const tableau of [0, 1]) {
       const cellules = page
@@ -95,7 +97,7 @@ test.describe("Niveau de risque des porcs et des viandes", () => {
   test("texte noir, zone sur une ligne et titre de colonne coupé avant la parenthèse", async ({
     page,
   }) => {
-    await page.goto("/niveau-de-risque");
+    await page.goto(URL_FICHE);
     const tableau = page.locator(".fr-table table").nth(1);
 
     const couleurs = await tableau
@@ -113,7 +115,15 @@ test.describe("Niveau de risque des porcs et des viandes", () => {
 
   test("le plan du site mène à la page", async ({ page }) => {
     await page.goto("/plan-du-site");
-    await page.getByRole("link", { name: "Niveau de risque des porcs et des viandes" }).click();
-    await expect(page).toHaveURL(/\/niveau-de-risque$/);
+    await page.getByRole("link", { name: "Biosécurité et niveaux de risque" }).click();
+    await expect(page).toHaveURL(/\/biosecurite-niveaux-de-risque$/);
+  });
+
+  test("l'ancienne URL redirige vers la fiche", async ({ page }) => {
+    await page.goto("/niveau-de-risque");
+    await expect(page).toHaveURL(/\/documentation-reglementaire\/biosecurite-niveaux-de-risque$/);
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Biosécurité et niveaux de risque" }),
+    ).toBeVisible();
   });
 });

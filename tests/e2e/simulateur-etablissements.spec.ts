@@ -315,12 +315,15 @@ test.describe("Simulateur Autres Établissements — tableau des mélanges", () 
     await remplirJusquaSuides(page, "zone-indemne");
 
     const lien = page.getByRole("link", { name: "référez-vous à ce tableau" });
-    await expect(lien).toHaveAttribute("href", "/niveau-de-risque");
+    await expect(lien).toHaveAttribute(
+      "href",
+      "/documentation-reglementaire/biosecurite-niveaux-de-risque",
+    );
     await expect(lien).toHaveAttribute("target", "_blank");
 
     const [onglet] = await Promise.all([context.waitForEvent("page"), lien.click()]);
     await expect(
-      onglet.getByRole("heading", { level: 1, name: "Niveau de risque des porcs et des viandes" }),
+      onglet.getByRole("heading", { level: 1, name: "Biosécurité et niveaux de risque" }),
     ).toBeVisible();
   });
 });
