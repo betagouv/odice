@@ -82,13 +82,6 @@ export const MARQUE_ORDER: Marque[] = [
   Marque.OvaleDiagonalesParalleles,
 ];
 
-// Infobulle des questions « agrément zoosanitaire MCA » : titre en gras puis définition (maquette).
-export const MCA_TOOLTIP = {
-  titre: "Agrément zoosanitaire spécifique « Maladie de Catégorie A » (MCA),",
-  texte:
-    "délivré par l’autorité compétente (DDecPP) aux établissements du secteur alimentaire autorisés à recevoir des animaux ou produits soumis à des restrictions de police sanitaire liées à la PPA.",
-};
-
 // Choix « ZI FS réflexe » (toutes les zones des deux simulateurs) : même conditionnalité
 // que ZI FS, donc traduit en Zone.ZIFS avant l'appel au moteur (moteur et oracle inchangés).
 export const ZONE_ZIFS_REFLEXE = "zi-fs-reflexe";

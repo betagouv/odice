@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { FicheDocumentation } from "../components/FicheDocumentation";
-import { FICHE_GLOSSAIRE } from "../fiches";
+import { FICHE_GLOSSAIRE, ancreTerme } from "../fiches";
 
 type Terme = { terme: string; paragraphes: ReactNode[] };
 
@@ -233,7 +233,9 @@ function Definition({ terme, paragraphes, niveau }: Terme & { niveau: "h2" | "h3
   const Titre = niveau;
   return (
     <section className="fr-mt-4w">
-      <Titre className="fr-h5">{terme}</Titre>
+      <Titre className="fr-h5" id={ancreTerme(terme)}>
+        {terme}
+      </Titre>
       {paragraphes.map((paragraphe, index) => (
         <p key={index}>{paragraphe}</p>
       ))}

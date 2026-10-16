@@ -103,14 +103,6 @@ test.describe("Simulateur Autres Établissements", () => {
     await choisirMarque(page, "ovale-barree");
     await expect(page.getByRole("heading", { name: /Conditions de mouvement/i })).not.toBeVisible();
   });
-
-  test("les deux questions MCA portent l'infobulle MCA", async ({ page }) => {
-    await ouvrirAtelier(page);
-    await remplirCasSain(page);
-
-    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /Maladie de catégorie A/i });
-    await expect(tooltip).toHaveCount(2);
-  });
 });
 
 test.describe("Simulateur Autres Établissements — affichage progressif", () => {

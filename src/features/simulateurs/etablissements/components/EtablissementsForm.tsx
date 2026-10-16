@@ -19,8 +19,14 @@ import {
 } from "@shared/hooks/useProgressiveFields";
 import { ROUTES } from "@shared/config/routes.config";
 import { CarteZonesHint } from "@shared/components/CarteZonesHint";
-import { McaInfoTooltip } from "@shared/components/McaInfoTooltip";
 import { SituationImpossibleAlert } from "@shared/components/SituationImpossibleAlert";
+import { LienFicheDoc } from "@features/simulateurs/components/LienFicheDoc";
+import {
+  FICHE_AGREMENT_MCA,
+  FICHE_MARQUES,
+  FICHE_TRAITEMENT,
+  FICHE_ZONES,
+} from "@features/documentation/fiches";
 import {
   MESSAGES_SITUATION_IMPOSSIBLE,
   deduireTraitements,
@@ -173,6 +179,7 @@ export function EtablissementsForm({
             <div className="fr-select-group">
               <label className="fr-label" htmlFor="etb-zone-exp">
                 Zone de votre {nomEtablissement}.
+                <LienFicheDoc fiche={FICHE_ZONES} />
                 <CarteZonesHint />
               </label>
               <select
@@ -199,7 +206,7 @@ export function EtablissementsForm({
               <div className="fr-select-group">
                 <label className="fr-label" htmlFor="etb-mca-exp">
                   Êtes-vous en possession d'un agrément zoosanitaire MCA ?
-                  <McaInfoTooltip />
+                  <LienFicheDoc fiche={FICHE_AGREMENT_MCA} />
                 </label>
                 <select
                   className="fr-select"
@@ -252,6 +259,7 @@ export function EtablissementsForm({
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="etb-zone-suides">
                     Zone d'origine des porcs dont sont issues les viandes.
+                    <LienFicheDoc fiche={FICHE_ZONES} />
                     <span className="fr-hint-text">Visible sur le bon de livraison</span>
                   </label>
                   <select
@@ -293,6 +301,7 @@ export function EtablissementsForm({
                   id="etb-marque-viandes-legend"
                 >
                   Marque sanitaire présente sur les viandes à réception.
+                  <LienFicheDoc fiche={FICHE_MARQUES} />
                 </legend>
                 {MARQUE_ORDER.map((m) => (
                   <div key={m} className="fr-fieldset__element fr-fieldset__element--inline">
@@ -323,7 +332,7 @@ export function EtablissementsForm({
                     <div className="fr-select-group">
                       <label className="fr-label" htmlFor="etb-trait-oblig-fr">
                         Un traitement d'atténuation est-il obligatoire pour les mouvements nationaux
-                        ?
+                        ?<LienFicheDoc fiche={FICHE_TRAITEMENT} />
                       </label>
                       <select
                         className="fr-select"
@@ -394,6 +403,7 @@ export function EtablissementsForm({
                 <div className="fr-select-group">
                   <label className="fr-label" htmlFor="etb-zone-dest">
                     Zone de l'établissement destinataire des viandes.
+                    <LienFicheDoc fiche={FICHE_ZONES} />
                     <CarteZonesHint />
                   </label>
                   <select
@@ -420,7 +430,7 @@ export function EtablissementsForm({
                   <div className="fr-select-group">
                     <label className="fr-label" htmlFor="etb-mca-dest">
                       L'établissement destinataire est-il en possession d'un agrément zoosanitaire
-                      MCA ?<McaInfoTooltip />
+                      MCA ?<LienFicheDoc fiche={FICHE_AGREMENT_MCA} />
                     </label>
                     <select
                       className="fr-select"

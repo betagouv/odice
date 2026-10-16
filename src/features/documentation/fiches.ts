@@ -79,3 +79,13 @@ export const FICHES: Fiche[] = [
   FICHE_CORPUS,
   FICHE_GLOSSAIRE,
 ];
+
+// Ancre d'un terme du glossaire (« MNR-PPA » → « mnr-ppa ») pour y pointer depuis les simulateurs.
+export function ancreTerme(terme: string): string {
+  return terme
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
