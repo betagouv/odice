@@ -92,6 +92,10 @@ export function Layout({ children }: LayoutProps) {
                   <NavLink
                     to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
                     className="fr-nav__link"
+                    // Nouvel onglet pour ne pas perdre une simulation en cours.
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Documentation réglementaire - nouvelle fenêtre"
                     onClick={() => trackEvent(MATOMO_ANNEXES.DOCUMENTATION_REGLEMENTAIRE)}
                   >
                     Documentation réglementaire

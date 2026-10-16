@@ -33,15 +33,14 @@ export function ZonesReglementeesPage() {
         </Definition>
         <Definition terme="Zone infectée faune sauvage (ZI FS)">
           zone mise en place lors de la détection d'un cas de PPA dans la faune sauvage, ajustée
-          selon la surveillance en ZI FS réflexe (phase mesures d'urgence).
+          selon la surveillance en ZI FS réflexe.
         </Definition>
         <Definition terme="Zone de protection (ZP)">
           zone d'environ 3 km de rayon mise en place lors de la détection d'un foyer de PPA en
-          élevage (phase mesures d'urgence).
+          élevage.
         </Definition>
         <Definition terme="Zone de surveillance (ZS)">
-          zone d'environ 10 km de rayon mise en place autour de la zone de protection (phase mesures
-          d'urgence).
+          zone d'environ 10 km de rayon mise en place autour de la zone de protection.
         </Definition>
       </section>
 
@@ -51,14 +50,13 @@ export function ZonesReglementeesPage() {
         <TitreSection>Phase de régionalisation</TitreSection>
         <Definition terme="Zone réglementée I (ZRI)">
           zone indemne de PPA soumise à des mesures de surveillance et de prévention en raison de sa
-          proximité avec une zone où la maladie est présente (phase de régionalisation).
+          proximité avec une zone où la maladie est présente.
         </Definition>
         <Definition terme="Zone réglementée II (ZRII)">
-          zone dans laquelle la PPA est uniquement présente dans la faune sauvage (phase de
-          régionalisation).
+          zone dans laquelle la PPA est uniquement présente dans la faune sauvage.
         </Definition>
         <Definition terme="Zone réglementée III (ZRIII)">
-          zone dans laquelle la PPA est présente chez les porcs détenus (phase de régionalisation).
+          zone dans laquelle la PPA est présente chez les porcs détenus.
         </Definition>
       </section>
 

@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
 import { ErrorBoundary } from "@shared/components/ErrorBoundary";
 import { Layout } from "@shared/components/layout/Layout";
+import { ScrollToTop } from "@shared/components/layout/ScrollToTop";
 import { Matomo } from "@shared/analytics";
 import { HomePage } from "@features/home/pages/HomePage";
 import { SimulateursIndexPage } from "@features/simulateurs/pages/SimulateursIndexPage";
@@ -27,6 +28,7 @@ function App() {
   return (
     <Layout>
       <Matomo />
+      <ScrollToTop />
       <ErrorBoundary fallback={<ErrorFallbackPage />}>
         <Routes>
           <Route path={ROUTES.HOME} element={<HomePage />} />

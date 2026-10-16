@@ -27,11 +27,25 @@ export function PlanDuSitePage() {
               <Link to={ROUTES.SIMULATEURS}>Simulateur</Link>
             </li>
             <li>
-              <Link to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}>Documentation réglementaire</Link>
+              <Link
+                to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Documentation réglementaire - nouvelle fenêtre"
+              >
+                Documentation réglementaire
+              </Link>
               <ul>
                 {FICHES.map((fiche) => (
                   <li key={fiche.route}>
-                    <Link to={fiche.route}>{fiche.titre}</Link>
+                    <Link
+                      to={fiche.route}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${fiche.titre} - nouvelle fenêtre`}
+                    >
+                      {fiche.titre}
+                    </Link>
                   </li>
                 ))}
               </ul>

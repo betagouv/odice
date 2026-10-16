@@ -113,10 +113,13 @@ test.describe("Fiche Biosécurité et niveaux de risque", () => {
     await expect(entete).toContainText("(voir document commercial)");
   });
 
-  test("le plan du site mène à la page", async ({ page }) => {
+  test("le plan du site mène à la page dans un nouvel onglet", async ({ page }) => {
     await page.goto("/plan-du-site");
-    await page.getByRole("link", { name: "Biosécurité et niveaux de risque" }).click();
-    await expect(page).toHaveURL(/\/biosecurite-niveaux-de-risque$/);
+    const [onglet] = await Promise.all([
+      page.waitForEvent("popup"),
+      page.getByRole("link", { name: "Biosécurité et niveaux de risque" }).click(),
+    ]);
+    await expect(onglet).toHaveURL(/\/biosecurite-niveaux-de-risque$/);
   });
 
   test("l'ancienne URL redirige vers la fiche", async ({ page }) => {

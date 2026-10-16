@@ -330,16 +330,16 @@ export function CorpusReglementairePage() {
         </>
       }
     >
-      {GROUPES.map((groupe, index) => (
-        <Accordeon key={groupe.titre} groupe={groupe} ouvert={index === 0} />
+      {GROUPES.map((groupe) => (
+        <Accordeon key={groupe.titre} groupe={groupe} />
       ))}
     </FicheDocumentation>
   );
 }
 
-// Accordéons DSFR indépendants (hors fr-accordions-group, qui n'en laisserait qu'un ouvert) ;
-// seul le premier est ouvert à l'arrivée (maquette). Ouverture/fermeture gérée par le JS DSFR.
-function Accordeon({ groupe, ouvert }: { groupe: Groupe; ouvert: boolean }) {
+// Accordéons DSFR indépendants (hors fr-accordions-group, qui n'en laisserait qu'un ouvert),
+// tous fermés à l'arrivée. Ouverture/fermeture gérée par le JS DSFR.
+function Accordeon({ groupe }: { groupe: Groupe }) {
   const id = useId();
   return (
     <section className="fr-accordion">
@@ -347,13 +347,13 @@ function Accordeon({ groupe, ouvert }: { groupe: Groupe; ouvert: boolean }) {
         <button
           type="button"
           className="fr-accordion__btn"
-          aria-expanded={ouvert}
+          aria-expanded="false"
           aria-controls={id}
         >
           {groupe.titre}
         </button>
       </h2>
-      <div className={`fr-collapse${ouvert ? " fr-collapse--expanded" : ""}`} id={id}>
+      <div className="fr-collapse" id={id}>
         {groupe.textes.map((texte, index) => (
           <article key={texte.url}>
             {index > 0 && <hr />}

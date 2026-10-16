@@ -22,11 +22,14 @@ test.describe("Documentation réglementaire", () => {
   });
 
   for (const fiche of FICHES) {
-    test(`la carte « ${fiche} » mène à sa fiche`, async ({ page }) => {
+    test(`la carte « ${fiche} » mène à sa fiche, affichée depuis le haut`, async ({ page }) => {
       await page.goto("/documentation-reglementaire");
+      // Accueil défilé : la fiche ne doit pas hériter de cette position.
+      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await page.locator(".fr-card__title").getByRole("link", { name: fiche }).click();
 
-      await expect(page.getByRole("heading", { level: 1, name: fiche })).toBeVisible();
+      await expect(page.getByRole("heading", { level: 1, name: fiche })).toBeInViewport();
+      expect(await page.evaluate(() => window.scrollY)).toBe(0);
       await expect(page).toHaveTitle(`${fiche} — Odicé`);
       await expect(
         page.locator(".fr-breadcrumb").getByRole("link", { name: "Documentation réglementaire" }),
@@ -41,6 +44,15 @@ test.describe("Documentation réglementaire", () => {
     ).toHaveAttribute("aria-current", "page");
   });
 
+  test("le menu ouvre la documentation dans un nouvel onglet", async ({ page }) => {
+    await page.goto("/simulateurs");
+    const lien = page.locator(".fr-nav").getByRole("link", { name: "Documentation réglementaire" });
+    await expect(lien).toHaveAttribute("target", "_blank");
+    const [onglet] = await Promise.all([page.waitForEvent("popup"), lien.click()]);
+    await expect(onglet).toHaveURL(/\/documentation-reglementaire$/);
+    await expect(page).toHaveURL(/\/simulateurs$/);
+  });
+
   test("chaque carte affiche son visuel", async ({ page }) => {
     await page.goto("/documentation-reglementaire");
     const images = page.locator(".fr-card__img img");
@@ -51,14 +63,18 @@ test.describe("Documentation réglementaire", () => {
     }
   });
 
-  test("le corpus présente trois accordéons, seul le premier ouvert", async ({ page }) => {
+  test("le corpus présente trois accordéons, tous fermés", async ({ page }) => {
     await page.goto("/documentation-reglementaire/corpus-reglementaire");
     const reglements = page.getByRole("button", { name: "Règlements européens" });
     const arretes = page.getByRole("button", { name: "Arrêtés ministériels" });
     const instructions = page.getByRole("button", { name: "Instructions techniques" });
-    await expect(reglements).toHaveAttribute("aria-expanded", "true");
-    await expect(arretes).toHaveAttribute("aria-expanded", "false");
-    await expect(instructions).toHaveAttribute("aria-expanded", "false");
+    for (const bouton of [reglements, arretes, instructions]) {
+      await expect(bouton).toHaveAttribute("aria-expanded", "false");
+    }
+    await expect(
+      page.getByRole("heading", { level: 3, name: "Règlement (UE) 2016/429" }),
+    ).toBeHidden();
+    await reglements.click();
 
     // 8 règlements + 3 arrêtés + 8 instructions, tous en nouvel onglet.
     const liens = page.locator(".fr-accordion a");

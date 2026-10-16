@@ -47,8 +47,8 @@ export function SchemaFoyerElevage() {
     <Schema
       titre="Foyer en élevage"
       image="/images/documentation/zones-foyer-elevage.webp"
-      largeur={1198}
-      hauteur={1584}
+      largeur={1180}
+      hauteur={1564}
       phaseInitiale="phase mesures d'urgence, avec une zone de protection (ZP) de 3 km entourée d'une zone de surveillance (ZS) de 10 km autour du foyer de PPA."
       branches={[
         {
@@ -73,8 +73,8 @@ export function SchemaFauneSauvage() {
     <Schema
       titre="Cas en faune sauvage"
       image="/images/documentation/zones-faune-sauvage.webp"
-      largeur={1240}
-      hauteur={2394}
+      largeur={1248}
+      hauteur={2412}
       phaseInitiale="phase réflexe, avec une zone infectée faune sauvage réflexe (ZI FS réflexe) de 20 km autour du cas de PPA."
       branches={[
         {
