@@ -99,8 +99,14 @@ test.describe("Documentation réglementaire", () => {
     await expect(
       page.getByRole("heading", { level: 3, name: "Cas en faune sauvage" }),
     ).toBeVisible();
-    // 2 cercles pour le foyer, 4 pour la faune sauvage, chacun décrit textuellement.
-    await expect(page.getByRole("img", { name: /^Zone / })).toHaveCount(6);
+    // Images décoratives chargées, décrites textuellement pour les lecteurs d'écran.
+    const schemas = page.locator("figure img[src*='/images/documentation/zones-']");
+    await expect(schemas).toHaveCount(2);
+    for (const schema of await schemas.all()) {
+      await schema.scrollIntoViewIfNeeded();
+      await expect(schema).toHaveJSProperty("complete", true);
+      expect(await schema.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBeGreaterThan(0);
+    }
     await expect(page.getByRole("list", { name: "Avec nouveau foyer" })).toContainText("J +30");
     await expect(page.getByRole("list", { name: "Sans nouveau cas" })).toContainText("J +365");
   });
