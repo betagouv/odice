@@ -359,6 +359,7 @@ export function EtablissementsForm({
                     <div className="fr-select-group">
                       <label className="fr-label" htmlFor="etb-trait-realise">
                         Un traitement d'atténuation a-t-il été réalisé ?
+                        <LienFicheDoc fiche={FICHE_TRAITEMENT} />
                       </label>
                       <select
                         className="fr-select"

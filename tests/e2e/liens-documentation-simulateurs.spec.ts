@@ -70,6 +70,20 @@ test.describe("Liens des simulateurs vers la documentation", () => {
     });
   });
 
+  test("Établissements : la question « réalisé », même seule, mène à la fiche traitement", async ({
+    page,
+  }) => {
+    await page.goto("/simulateurs");
+    await page.getByLabel(/nature de votre établissement/i).selectOption("atelier-decoupe");
+    await page.getByLabel(/Zone de votre atelier de découpe/i).selectOption("zone-indemne");
+    await page.getByLabel(/Êtes-vous en possession/i).selectOption("oui");
+    await page.getByLabel(/Zone d'origine des porcs/i).selectOption("zrii");
+    await page.locator('label[for="etb-marque-ovale-barree"]').click();
+
+    await expect(page.locator("#etb-trait-oblig-fr")).toHaveCount(0);
+    await verifierLiens(page, { "etb-trait-realise": `${DOC}/traitement-attenuation` });
+  });
+
   test("le clic ouvre la fiche dans un nouvel onglet sans quitter la saisie", async ({ page }) => {
     await page.goto("/simulateurs");
     await page.getByLabel(/nature de votre établissement/i).selectOption("abattoir");
