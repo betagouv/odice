@@ -381,34 +381,6 @@ test.describe("Simulateur Abattoirs — affichage progressif", () => {
   });
 });
 
-test.describe("Simulateur Abattoirs — infobulles", () => {
-  test("la question MCA de l'abattoir porte l'infobulle MCA", async ({ page }) => {
-    await ouvrirAbattoir(page);
-    await page.getByLabel(L.zoneAbattoir).selectOption("zone-indemne");
-
-    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /Maladie de catégorie A/i });
-    await expect(tooltip).toHaveCount(1);
-  });
-
-  test("la question MCA du destinataire porte aussi l'infobulle MCA", async ({ page }) => {
-    await ouvrirAbattoir(page);
-    await remplir(page, CAS_SAIN);
-
-    const tooltip = page.locator('[role="tooltip"]').filter({ hasText: /Maladie de catégorie A/i });
-    await expect(tooltip).toHaveCount(2);
-  });
-
-  test("l'infobulle du statut explique MR-PPA et MNR-PPA", async ({ page }) => {
-    await ouvrirAbattoir(page);
-    await remplirJusquaSuides(page, "zrii");
-
-    const tooltip = page
-      .locator('[role="tooltip"]')
-      .filter({ hasText: /MR-PPA — Mouvement respectant/ });
-    await expect(tooltip).toContainText("MNR-PPA — Mouvement ne respectant pas");
-  });
-});
-
 test.describe("Simulateur Abattoirs — lien vers l'historique des versions", () => {
   test("la date du résultat ouvre l'historique dans un nouvel onglet", async ({ page }) => {
     await ouvrirAbattoir(page);

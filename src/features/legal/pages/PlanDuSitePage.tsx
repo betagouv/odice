@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "@shared/config/routes.config";
+import { FICHES } from "@features/documentation/fiches";
 import { Breadcrumb } from "@shared/components/Breadcrumb";
 import { PageContainer } from "@shared/components/PageContainer";
 import { PageTitle } from "@shared/components/PageTitle";
@@ -26,10 +27,28 @@ export function PlanDuSitePage() {
               <Link to={ROUTES.SIMULATEURS}>Simulateur</Link>
             </li>
             <li>
-              <Link to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}>Documentation réglementaire</Link>
-            </li>
-            <li>
-              <Link to={ROUTES.NIVEAU_RISQUE}>Niveau de risque des porcs et des viandes</Link>
+              <Link
+                to={ROUTES.DOCUMENTATION_REGLEMENTAIRE}
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Documentation réglementaire - nouvelle fenêtre"
+              >
+                Documentation réglementaire
+              </Link>
+              <ul>
+                {FICHES.map((fiche) => (
+                  <li key={fiche.route}>
+                    <Link
+                      to={fiche.route}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title={`${fiche.titre} - nouvelle fenêtre`}
+                    >
+                      {fiche.titre}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </li>
             <li>
               <Link to={ROUTES.HISTORIQUE_VERSIONS}>Historique des versions</Link>

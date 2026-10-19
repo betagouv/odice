@@ -1,4 +1,4 @@
-// Tableaux de niveau de risque (maquette « Niveau de risque des porcs et des viandes »).
+// Tableaux de niveau de risque (fiche « Biosécurité et niveaux de risque »).
 // Ordre = niveau de risque croissant ; le niveau affiché est la position dans le tableau.
 
 import { Marque, Statut, Zone } from "@engine";
