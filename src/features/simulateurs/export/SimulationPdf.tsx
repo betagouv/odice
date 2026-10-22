@@ -59,7 +59,9 @@ const styles = StyleSheet.create({
   },
   blocTitre: { fontSize: 11, fontWeight: 700, color: COULEURS.bleuFrance, marginBottom: 6 },
   rangee: { flexDirection: "row", alignItems: "center", flexWrap: "wrap", gap: 8 },
-  pays: { marginRight: 2 },
+  colonne: { gap: 6 },
+  ligneZone: { flexDirection: "row", alignItems: "center", gap: 8 },
+  pays: { width: 40 },
   badge: {
     fontSize: 8.5,
     fontWeight: 700,
@@ -160,20 +162,20 @@ function Bloc({ titre, children }: { titre: string; children: ReactNode }) {
 }
 
 function Lignes({ ligne }: { ligne: LigneBadges }) {
+  // Une ligne par zone, libellé en colonne fixe : mise en page stable quelle que soit la longueur des badges.
   return (
-    <View style={styles.rangee}>
-      {ligne.france !== null && (
-        <>
-          <Text style={styles.pays}>France</Text>
-          <Badge badge={ligne.france} />
-        </>
-      )}
-      {ligne.ue !== null && (
-        <>
-          <Text style={[styles.pays, { marginLeft: 16 }]}>UE</Text>
-          <Badge badge={ligne.ue} />
-        </>
-      )}
+    <View style={styles.colonne}>
+      {ligne.france !== null && <LigneZone pays="France" badge={ligne.france} />}
+      {ligne.ue !== null && <LigneZone pays="UE" badge={ligne.ue} />}
+    </View>
+  );
+}
+
+function LigneZone({ pays, badge }: { pays: string; badge: BadgeSpec }) {
+  return (
+    <View style={styles.ligneZone} wrap={false}>
+      <Text style={styles.pays}>{pays}</Text>
+      <Badge badge={badge} />
     </View>
   );
 }
